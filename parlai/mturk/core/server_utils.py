@@ -18,7 +18,8 @@ import time
 import parlai.mturk.core.shared_utils as shared_utils
 
 region_name = 'us-east-1'
-user_name = getpass.getuser()
+# user_name = getpass.getuser()
+user_name = "yooli-test"
 
 parent_dir = shared_utils.get_core_dir()
 legacy_server_source_directory_name = 'server_legacy'

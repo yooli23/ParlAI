@@ -20,6 +20,19 @@ SPECIAL_TOKENS = {
     "pad_token": "<pad>",
 }
 
+# placeholders special tokens for inspired dataset
+movie_genre_special_tokens = ["[movie_genre_" + str(i) + "]" for i in range(8)]
+movie_title_special_tokens = ["[movie_title_" + str(i) + "]" for i in range(16)]
+movie_actor_special_tokens = ["[movie_p_actor_" + str(i) + "]" for i in range(9)]
+movie_director_special_tokens = ["[movie_p_director_" + str(i) + "]" for i in range(7)]
+added_genre_special_tokens = ["[movie_genre]"]
+added_title_special_tokens = ["[movie_title]"]
+added_actor_special_tokens = ["[movie_p_actor]"]
+added_director_special_tokens = ["[movie_p_director]"]
+added_special_tokens = added_genre_special_tokens + added_title_special_tokens + added_actor_special_tokens + added_director_special_tokens
+PLACE_HOLDER_TOKENS = added_special_tokens + movie_genre_special_tokens + movie_title_special_tokens + movie_actor_special_tokens + movie_director_special_tokens
+
+
 NO_OP = "x"
 
 
@@ -85,8 +98,11 @@ class Gpt2DictionaryAgent(HuggingFaceDictionaryAgent):
 
     def _define_special_tokens(self, opt):
         if opt['add_special_tokens']:
+            if opt['add_inspired_special_tokens']:
+                self.tokenizer.add_special_tokens(SPECIAL_TOKENS + PLACE_HOLDER_TOKENS)
             # Add addtional start/end/pad tokens
-            self.tokenizer.add_special_tokens(SPECIAL_TOKENS)
+            else:
+                self.tokenizer.add_special_tokens(SPECIAL_TOKENS)
             self.start_token = SPECIAL_TOKENS["bos_token"]
             self.end_token = SPECIAL_TOKENS["eos_token"]
             self.null_token = SPECIAL_TOKENS["pad_token"]

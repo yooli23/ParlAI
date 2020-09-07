@@ -1262,4 +1262,13 @@ task_list = [
             "human and a virtual assistant."
         ),
     },
+    {
+        "id": "inspired_state_predictor",
+        "display_name": "inspired_state_predictor",
+        "task": "inspired_state_predictor",
+        "tags": ["All", "Goal", "ChitChat"],
+        "description": (
+            "Inspired movie recommendation dialog dataset state predictor"
+        ),
+    },
 ]
