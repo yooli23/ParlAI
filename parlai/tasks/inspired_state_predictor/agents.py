@@ -51,22 +51,24 @@ class InspiredStatePredictorTeacher(FixedDialogTeacher):
         print('loading: ' + data_path)
         df_training = pd.read_csv(data_path)
         df_training = df_training.fillna("")
-        # if self.datatype.startswith('test'):
-            
-        # elif self.datatype.startswith('valid'):
-
-        # else:
-
         self.messages = self._get_messages(df_training)
+        if self.datatype.startswith('test'):
+            self.messages = self.messages[2410:]
+        elif self.datatype.startswith('valid'):
+            self.messages = self.messages[2149:2410]
+        else:
+            self.messages = self.messages[:2149]
+        
         
     
     def _get_messages(self, df_training):
+        print("[Inspired_Dataset]processing dataset...")
         messages = []
         for index, row in df_training.iterrows():
-            context = row["context"]
-            ut = row["ut"]
-            bt = row["bt"]
-            bt_plus_1 = row["bt_plus_1"]
+            context = row["context"].lower()
+            ut = row["ut"].lower()
+            bt = row["bt"].lower()
+            bt_plus_1 = row["bt_plus_1"].lower()
             row_dic = {"context": context, "ut": ut, "bt": bt, "bt_plus_1": bt_plus_1}
             messages.append(row_dic)
         return messages

@@ -30,8 +30,10 @@ added_title_special_tokens = ["[movie_title]"]
 added_actor_special_tokens = ["[movie_p_actor]"]
 added_director_special_tokens = ["[movie_p_director]"]
 added_special_tokens = added_genre_special_tokens + added_title_special_tokens + added_actor_special_tokens + added_director_special_tokens
-PLACE_HOLDER_TOKENS = added_special_tokens + movie_genre_special_tokens + movie_title_special_tokens + movie_actor_special_tokens + movie_director_special_tokens
-
+PLACE_HOLDER_TOKENS_LIST = added_special_tokens + movie_genre_special_tokens + movie_title_special_tokens + movie_actor_special_tokens + movie_director_special_tokens
+PLACE_HOLDER_TOKENS_DIC = {}
+for elem in PLACE_HOLDER_TOKENS_LIST:
+    PLACE_HOLDER_TOKENS_DIC[elem] = elem
 
 NO_OP = "x"
 
@@ -94,15 +96,15 @@ class Gpt2DictionaryAgent(HuggingFaceDictionaryAgent):
             fle_key = 'distilgpt2'
         else:
             fle_key = f'gpt2-{model_sz}'
-        return GPT2Tokenizer.from_pretrained(fle_key)
+        if opt['add_inspired_special_tokens']:
+            return GPT2Tokenizer.from_pretrained(fle_key, additional_special_tokens=PLACE_HOLDER_TOKENS_LIST)
+        else:
+            return GPT2Tokenizer.from_pretrained(fle_key)
 
     def _define_special_tokens(self, opt):
         if opt['add_special_tokens']:
-            if opt['add_inspired_special_tokens']:
-                self.tokenizer.add_special_tokens(SPECIAL_TOKENS + PLACE_HOLDER_TOKENS)
             # Add addtional start/end/pad tokens
-            else:
-                self.tokenizer.add_special_tokens(SPECIAL_TOKENS)
+            self.tokenizer.add_special_tokens(SPECIAL_TOKENS)
             self.start_token = SPECIAL_TOKENS["bos_token"]
             self.end_token = SPECIAL_TOKENS["eos_token"]
             self.null_token = SPECIAL_TOKENS["pad_token"]
