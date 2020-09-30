@@ -95,7 +95,6 @@ class InspiredStatePredictorTeacher(FixedDialogTeacher):
             context = row["context"].lower()
             ut = row["ut"].lower()
             bt = row["bt"].lower()
-            
             try:
                 bt = ast.literal_eval(bt)
             except:
