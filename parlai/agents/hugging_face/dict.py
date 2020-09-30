@@ -30,12 +30,8 @@ added_genre_special_tokens = ["[movie_genre]"]
 added_title_special_tokens = ["[movie_title]"]
 added_actor_special_tokens = ["[movie_p_actor]"]
 added_director_special_tokens = ["[movie_p_director]"]
-<<<<<<< HEAD
 added_chitchat_token = ["[chitchat]"]
 added_special_tokens = added_genre_special_tokens + added_title_special_tokens + added_actor_special_tokens + added_director_special_tokens + added_chitchat_token
-=======
-added_special_tokens = added_genre_special_tokens + added_title_special_tokens + added_actor_special_tokens + added_director_special_tokens
->>>>>>> c6be91bea69715bb8d434262bf73a571b7fc83be
 PLACE_HOLDER_TOKENS_LIST = added_special_tokens + movie_genre_special_tokens + movie_title_special_tokens + movie_actor_special_tokens + movie_director_special_tokens
 PLACE_HOLDER_TOKENS_DIC = {}
 for elem in PLACE_HOLDER_TOKENS_LIST:

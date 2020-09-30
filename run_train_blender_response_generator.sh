@@ -59,7 +59,7 @@ parlai multiprocessing_train -t inspired_response_generator \
     --delimiter '  ' \
     --dict-tokenizer bytelevelbpe  \
     --dropout 0.1 \
-    --fp16 True \
+    --fp16 False \
     --init-model zoo:blender/blender_3B/model \
     --dict-file zoo:blender/blender_3B/model.dict \
     --label-truncate 128 \
