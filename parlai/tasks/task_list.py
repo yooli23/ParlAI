@@ -1271,4 +1271,13 @@ task_list = [
             "Inspired movie recommendation dialog dataset state predictor"
         ),
     },
+    {
+        "id": "inspired_response_generator",
+        "display_name": "inspired_response_generator",
+        "task": "inspired_response_generator",
+        "tags": ["All", "Goal", "ChitChat"],
+        "description": (
+            "Inspired movie recommendation dialog dataset response generator"
+        ),
+    },
 ]
