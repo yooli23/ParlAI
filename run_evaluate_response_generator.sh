@@ -3,7 +3,10 @@
 set -xue
 
 parlai display_model -t inspired_response_generator \
-    -mf "./experiments/inspired_response_generator/model/0908_exp2_conditional_tokens" \
+    -mf "./experiments/inspired_response_generator/model/blender_0929_exp1" \
     -dt test \
     -n 100 \
-    --add-special-tokens True
+    --skip-generation False \
+    --inference nucleus \
+    
+    # --add-special-tokens True

@@ -38,7 +38,7 @@ set -xue
 #     -vmt ppl \
 #     -vmm min \
 #     --save-after-valid True \
-#     --model-file ./experiments/inspired_response_generator/model/blender_0929_exp2_3B_model\
+#     --model-file ./experiments/inspired_response_generator/model/blender_0929_exp1\
 #     -eps 10.0
 
 
