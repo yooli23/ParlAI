@@ -21,8 +21,8 @@ __pycache__/
 .vector_cache/
 env/
 build/
-data/
-data
+experiments/
+experiments
 logs/
 develop-eggs/
 dist/
