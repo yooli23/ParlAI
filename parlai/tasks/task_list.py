@@ -1355,7 +1355,6 @@ task_list = [
         ),
     },
     {
-<<<<<<< HEAD
         "id": "inspired_state_predictor",
         "display_name": "inspired_state_predictor",
         "task": "inspired_state_predictor",
@@ -1389,7 +1388,9 @@ task_list = [
         "tags": ["All", "Goal", "ChitChat"],
         "description": (
             "Inspired movie recommendation dialog dataset e2e blender"
-=======
+        ),
+    },
+    {
         "id": "TaskMaster2",
         "display_name": "TaskMaster2",
         "task": "taskmaster2",
@@ -1474,7 +1475,6 @@ task_list = [
         "description": (
             "A multi-session human-human chit-chat dataset consist of session 2-5 follow up from PersonaChat "
             "It contains 5k full converesations from session 2 to session 5 (session 1 being PersonaChat) "
->>>>>>> aa1c501bd3eca3e2af0b415c44e78a40050b8fd9
         ),
     },
 ]

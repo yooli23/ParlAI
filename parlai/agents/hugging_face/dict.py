@@ -173,16 +173,12 @@ class Gpt2DictionaryAgent(HuggingFaceDictionaryAgent):
             fle_key = PathManager.get_local_path(hf_dir, recursive=True)
 
         else:
-<<<<<<< HEAD
             fle_key = f'gpt2-{model_sz}'
         if opt['add_inspired_special_tokens']:
             return GPT2Tokenizer.from_pretrained(fle_key, additional_special_tokens=PLACE_HOLDER_TOKENS_LIST)
         else:
-            return GPT2Tokenizer.from_pretrained(fle_key)
-=======
             fle_key = model_key
-        return GPT2Tokenizer.from_pretrained(fle_key)
->>>>>>> aa1c501bd3eca3e2af0b415c44e78a40050b8fd9
+            return GPT2Tokenizer.from_pretrained(fle_key)
 
     def add_additional_special_tokens(self, additional_special_tokens: List[str]):
         """
