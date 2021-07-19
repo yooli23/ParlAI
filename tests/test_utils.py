@@ -8,8 +8,10 @@ from parlai.core.opt import Opt
 from parlai.utils.misc import Timer, round_sigfigs, set_namedtuple_defaults, nice_report
 import parlai.utils.strings as string_utils
 from copy import deepcopy
+import random
 import time
 import unittest
+from parlai.utils.data import DatatypeHelper
 
 
 class TestUtils(unittest.TestCase):
@@ -137,6 +139,105 @@ class TestStrings(unittest.TestCase):
     def test_uppercase(self):
         assert string_utils.uppercase("this is a test") == "This is a test"
         assert string_utils.uppercase("tEst") == "TEst"
+
+
+class TestDatatypeHelper(unittest.TestCase):
+    def test_fold(self):
+        assert DatatypeHelper.fold("train") == "train"
+        assert DatatypeHelper.fold("train:ordered") == "train"
+        assert DatatypeHelper.fold("train:stream") == "train"
+        assert DatatypeHelper.fold("train:stream:ordered") == "train"
+        assert DatatypeHelper.fold("train:evalmode") == "train"
+        assert DatatypeHelper.fold("train:stream:evalmode") == "train"
+
+        assert DatatypeHelper.fold("valid") == "valid"
+        assert DatatypeHelper.fold("valid:stream") == "valid"
+
+        assert DatatypeHelper.fold("test") == "test"
+        assert DatatypeHelper.fold("test:stream") == "test"
+
+    def test_should_cycle(self):
+        assert DatatypeHelper.should_cycle("train") is True
+        assert DatatypeHelper.should_cycle("train:evalmode") is False
+        assert DatatypeHelper.should_cycle("train:ordered") is False
+        assert DatatypeHelper.should_cycle("train:stream") is True
+
+        assert DatatypeHelper.should_cycle("valid") is False
+        assert DatatypeHelper.should_cycle("valid:stream") is False
+
+        assert DatatypeHelper.should_cycle("test") is False
+        assert DatatypeHelper.should_cycle("test:stream") is False
+
+    def test_should_shuffle(self):
+        assert DatatypeHelper.should_shuffle("train") is True
+        assert DatatypeHelper.should_shuffle("train:evalmode") is False
+        assert DatatypeHelper.should_shuffle("train:ordered") is False
+        assert DatatypeHelper.should_shuffle("train:stream") is False
+
+        assert DatatypeHelper.should_shuffle("valid") is False
+        assert DatatypeHelper.should_shuffle("valid:stream") is False
+
+        assert DatatypeHelper.should_shuffle("test") is False
+        assert DatatypeHelper.should_shuffle("test:stream") is False
+
+    def test_is_training(self):
+        assert DatatypeHelper.is_training("train") is True
+        assert DatatypeHelper.is_training("train:evalmode") is False
+        assert DatatypeHelper.is_training("train:ordered") is True
+        assert DatatypeHelper.is_training("train:stream") is True
+
+        assert DatatypeHelper.is_training("valid") is False
+        assert DatatypeHelper.is_training("valid:stream") is False
+
+        assert DatatypeHelper.is_training("test") is False
+        assert DatatypeHelper.is_training("test:stream") is False
+
+    def test_split_domains_by_fold(self):
+        TOTAL_LEN = random.randint(100, 200)
+        a_end = random.randrange(1, TOTAL_LEN)
+        b_end = random.randrange(a_end, TOTAL_LEN)
+        DOMAIN_A = [i for i in range(0, a_end)]
+        DOMAIN_B = [i for i in range(a_end, b_end)]
+        DOMAIN_C = [i for i in range(b_end, TOTAL_LEN)]
+
+        DOMAINS_A = [deepcopy(DOMAIN_A)]
+        DOMAINS_A_B = [deepcopy(DOMAIN_A), deepcopy(DOMAIN_B)]
+        DOMAINS_C_B_A = [deepcopy(DOMAIN_C), deepcopy(DOMAIN_B), deepcopy(DOMAIN_A)]
+
+        train_frac = random.uniform(0, 1)
+        valid_frac = random.uniform(0, 1 - train_frac)
+        test_frac = 1 - train_frac - valid_frac
+
+        TRAIN_A = DatatypeHelper.split_domains_by_fold(
+            "train", DOMAINS_A, train_frac, valid_frac, test_frac
+        )
+        TRAIN_A_B = DatatypeHelper.split_domains_by_fold(
+            "train", DOMAINS_A_B, train_frac, valid_frac, test_frac
+        )
+        TRAIN_C_B_A = DatatypeHelper.split_domains_by_fold(
+            "train", deepcopy(DOMAINS_C_B_A), train_frac, valid_frac, test_frac
+        )
+
+        # Check to make sure selected values for a fold within a domain are consistent even if different domains are used, and presented in different orders
+        for val in DOMAIN_A:
+            state = bool(val in TRAIN_A)
+            assert bool(val in TRAIN_A_B) == state
+            assert bool(val in TRAIN_C_B_A) == state
+
+        for val in DOMAIN_B:
+            state = bool(val in TRAIN_A_B)
+            assert bool(val in TRAIN_C_B_A) == state
+
+        # Check that train + valid + test covers everything
+        VALID_C_B_A = DatatypeHelper.split_domains_by_fold(
+            "valid", deepcopy(DOMAINS_C_B_A), train_frac, valid_frac, test_frac
+        )
+        TEST_C_B_A = DatatypeHelper.split_domains_by_fold(
+            "test", deepcopy(DOMAINS_C_B_A), train_frac, valid_frac, test_frac
+        )
+
+        assert len(TRAIN_C_B_A) + len(VALID_C_B_A) + len(TEST_C_B_A) is TOTAL_LEN
+        assert len(set(TRAIN_C_B_A + VALID_C_B_A + TEST_C_B_A)) is TOTAL_LEN
 
 
 if __name__ == '__main__':

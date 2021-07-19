@@ -4,6 +4,9 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
+from typing import Optional
+from parlai.core.params import ParlaiParser
+from parlai.core.opt import Opt
 import json
 import math
 import os
@@ -12,6 +15,7 @@ import torch.nn.functional as F
 from collections import defaultdict, Counter
 from nltk import ngrams
 
+from parlai.core.torch_generator_agent import PPLMetric
 from parlai.agents.image_seq2seq.image_seq2seq import ImageSeq2seqAgent
 from parlai.agents.transformer.transformer import TransformerGeneratorAgent
 from parlai.core.metrics import AverageMetric, SumMetric, GlobalAverageMetric
@@ -55,22 +59,12 @@ class RewardUnlikelihoodAgentTrait(object):
     """
 
     @classmethod
-    def add_cmdline_args(cls, argparser):
-        grp = super(RewardUnlikelihoodAgentTrait, cls).add_cmdline_args(argparser)
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
+        grp = super().add_cmdline_args(parser, partial_opt=partial_opt)
         grp.add_argument('--alpha', default=1.0, type=float)
-
-    def batchify(self, obs_batch, **kwargs):
-        batch = super().batchify(obs_batch, **kwargs)
-        rewards = torch.FloatTensor(
-            [float(o.get('reward', 0)) for o in batch.observations]
-        ).to(batch.text_vec.device)
-        batch['rewards'] = rewards
-        return batch
-
-    def _dummy_batch(self, batchsize, maxlen):
-        batch = super()._dummy_batch(batchsize, maxlen)
-        batch['rewards'] = torch.ones(batchsize, dtype=torch.long).cuda()
-        return batch
+        return parser
 
     def compute_loss(self, batch, return_output=False):
         if batch.label_vec is None:
@@ -94,16 +88,16 @@ class RewardUnlikelihoodAgentTrait(object):
         mle_loss = (
             F.nll_loss(
                 scores_view, targets_view, ignore_index=self.NULL_IDX, reduction='none'
-            )
-            * mle_notnull.view(-1).float()
+            ).view_as(mle_notnull)
+            * mle_notnull.float()
         ).sum()
 
         # limit loss to only the positive rewards
-        mle_target_tokens = mle_notnull.long().sum().item()
-        correct = ((targets == preds) * mle_notnull).sum().item()
-        self.record_local_metric('correct_tokens', SumMetric(correct))
-        self.record_local_metric('nll_loss', SumMetric(mle_loss.item()))
-        self.record_local_metric('num_tokens', SumMetric(mle_target_tokens))
+        mle_target_tokens = mle_notnull.long().sum()
+        correct = ((targets == preds) * mle_notnull).sum()
+        self.global_metrics.add('token_acc', AverageMetric(correct, mle_target_tokens))
+        self.global_metrics.add('nll_loss', AverageMetric(mle_loss, mle_target_tokens))
+        self.global_metrics.add('ppl', PPLMetric(mle_loss, mle_target_tokens))
         if mle_target_tokens > 0:
             mle_loss /= mle_target_tokens  # average loss per token
 
@@ -115,17 +109,17 @@ class RewardUnlikelihoodAgentTrait(object):
 
         # and now we want the unlikelihood loss on the negative examples
         ul_notnull = notnull & (batch.rewards < 0).unsqueeze(1).expand_as(notnull)
-        ul_target_tokens = ul_notnull.long().sum().item()
+        ul_target_tokens = ul_notnull.long().sum()
         range_ = torch.arange(targets_view.size(0)).to(batch.label_vec.device)
         ul_scores = scores_view[range_, targets_view]
         clamp_min = 1e-6 if self.opt['fp16'] else 1e-20
         ul_loss = (
-            -(torch.log(torch.clamp(1.0 - ul_scores.exp(), min=clamp_min)))
-            * ul_notnull.view(-1).float()
+            -torch.log(torch.clamp(1.0 - ul_scores.exp(), min=clamp_min)).view_as(
+                ul_notnull
+            )
+            * ul_notnull.float()
         ).sum()
-        self.record_local_metric(
-            'ul_loss', AverageMetric.many(ul_loss.sum(dim=-1), ul_target_tokens)
-        )
+        self.global_metrics.add('ul_loss', AverageMetric(ul_loss, ul_target_tokens))
         if ul_target_tokens > 0:
             ul_loss /= ul_target_tokens
 
@@ -150,14 +144,16 @@ class RepetitionUnlikelihoodAgentTrait(object):
         self.pred_logsoftmax = torch.nn.LogSoftmax(dim=2)
 
     @classmethod
-    def add_cmdline_args(cls, argparser):
-        print(super())
-        grp = super().add_cmdline_args(argparser)
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
+        grp = super().add_cmdline_args(parser, partial_opt=partial_opt)
         grp.add_argument('--seq-ul-ratio', default=0.5, type=float)
         grp.add_argument('--seq-ul-n', default=4, type=int)
         grp.add_argument('--mask-n', default=100, type=int)
         grp.add_argument('--ctxt-beta', default=0.5, type=float)
         grp.add_argument('--crep-pen', default='crep', type=str)
+        return parser
 
     def _init_cuda_buffer(self, batchsize, maxlen, force=False):
         pass
@@ -353,9 +349,10 @@ class SequenceVocabUnlikelihoodAgentTrait(_VocabUnlikelihoodTrait):
         self.running_human = Counter()
 
     @classmethod
-    def add_cmdline_args(cls, argparser):
-        print(super())
-        grp = super().add_cmdline_args(argparser)
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
+        grp = super().add_cmdline_args(parser, partial_opt=partial_opt)
         grp.add_argument('--alpha', default=1.0, type=float)
         grp.add_argument('--queue-size', default=32, type=int)
         grp.add_argument(
@@ -363,6 +360,7 @@ class SequenceVocabUnlikelihoodAgentTrait(_VocabUnlikelihoodTrait):
         )
         grp.add_argument('--threshold', type=float, default=1e-3)
         grp.add_argument('--counts-file', type=str, default=None)
+        return parser
 
     def _init_cuda_buffer(self, *args, **kwargs):
         pass

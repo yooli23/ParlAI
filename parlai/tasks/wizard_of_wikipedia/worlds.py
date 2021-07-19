@@ -4,6 +4,8 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
+from typing import Optional
+from parlai.core.opt import Opt
 from copy import deepcopy
 import json
 import random
@@ -11,12 +13,15 @@ import os
 import string
 
 
+from parlai.core.params import ParlaiParser
 from parlai.core.agents import create_agent
 from parlai.core.message import Message
 from parlai.core.worlds import DialogPartnerWorld, validate
 from parlai.tasks.wizard_of_wikipedia.agents import TOKEN_KNOWLEDGE, TOKEN_END_KNOWLEDGE
 from parlai.tasks.self_chat.worlds import SelfChatWorld as SelfChatBaseWorld
 from parlai.utils.misc import warn_once
+
+from .build import build
 
 from projects.wizard_of_wikipedia.knowledge_retriever.knowledge_retriever import (
     KnowledgeRetrieverAgent,
@@ -36,15 +41,19 @@ class InteractiveWorld(DialogPartnerWorld):
     these retrieved passages.
     """
 
-    @staticmethod
-    def add_cmdline_args(argparser):
-        parser = argparser.add_argument_group('WoW Interactive World Args')
+    @classmethod
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
+        super().add_cmdline_args(parser, partial_opt)
+        parser = parser.add_argument_group('WoW Interactive World Args')
         parser.add_argument(
             '--print-checked-sentence',
             type='bool',
             default=True,
             help='Print sentence that the model checks.',
         )
+        return parser
 
     def __init__(self, opt, agents, shared=None):
         super().__init__(opt, agents, shared)
@@ -64,7 +73,7 @@ class InteractiveWorld(DialogPartnerWorld):
         from parlai.core.params import ParlaiParser
 
         parser = ParlaiParser(False, False)
-        KnowledgeRetrieverAgent.add_cmdline_args(parser)
+        KnowledgeRetrieverAgent.add_cmdline_args(parser, partial_opt=self.opt)
         parser.set_params(
             model='projects:wizard_of_wikipedia:knowledge_retriever',
             add_token_knowledge=add_token_knowledge,
@@ -74,6 +83,7 @@ class InteractiveWorld(DialogPartnerWorld):
 
     def _load_topics(self, opt):
         # Load possible chosen topics
+        build(opt)
         topics_path = os.path.join(
             opt['datapath'], 'wizard_of_wikipedia', 'topic_splits.json'
         )
@@ -135,7 +145,10 @@ class InteractiveWorld(DialogPartnerWorld):
         if self.cnt == 0:
             self.topic = self._get_new_topic()
             self.acts = [None, None]
-            self.human_first = random.choice([0, 1])
+            if self.topic != NO_TOPIC:
+                self.human_first = random.choice([0, 1])
+            else:
+                self.human_first = 1
 
         # possibly get human act first
         if self.cnt == 0 and not self.human_first:

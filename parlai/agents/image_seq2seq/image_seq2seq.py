@@ -7,6 +7,9 @@
 Image+Seq2Seq Agent.
 """
 
+from typing import Optional
+from parlai.core.params import ParlaiParser
+from parlai.core.opt import Opt
 from typing import Dict, List, Tuple
 
 import torch
@@ -41,13 +44,15 @@ class ImageSeq2seqAgent(TransformerGeneratorAgent, TorchImageAgent):
         return self.model
 
     @classmethod
-    def add_cmdline_args(cls, argparser):
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
         """
         Override to add one arg.
         """
-        TransformerGeneratorAgent.add_cmdline_args(argparser)
-        TorchImageAgent.add_cmdline_args(argparser)
-        group = argparser.add_argument_group('Image Encoder Args')
+        TransformerGeneratorAgent.add_cmdline_args(parser, partial_opt=partial_opt)
+        TorchImageAgent.add_cmdline_args(parser, partial_opt=partial_opt)
+        group = parser.add_argument_group('Image Encoder Args')
         group.add_argument(
             '--include-image-token',
             type='bool',
@@ -96,23 +101,6 @@ class ImageSeq2seqAgent(TransformerGeneratorAgent, TorchImageAgent):
                 torch.cat([vec, vec.new_tensor(self.dict[token]).unsqueeze(0)], 0),
             )
         return obs
-
-    def _dummy_batch(self, batchsize: int, maxlen: int) -> Batch:
-        """
-        Override to include image feats.
-        """
-        b = super()._dummy_batch(batchsize, maxlen)
-        image = torch.ones(batchsize, self.image_features_dim).cuda()
-        if self.n_image_channels > 1:
-            image = image.unsqueeze(1).repeat(1, self.n_image_channels, 1)
-        if self.fp16:
-            image = image.half()
-        return Batch(
-            text_vec=b.text_vec,
-            label_vec=b.label_vec,
-            image=image,
-            personalities=torch.ones(batchsize, self.opt['embedding_size']).cuda(),
-        )
 
     def batchify_image_features(self, batch: Batch) -> Batch:
         """

@@ -7,12 +7,15 @@
 Transresnet Multimodal Model (https://arxiv.org/abs/1811.00945).
 """
 
-from parlai.core.dict import DictionaryAgent
+from typing import Optional
+from parlai.core.params import ParlaiParser
+from parlai.core.opt import Opt
 from parlai.utils.misc import round_sigfigs
 from parlai.core.message import Message
 from .modules import TransresnetMultimodalModel
 from projects.personality_captions.transresnet.transresnet import TransresnetAgent
 from parlai.utils.io import PathManager
+import parlai.utils.torch as torch_utils
 
 import torch
 from torch import optim
@@ -37,15 +40,17 @@ class TransresnetMultimodalAgent(TransresnetAgent):
     # Initialization and argument parsers
     ######################################
 
-    @staticmethod
-    def add_cmdline_args(argparser):
+    @classmethod
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
         """
         Override to add personality-override option.
         """
-        TransresnetMultimodalModel.add_cmdline_args(argparser)
-        TransresnetAgent.add_cmdline_args(argparser)
-        arg_group = argparser.add_argument_group("TransresnetMultimodal Arguments")
-        argparser.add_argument(
+        TransresnetMultimodalModel.add_cmdline_args(parser, partial_opt=partial_opt)
+        super().add_cmdline_args(parser, partial_opt=partial_opt)
+        arg_group = parser.add_argument_group("TransresnetMultimodal Arguments")
+        parser.add_argument(
             "--personality-override",
             type=str,
             default=None,
@@ -53,13 +58,12 @@ class TransresnetMultimodalAgent(TransresnetAgent):
             "is given. This will give the model a personality "
             "(whichever is specifed).",
         )
-        argparser.add_argument(
+        parser.add_argument(
             "--personalities-path",
             type=str,
             default=None,
             help="Path to personalities list",
         )
-        DictionaryAgent.add_cmdline_args(argparser)
         return arg_group
 
     def __init__(self, opt, shared=None):
@@ -108,9 +112,10 @@ class TransresnetMultimodalAgent(TransresnetAgent):
             cands_enc_file = "{}.cands_enc".format(self.fcp)
             print("loading saved cand encodings")
             if PathManager.exists(cands_enc_file):
-                self.fixed_cands_enc = torch.load(
-                    cands_enc_file, map_location=lambda cpu, _: cpu
-                )
+                with PathManager.open(cands_enc_file, 'rb') as f:
+                    self.fixed_cands_enc = torch.load(
+                        f, map_location=lambda cpu, _: cpu
+                    )
             else:
                 print("Extracting cand encodings")
                 self.model.eval()
@@ -131,7 +136,7 @@ class TransresnetMultimodalAgent(TransresnetAgent):
                     fixed_cands_enc.append(embedding)
                     pbar.update(50)
                 self.fixed_cands_enc = torch.cat(fixed_cands_enc, 0)
-                torch.save(self.fixed_cands_enc, cands_enc_file)
+                torch_utils.atomic_save(self.fixed_cands_enc, cands_enc_file)
 
     def share(self):
         """

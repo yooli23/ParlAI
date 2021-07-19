@@ -10,6 +10,8 @@ Torch Ranker Agents provide functionality for building ranking models.
 See the TorchRankerAgent tutorial for examples.
 """
 
+from typing import Optional
+from parlai.core.params import ParlaiParser
 from typing import Dict, Any
 from abc import abstractmethod
 from itertools import islice
@@ -49,12 +51,14 @@ class TorchRankerAgent(TorchAgent):
     """
 
     @classmethod
-    def add_cmdline_args(cls, argparser):
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
         """
         Add CLI args.
         """
-        super(TorchRankerAgent, cls).add_cmdline_args(argparser)
-        agent = argparser.add_argument_group('TorchRankerAgent')
+        super().add_cmdline_args(parser, partial_opt=partial_opt)
+        agent = parser.add_argument_group('TorchRankerAgent')
         agent.add_argument(
             '-cands',
             '--candidates',
@@ -175,6 +179,7 @@ class TorchRankerAgent(TorchAgent):
             default=False,
             help='Return sorted candidate scores from eval_step',
         )
+        return parser
 
     def __init__(self, opt: Opt, shared=None):
         # Must call _get_init_model() first so that paths are updated if necessary
@@ -236,10 +241,15 @@ class TorchRankerAgent(TorchAgent):
         elif self._should_initialize_optimizer():
             # only build an optimizer if we're training
             optim_params = [p for p in self.model.parameters() if p.requires_grad]
-            self.init_optim(
-                optim_params, states.get('optimizer'), states.get('optimizer_type')
+            was_reset = self.init_optim(
+                optim_params,
+                states.get('optimizer'),
+                states.get('optimizer_type'),
+                is_finetune=is_finetune,
             )
-            self.build_lr_scheduler(states, hard_reset=is_finetune)
+            if was_reset:
+                logging.warning("Optimizer was reset. Also resetting LR scheduler.")
+            self.build_lr_scheduler(states, hard_reset=is_finetune or was_reset)
 
         if shared is None and is_distributed():
             device_ids = None if self.model_parallel else [self.opt['gpu']]
@@ -312,7 +322,7 @@ class TorchRankerAgent(TorchAgent):
         path = self.opt['model_file'] + '.cands-' + self.opt['task'] + '.cands'
         if PathManager.exists(path) and self.opt['fixed_candidate_vecs'] == 'reuse':
             return path
-        logging.warn(f'Building candidates file as they do not exist: {path}')
+        logging.warning(f'Building candidates file as they do not exist: {path}')
         from parlai.scripts.build_candidates import build_cands
         from copy import deepcopy
 
@@ -706,6 +716,7 @@ class TorchRankerAgent(TorchAgent):
                         cands_to_id[cand] = len(cands_to_id)
                         all_cands_vecs.append(batch.candidate_vecs[i][j])
             cand_vecs, _ = self._pad_tensor(all_cands_vecs)
+            cand_vecs = cand_vecs.to(batch.label_vec.device)
             label_inds = label_vecs.new_tensor(
                 [cands_to_id[label] for label in batch.labels]
             )
@@ -725,11 +736,12 @@ class TorchRankerAgent(TorchAgent):
 
             cands = batch.candidates
             cand_vecs = padded_3d(
-                batch.candidate_vecs,
-                self.NULL_IDX,
-                use_cuda=self.use_cuda,
-                fp16friendly=self.fp16,
+                batch.candidate_vecs, self.NULL_IDX, fp16friendly=self.fp16
             )
+            if self.use_cuda:
+                cand_vecs = cand_vecs.to(
+                    0 if self.opt['gpu'] == -1 else self.opt['gpu']
+                )
             if label_vecs is not None:
                 label_inds = label_vecs.new_empty((batchsize))
                 bad_batch = False
@@ -965,7 +977,8 @@ class TorchRankerAgent(TorchAgent):
         Load fixed candidates from a path.
         """
         logging.info(f"Loading fixed candidate set {cand_type} from {path}")
-        return torch.load(path, map_location=lambda cpu, _: cpu)
+        with PathManager.open(path, 'rb') as f:
+            return torch.load(f, map_location=lambda cpu, _: cpu)
 
     def _make_candidate_vecs(self, cands):
         """

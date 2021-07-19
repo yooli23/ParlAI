@@ -11,6 +11,8 @@ can learn simple behavior easily. They are useful as unit tests for the basic mo
 The corpora are all randomly, but deterministically generated
 """
 
+from typing import Optional
+from parlai.core.params import ParlaiParser
 from parlai.core.teachers import (
     FixedDialogTeacher,
     DialogTeacher,
@@ -28,6 +30,9 @@ import string
 import json
 from abc import ABC
 from typing import Tuple, List
+import time
+from parlai.core.message import Message
+from parlai.utils.data import DatatypeHelper
 from parlai.utils.io import PathManager
 
 # default parameters
@@ -192,6 +197,63 @@ class CandidateTeacher(CandidateBaseTeacher, DialogTeacher):
             yield (text, [text], 0, cands), True
 
 
+class OverfitTeacher(CandidateTeacher, DialogTeacher):
+    @classmethod
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
+        super().add_cmdline_args(parser, partial_opt)
+        parser.add_argument('--corpus-size', default=4, type=int)
+        return parser
+
+    def __init__(self, opt, shared=None):
+        self.corpussize = opt.get('corpus_size', 4)
+        super().__init__(opt, shared)
+
+    def setup_data(self, fold):
+        super()._setup_data('train')
+        for i, text in enumerate(self.corpus[: self.corpussize]):
+            cands = []
+            for j in range(NUM_CANDIDATES):
+                offset = (i + j) % len(self.corpus)
+                cands.append(self.corpus[offset])
+            yield (text, [text], 0, cands), True
+
+    def num_examples(self):
+        return self.corpussize
+
+    def num_episodes(self):
+        return self.corpussize
+
+
+class OverfitMultiturnTeacher(CandidateTeacher, DialogTeacher):
+    @classmethod
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
+        super().add_cmdline_args(parser, partial_opt)
+        parser.add_argument('--corpus-size', default=4, type=int)
+        return parser
+
+    def __init__(self, opt, shared=None):
+        self.corpussize = opt.get('corpus_size', 4)
+        super().__init__(opt, shared)
+
+    def setup_data(self, fold):
+        super()._setup_data('train')
+        for text in self.corpus[: self.corpussize]:
+            words = text.split(' ')
+            for j in range(1, len(words) + 1):
+                real_text = ' '.join(words[:j])
+                yield (real_text, text), True
+
+    def num_examples(self):
+        return self.corpussize * EXAMPLE_SIZE
+
+    def num_episodes(self):
+        return self.corpussize * EXAMPLE_SIZE
+
+
 class VariableLengthTeacher(CandidateTeacher):
     def build_corpus(self):
         corpus = super().build_corpus()
@@ -305,71 +367,18 @@ class ClassifierTeacher(CandidateTeacher):
             yield (text, [label], 0, ['one', 'zero']), e
 
 
-class BadExampleTeacher(CandidateTeacher):
+class ReverseTeacher(CandidateTeacher):
     """
-    Teacher which produces a variety of examples that upset verify_data.py.
+    Reverse Teacher.
 
-    Useful for checking how models respond when the following assumptions are
-    violated:
-
-        0. text is empty string
-        1. missing text
-        2. label is empty string
-        3. missing label
-        4. label candidates is empty
-        5. label candidates contains an empty string
-        6. label isn't in the candidates
-        7. missing label candidates
-
-    Note: this test may come to outlive its purpose in the future. When failing
-    this test, one should consider who is really at fault: the test, or the code.
+    Label is opposite of text; good for testing more complex generative models.
     """
 
-    NUM_CASES = 8
-
-    def __init__(self, opt, shared=None):
-        super().__init__(opt, shared)
-        # gross hack: override data.get to force things the way we want; otherwise
-        # we can't actually force some of these scenarios.
-        self.data.get = self._wrapperfn(self.data.get)
-
-    def _wrapperfn(self, oldget):
-        def newget(*args):
-            item, eod = oldget(*args)
-            item = copy.deepcopy(item)
-            newget.case = (newget.case + 1) % self.NUM_CASES
-            case = newget.case
-            if case == 0:
-                # empty string input
-                item.force_set('text', '')
-            elif case == 1:
-                # not text input
-                del item['text']
-            elif case == 2:
-                # empty string label
-                item.force_set('labels', [''])
-            elif case == 3:
-                # no label
-                del item['labels']
-            elif case == 4:
-                # no label candidates
-                item.force_set('label_candidates', [])
-            elif case == 5:
-                # extra empty string in labels
-                item.force_set(
-                    'label_candidates', list(item['label_candidates']) + ['']
-                )
-            elif case == 6:
-                # label candidates doesn't have the label
-                item.force_set('label_candidates', list(item['label_candidates']))
-                item['label_candidates'].remove(item['labels'][0])
-            elif case == 7:
-                # no label candidates field
-                del item['label_candidates']
-            return item, eod
-
-        newget.case = random.randint(0, self.NUM_CASES)
-        return newget
+    def setup_data(self, fold):
+        raw = super().setup_data(fold)
+        for (t, a, r, c), e in raw:
+            label = a[0][::-1]
+            yield (t, [label], r, c + [label]), e
 
 
 class ImageTeacher(AbstractImageTeacher):
@@ -478,22 +487,74 @@ class ChunkyTeacher(ChunkTeacher):
 
     def create_message(self, sample_item, entry_idx=0):
         text, label = sample_item
-        return {'text': text, 'labels': [label], 'episode_done': True}
+        return Message({'text': text, 'labels': [label], 'episode_done': True})
 
 
-class InfiniteTrainTeacher(ChunkyTeacher):
+class WrongExamplesChunkyTeacher(ChunkyTeacher):
     """
-    Chunk teacher with an effectively infinite number of training examples.
+    Chunk teacher with an incorrect number of examples.
+
+    Useful for testing we don't get a deadlock from a common user error.
     """
 
-    def get_num_samples(self, opt) -> Tuple[int, int]:
-        datatype = opt['datatype']
-        if 'train' in datatype:
-            return INFINITE, INFINITE
-        elif 'valid' in datatype:
-            return NUM_TEST, NUM_TEST
-        elif 'test' in datatype:
-            return NUM_TEST, NUM_TEST
+    def num_examples(self):
+        return 10
+
+
+class WrongEpisodesChunkyTeacher(ChunkyTeacher):
+    """
+    Chunk teacher with an incorrect number of episodes.
+    """
+
+    def num_episodes(self):
+        return 10
+
+
+class WrongExamplesEpisodesChunkyTeacher(ChunkyTeacher):
+    """
+    Chunk teacher with an incorrect number of episodes and examples.
+    """
+
+    def num_examples(self):
+        return 10
+
+    def num_episodes(self):
+        return 10
+
+
+class ChunkySmallBufferTeacher(ChunkyTeacher):
+    def get_buffersize(self):
+        return NUM_TEST // 2
+
+
+class InfiniteTrainTeacher(FixedDialogTeacher):
+    """
+    Teacher with an effectively infinite number of training examples.
+    """
+
+    def num_examples(self):
+        return INFINITE
+
+    def num_episodes(self):
+        return INFINITE
+
+    def get(self, episode_idx=0, entry_idx=0):
+        field = (
+            'labels'
+            if DatatypeHelper.is_training(self.opt['datatype'])
+            else 'eval_labels'
+        )
+        return Message({'text': '1 2 3 4', field: ['1 2 3 4'], 'episode_done': True})
+
+
+class ChunkySlowTeacher(ChunkyTeacher):
+    """
+    Unique examples that load slowly.
+    """
+
+    def load_from_chunk(self, chunk_idx: int):
+        time.sleep(0.1)
+        return super().load_from_chunk(chunk_idx)
 
 
 class ShortFixedTeacher(FixedDialogCandidateTeacher):
@@ -507,3 +568,17 @@ class ShortFixedTeacher(FixedDialogCandidateTeacher):
 
 class DefaultTeacher(CandidateTeacher):
     pass
+
+
+class TinyTeacher(DialogTeacher):
+    """
+    Teacher with a single example, to test data stratification with fewer examples than
+    GPUs.
+    """
+
+    def __init__(self, opt, shared=None):
+        opt['datafile'] = 'tiny_data'
+        super().__init__(opt, shared)
+
+    def setup_data(self, _):
+        yield {'text': 'hi', 'label': 'there'}, True

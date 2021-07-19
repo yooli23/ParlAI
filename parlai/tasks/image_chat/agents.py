@@ -7,9 +7,12 @@ Images and Dialogues from Image-Chat dataset.
 
 202k images, 401k utterances, over 215 different personalities.
 """
+from typing import Optional
+from parlai.core.params import ParlaiParser
 import json
 import os
-from typing import Tuple
+import random
+from typing import Tuple, Dict, List
 
 from parlai.core.message import Message
 from parlai.core.opt import Opt
@@ -74,9 +77,12 @@ class ImageChatTeacher(FixedDialogTeacher):
         self.num_exs = sum(len(d['dialog']) for d in self.data)
         self.reset()
 
-    @staticmethod
-    def add_cmdline_args(argparser):
-        agent = argparser.add_argument_group('Personality-Captions arguments')
+    @classmethod
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
+        super().add_cmdline_args(parser, partial_opt)
+        agent = parser.add_argument_group('Personality-Captions arguments')
         agent.add_argument(
             '--include-personality',
             type='bool',
@@ -109,6 +115,7 @@ class ImageChatTeacher(FixedDialogTeacher):
             choices=['100', '1000'],
             help='how many candidates to provide agent',
         )
+        return parser
 
     def _setup_data(self, data_path: str, personalities_data_path: str):
         """
@@ -210,15 +217,30 @@ class GenerationTeacher(ImageChatTeacher):
             self.idx_to_ep = shared['idx_to_ep']
         self.prepend_personality = opt.get('prepend_personality', True)
         self.include_dialogue_history = opt.get('include_dialogue_history', True)
+        self.category_frac = opt.get('category_frac', 0.0)
         super().__init__(opt, shared)
         self.num_eps = len(self.data) + len(
             [d for d in self.data if len(d['dialog']) > 1]
         )
 
-    @staticmethod
-    def add_cmdline_args(argparser):
-        ImageChatTeacher.add_cmdline_args(argparser)
-        agent = argparser.add_argument_group('generation teacher arguments')
+        # Replace personalities with polarity categories ("positive/neutral" or
+        # "negative"), with probability self.category_frac
+        if not shared:
+            category_map = get_category_map(self.personalities)
+            for i, d in enumerate(self.data):
+                use_category_rand = random.random()
+                if use_category_rand < self.category_frac:
+                    self.data[i]['dialog'] = [
+                        [category_map[personality], label]
+                        for personality, label in d['dialog']
+                    ]
+
+    @classmethod
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
+        super().add_cmdline_args(parser, partial_opt=partial_opt)
+        agent = parser.add_argument_group('generation teacher arguments')
         agent.add_argument(
             '--prepend-personality',
             type='bool',
@@ -231,6 +253,13 @@ class GenerationTeacher(ImageChatTeacher):
             default=True,
             help='if false, remove the dialogue history',
         )
+        agent.add_argument(
+            '--category-frac',
+            type=float,
+            default=0.0,
+            help='Fraction of the time to replace the personality with its polarity category ("positive/neutral" or "negative")',
+        )
+        return parser
 
     def num_episodes(self) -> int:
         return self.num_eps
@@ -305,7 +334,8 @@ class ImageChatTestTeacher(ImageChatTeacher):
         )
         import torch
 
-        self.image_features = torch.load(image_features_path)
+        with PathManager.open(image_features_path, 'rb') as f:
+            self.image_features = torch.load(f)
 
     def reset(self):
         """
@@ -357,3 +387,36 @@ class ImageChatTestTeacher(ImageChatTeacher):
 
 class DefaultTeacher(ImageChatTeacher):
     pass
+
+
+def get_category_map(personalities: Dict[str, List[str]]) -> Dict[str, str]:
+    """
+    Map personalities to polarity categories: "positive/neutral" and "negative".
+
+    Given a dictionary mapping Image-Chat categories (positive/neutral/negative) to
+    personalities, return a dictionary mapping each personality to its category.
+    Categories are merged into only two buckets: "positive/neutral", for personalities
+    that are more likely to be safe to use, and "negative". Add in rare personalities.
+    """
+
+    category_map = {
+        personality: _get_final_category(category)
+        for category, personalities in personalities.items()
+        for personality in personalities
+    }
+    category_map['Crude'] = _get_final_category('negative')
+    category_map['Earnest'] = _get_final_category('positive')
+    # These personalities occasionally appear but are not in personalities
+    return category_map
+
+
+def _get_final_category(category: str) -> str:
+    """
+    Given the input raw category label, return the final one.
+    """
+    if category in ['positive', 'neutral']:
+        return 'positive/neutral'
+    elif category == 'negative':
+        return 'negative'
+    else:
+        raise ValueError(f'Category "{category}" unrecognized!')

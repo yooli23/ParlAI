@@ -30,14 +30,15 @@ class _AbstractTRATest(unittest.TestCase):
         # Add arguments for the Torch Ranker Agent to test
         # Override in child classes
         return dict(
-            task='integration_tests:candidate',
-            optimizer='adamax',
-            candidates='batch',
-            learningrate=7e-3,
-            batchsize=16,
-            embedding_size=16,
-            num_epochs=4,
-            gradient_clip=0.0,
+            task='integration_tests:overfit',
+            optimizer='adam',
+            learningrate=1e-2,
+            batchsize=4,
+            validation_every_n_epochs=5,
+            validation_patience=10,
+            lr_scheduler='none',
+            embedding_size=8,
+            gradient_clip=0.5,
         )
 
     def _get_threshold(self):
@@ -49,6 +50,7 @@ class _AbstractTRATest(unittest.TestCase):
     def test_train_inline(self):
         args = self._get_args()
         args['candidates'] = 'inline'
+        args['eval_candidates'] = 'inline'
         valid, test = testing_utils.train_model(args)
         threshold = self._get_threshold()
 
@@ -59,6 +61,7 @@ class _AbstractTRATest(unittest.TestCase):
     def test_train_batch(self):
         args = self._get_args()
         args['candidates'] = 'batch'
+        args['eval_candidates'] = 'batch'
         valid, test = testing_utils.train_model(args)
         threshold = self._get_threshold()
 
@@ -70,6 +73,7 @@ class _AbstractTRATest(unittest.TestCase):
     def test_train_fixed(self):
         args = self._get_args()
         args['candidates'] = 'fixed'
+        args['eval_candidates'] = 'fixed'
         args['encode_candidate_vecs'] = False
         valid, test = testing_utils.train_model(args)
         threshold = self._get_threshold()
@@ -81,6 +85,7 @@ class _AbstractTRATest(unittest.TestCase):
     def test_train_batch_all(self):
         args = self._get_args()
         args['candidates'] = 'batch-all-cands'
+        args['eval_candidates'] = 'batch-all-cands'
         valid, test = testing_utils.train_model(args)
         threshold = self._get_threshold()
 
@@ -97,45 +102,11 @@ class _AbstractTRATest(unittest.TestCase):
         self.assertGreaterEqual(valid['hits@1'], threshold)
 
     # test eval batch ecands
-    @testing_utils.retry(ntries=3)
     def test_eval_batch(self):
         args = self._get_args()
         args['eval_candidates'] = 'batch'
         valid, test = testing_utils.train_model(args)
-        threshold = self._get_threshold()
-
-        self.assertGreaterEqual(valid['hits@1'], threshold)
-
-    # test eval fixed ecands
-    @testing_utils.retry(ntries=3)
-    def test_eval_fixed(self):
-        args = self._get_args()
-        args['eval_candidates'] = 'fixed'
-        args['encode_candidate_vecs'] = True
-        args['ignore_bad_candidates'] = True
-        valid, test = testing_utils.train_model(args)
-
-        # none of the train candidates appear in evaluation, so should have
-        # zero accuracy: this tests whether the fixed candidates were built
-        # properly (i.e., only using candidates from the train set)
-        self.assertEqual(valid['hits@1'], 0)
-
-        # now try again with a fixed candidate file that includes all possible
-        # candidates
-        teacher = CandidateTeacher({'datatype': 'train'})
-        all_cands = teacher.train + teacher.val + teacher.test
-        all_cands_str = '\n'.join([' '.join(x) for x in all_cands])
-
-        with testing_utils.tempdir() as tmpdir:
-            tmp_cands_file = os.path.join(tmpdir, 'all_cands.text')
-            with open(tmp_cands_file, 'w') as f:
-                f.write(all_cands_str)
-            args['fixed_candidates_path'] = tmp_cands_file
-            args['encode_candidate_vecs'] = False  # don't encode before training
-            args['ignore_bad_candidates'] = False
-            args['num_epochs'] = 4
-            valid, test = testing_utils.train_model(args)
-            self.assertGreaterEqual(valid['hits@100'], 0.1)
+        # no threshold, the model won't generalize on :overfit
 
     # test eval vocab ecands
     @testing_utils.retry(ntries=3)
@@ -219,7 +190,12 @@ class TestPolyRanker(_AbstractTRATest):
             # Evaluate model where label is not in fixed candidates
             args['fixed_candidates_path'] = tmp_train_val_cands_file
 
-            del args['num_epochs']  # need this arg dropped, it was for train only
+            # need these args dropped, it was for train only
+            del args['num_epochs']
+            del args['validation_patience']
+            del args['validation_every_n_epochs']
+            # use validation set that doesn't overlap
+            args['task'] = 'integration_tests'
 
             # Will fail without appropriate arg set
             with self.assertRaises(RuntimeError):

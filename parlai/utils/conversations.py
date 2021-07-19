@@ -12,6 +12,7 @@ import os
 import random
 
 from parlai.utils.io import PathManager
+from parlai.core.metrics import dict_report
 from parlai.utils.misc import AttrDict
 import parlai.utils.logging as logging
 
@@ -169,6 +170,9 @@ class Conversations:
     Conversations should be saved in JSONL format, where each line is
     a JSON of the following form:
 
+    WARNING: The data below must be on ONE LINE per dialogue
+    in a conversation file or it will not load!!
+
     .. code-block:
 
         {
@@ -238,7 +242,7 @@ class Conversations:
         if self.metadata is not None:
             logging.info(self.metadata)
         else:
-            logging.warn('No metadata available.')
+            logging.warning('No metadata available.')
 
     def __getitem__(self, index):
         return self.conversations[index]
@@ -292,7 +296,7 @@ class Conversations:
         """
         to_save = cls._get_path(datapath)
 
-        context_ids = context_ids.split(',')
+        context_ids = context_ids.strip().split(',')
         # save conversations
         speakers = []
         with PathManager.open(to_save, 'w') as f:
@@ -320,11 +324,11 @@ class Conversations:
                         if save_keys != 'all':
                             save_keys_lst = save_keys.split(',')
                         else:
-                            save_keys_lst = [
-                                key for key in ex.keys() if key != 'metrics'
-                            ]
+                            save_keys_lst = ex.keys()
                         for key in save_keys_lst:
                             turn[key] = ex.get(key, '')
+                            if key == 'metrics':
+                                turn[key] = dict_report(turn[key])
                         turn['id'] = ex_id
                         if not context:
                             new_pair.append(turn)
@@ -332,7 +336,7 @@ class Conversations:
                             convo['context'].append(turn)
                     if new_pair:
                         convo['dialog'].append(new_pair)
-                json_convo = json.dumps(convo)
+                json_convo = json.dumps(convo, default=lambda v: '<not serializable>')
                 f.write(json_convo + '\n')
         logging.info(f'Conversations saved to file: {to_save}')
 

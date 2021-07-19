@@ -7,13 +7,16 @@
 Agent code for the model described in (https://arxiv.org/abs/1811.00945).
 """
 
+from typing import Optional
+from parlai.core.params import ParlaiParser
+from parlai.core.opt import Opt
 from parlai.core.agents import Agent
 from parlai.core.dict import DictionaryAgent
 from parlai.utils.misc import round_sigfigs
 from .modules import TransresnetModel
 from parlai.tasks.personality_captions.build import build
 from parlai.utils.io import PathManager
-
+import parlai.utils.torch as torch_utils
 
 import os
 import random
@@ -34,36 +37,42 @@ class TransresnetAgent(Agent):
     See the paper linked above for more information.
     """
 
-    @staticmethod
-    def add_cmdline_args(argparser):
+    @classmethod
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
         """
         Add command line args.
         """
-        arg_group = argparser.add_argument_group('Transresnet Arguments')
-        TransresnetModel.add_cmdline_args(argparser)
-        argparser.add_argument(
+        arg_group = parser.add_argument_group('Transresnet Arguments')
+        TransresnetModel.add_cmdline_args(parser, partial_opt=partial_opt)
+        parser.add_argument(
             '--freeze-patience',
             type=int,
             default=-1,
             help='How long to freeze text encoders',
         )
-        argparser.add_argument(
+        parser.add_argument(
             '--one-cand-set',
             type='bool',
             default=False,
             help='True if each example has one set of shared ' 'label candidates',
         )
-        argparser.add_argument(
+        parser.add_argument(
             '--fixed-cands-path',
             type=str,
             default=None,
             help='path to text file with candidates',
         )
-        argparser.add_argument(
+        parser.add_argument(
             '--pretrained', type='bool', default=False, help='True if pretrained model'
         )
-        DictionaryAgent.add_cmdline_args(argparser)
+        cls.dictionary_class().add_cmdline_args(parser, partial_opt=partial_opt)
         return arg_group
+
+    @classmethod
+    def dictionary_class(cls):
+        return DictionaryAgent
 
     def __init__(self, opt, shared=None):
         self.metrics = {
@@ -146,9 +155,10 @@ class TransresnetAgent(Agent):
             cands_enc_file = '{}.cands_enc'.format(self.fcp)
             print('loading saved cand encodings')
             if PathManager.exists(cands_enc_file):
-                self.fixed_cands_enc = torch.load(
-                    cands_enc_file, map_location=lambda cpu, _: cpu
-                )
+                with PathManager.open(cands_enc_file, 'rb') as f:
+                    self.fixed_cands_enc = torch.load(
+                        f, map_location=lambda cpu, _: cpu
+                    )
             else:
                 print('Extracting cand encodings')
                 self.model.eval()
@@ -169,7 +179,7 @@ class TransresnetAgent(Agent):
                     fixed_cands_enc.append(embedding)
                     pbar.update(50)
                 self.fixed_cands_enc = torch.cat(fixed_cands_enc, 0)
-                torch.save(self.fixed_cands_enc, cands_enc_file)
+                torch_utils.atomic_save(self.fixed_cands_enc, cands_enc_file)
 
     def load_personalities(self):
         """
@@ -491,7 +501,7 @@ class TransresnetAgent(Agent):
         print('Saving best model')
         states = {}
         states['model'] = self.model.state_dict()
-        torch.save(states, path)
+        torch_utils.atomic_save(states, path)
 
         with PathManager.open(path + '.opt', 'w') as handle:
             json.dump(self.opt, handle)
@@ -504,6 +514,7 @@ class TransresnetAgent(Agent):
         :param path:
             path from which to load model
         """
-        states = torch.load(path, map_location=lambda cpu, _: cpu)
+        with PathManager.open(path, 'rb') as f:
+            states = torch.load(f, map_location=lambda cpu, _: cpu)
         if 'model' in states:
             self.model.load_state_dict(states['model'])

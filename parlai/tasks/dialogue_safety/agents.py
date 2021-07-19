@@ -7,6 +7,9 @@
 Dialogue safety related datasets and teachers.
 """
 
+from typing import Optional
+from parlai.core.params import ParlaiParser
+from parlai.core.opt import Opt
 import parlai.core.build_data as build_data
 from parlai.core.message import Message
 from parlai.core.teachers import FixedDialogTeacher
@@ -81,8 +84,11 @@ class MultiturnTeacher(FixedDialogTeacher):
     single turn data.
     """
 
-    @staticmethod
-    def add_cmdline_args(parser):
+    @classmethod
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
+        super().add_cmdline_args(parser, partial_opt)
         parser = parser.add_argument_group('Multiturn Safety Teacher Args')
         parser.add_argument(
             '--single-turn',
@@ -90,6 +96,7 @@ class MultiturnTeacher(FixedDialogTeacher):
             default=False,
             help='only include the single turn data and not the context info',
         )
+        return parser
 
     def __init__(self, opt, shared=None):
         build(opt['datapath'])  # download the data
@@ -148,8 +155,11 @@ class WikiToxicCommentsTeacher(FixedDialogTeacher):
     We convert this data to a binary classification task.
     """
 
-    @staticmethod
-    def add_cmdline_args(parser):
+    @classmethod
+    def add_cmdline_args(
+        cls, parser: ParlaiParser, partial_opt: Optional[Opt] = None
+    ) -> ParlaiParser:
+        super().add_cmdline_args(parser, partial_opt)
         parser = parser.add_argument_group('Kaggle Toxic Comment Classification Data')
         parser.add_argument(
             '--use-test-set',
@@ -173,6 +183,7 @@ class WikiToxicCommentsTeacher(FixedDialogTeacher):
 
         self.use_test_set = opt['use_test_set']
         self.balance_data = opt['balance_data']
+        self.DATA_SOURCE = '<https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data>'
 
         self.data_path = os.path.join(
             opt['datapath'], 'dialogue_safety', 'wiki-toxic-comments'
@@ -216,8 +227,7 @@ class WikiToxicCommentsTeacher(FixedDialogTeacher):
             PathManager.mkdirs(self.data_path)
         if not PathManager.exists(os.path.join(self.data_path, 'train.csv')):
             raise RuntimeError(
-                f'\n\n{stars}\nThis data must be downloaded from '
-                '<https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/data>. '
+                f'\n\n{stars}\nThis data must be downloaded from {self.DATA_SOURCE}'
                 '\nIt cannot be automatically downloaded, as one must agree to '
                 'the competition rules outlined on the website before '
                 'gaining access to the data.\n\n'

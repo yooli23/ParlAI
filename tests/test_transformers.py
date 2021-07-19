@@ -9,13 +9,72 @@ Test many variants of transformers.
 """
 
 import os
+import torch
 import unittest
+from unittest.mock import MagicMock
 import pytest
 import parlai.utils.testing as testing_utils
+from parlai.agents.transformer.modules import (
+    TransformerFFN,
+    TransformerGeneratorModel,
+    TransformerEncoder,
+    TransformerEncoderLayer,
+)
 from parlai.core.agents import create_agent
+from parlai.core.agents import create_agent_from_model_file
+from parlai.core.dict import DictionaryAgent
 from parlai.core.opt import Opt
 from .test_dict import DEFAULT_BYTELEVEL_BPE_VOCAB, DEFAULT_BYTELEVEL_BPE_MERGE
 from parlai.core.params import ParlaiParser
+
+
+class TestTransformerBase(unittest.TestCase):
+    """
+    Base Tester class for sharing functionality.
+    """
+
+    def _test_resize_embeddings(self, model):
+        with testing_utils.tempdir() as tmpdir:
+            model_file = os.path.join(tmpdir, 'model_file')
+            _, _ = testing_utils.train_model(
+                dict(
+                    model=model,
+                    task='integration_tests:short_fixed',
+                    n_layers=1,
+                    n_encoder_layers=2,
+                    n_decoder_layers=4,
+                    num_epochs=1,
+                    dict_tokenizer='bytelevelbpe',
+                    bpe_vocab=DEFAULT_BYTELEVEL_BPE_VOCAB,
+                    bpe_merge=DEFAULT_BYTELEVEL_BPE_MERGE,
+                    bpe_add_prefix_space=False,
+                    model_file=model_file,
+                    save_after_valid=True,
+                )
+            )
+
+            # now create agent with special tokens
+            parser = ParlaiParser()
+            parser.set_params(
+                model=model,
+                task='integration_tests:short_fixed',
+                n_layers=1,
+                n_encoder_layers=2,
+                n_decoder_layers=4,
+                dict_tokenizer='bytelevelbpe',
+                bpe_vocab=DEFAULT_BYTELEVEL_BPE_VOCAB,
+                bpe_merge=DEFAULT_BYTELEVEL_BPE_MERGE,
+                bpe_add_prefix_space=False,
+                model_file=model_file,
+                save_after_valid=True,
+                special_tok_lst='PARTY,PARROT',
+            )
+            opt = parser.parse_args([])
+            agent = create_agent(opt)
+            # assert that the embeddings were resized
+            assert agent.resized_embeddings
+            # assert model has special tokens
+            self.assertEqual(agent.special_toks, ['PARTY', 'PARROT'])
 
 
 class TestTransformerRanker(unittest.TestCase):
@@ -23,29 +82,33 @@ class TestTransformerRanker(unittest.TestCase):
     Checks that transformer_ranker can learn some very basic tasks.
     """
 
+    def _overfit_train(self, **args):
+        opt = dict(
+            task='integration_tests:overfit',
+            model='transformer/ranker',
+            optimizer='adam',
+            learningrate=0.01,
+            batchsize=4,
+            validation_every_n_epochs=5,
+            validation_patience=10,
+            lr_scheduler='none',
+            n_layers=1,
+            n_heads=4,
+            ffn_size=64,
+            embedding_size=8,
+            candidates='batch',
+            eval_candidates='batch',
+            gradient_clip=0.5,
+        )
+        opt.update(args)
+        return testing_utils.train_model(opt)
+
     @testing_utils.retry(ntries=3)
     def test_repeater(self):
         """
         Test a simple repeat-after-me model.
         """
-        valid, test = testing_utils.train_model(
-            dict(
-                task='integration_tests:candidate',
-                model='transformer/ranker',
-                optimizer='adamax',
-                learningrate=7e-3,
-                batchsize=16,
-                validation_every_n_epochs=5,
-                validation_patience=2,
-                n_layers=1,
-                n_heads=4,
-                ffn_size=64,
-                embedding_size=32,
-                candidates='batch',
-                eval_candidates='inline',
-                gradient_clip=0.5,
-            )
-        )
+        valid, test = self._overfit_train()
 
         self.assertGreaterEqual(valid['hits@1'], 0.90)
         self.assertGreaterEqual(test['hits@1'], 0.90)
@@ -62,15 +125,13 @@ class TestTransformerRanker(unittest.TestCase):
                     model_file=model_file,
                     task='integration_tests:candidate',
                     model='transformer/ranker',
-                    optimizer='adamax',
-                    learningrate=7e-3,
-                    batchsize=32,
-                    num_epochs=1,
+                    batchsize=16,
+                    num_epochs=0.1,
                     n_layers=1,
                     n_heads=1,
-                    ffn_size=32,
-                    embedding_size=32,
-                    warmup_updates=1,
+                    ffn_size=4,
+                    embedding_size=4,
+                    warmup_updates=0,
                     lr_scheduler='invsqrt',
                 )
             )
@@ -80,7 +141,7 @@ class TestTransformerRanker(unittest.TestCase):
                     model_file=model_file,
                     task='integration_tests:candidate',
                     model='transformer/ranker',
-                    num_epochs=1,
+                    num_epochs=0.1,
                 )
             )
             # make sure the number of updates is being tracked correctly
@@ -115,7 +176,7 @@ class TestTransformerRanker(unittest.TestCase):
                     n_heads=1,
                     ffn_size=32,
                     embedding_size=32,
-                    warmup_updates=1,
+                    warmup_updates=0,
                     lr_scheduler='reduceonplateau',
                 )
             )
@@ -160,26 +221,7 @@ class TestTransformerRanker(unittest.TestCase):
         """
         Test --variant xlm.
         """
-        valid, test = testing_utils.train_model(
-            dict(
-                task='integration_tests:candidate',
-                model='transformer/ranker',
-                optimizer='adamax',
-                learningrate=7e-3,
-                batchsize=16,
-                validation_every_n_epochs=5,
-                validation_patience=2,
-                n_layers=1,
-                n_heads=4,
-                ffn_size=64,
-                embedding_size=32,
-                candidates='batch',
-                eval_candidates='inline',
-                gradient_clip=0.5,
-                variant='xlm',
-                activation='gelu',
-            )
-        )
+        valid, test = self._overfit_train(variant='xlm', activation='gelu')
 
         self.assertGreaterEqual(valid['hits@1'], 0.90)
         self.assertGreaterEqual(test['hits@1'], 0.90)
@@ -189,26 +231,12 @@ class TestTransformerRanker(unittest.TestCase):
         """
         Test --variant prelayernorm with history_add_global_end_token option.
         """
-        valid, test = testing_utils.train_model(
-            dict(
-                task='integration_tests:candidate',
-                model='transformer/ranker',
-                optimizer='adamax',
-                learningrate=7e-3,
-                batchsize=16,
-                validation_every_n_epochs=5,
-                validation_patience=2,
-                n_layers=1,
-                n_heads=4,
-                ffn_size=64,
-                embedding_size=32,
-                candidates='batch',
-                eval_candidates='inline',
-                gradient_clip=0.5,
-                variant='prelayernorm',
-                activation='gelu',
-                history_add_global_end_token='end',
-            )
+        valid, test = self._overfit_train(
+            task='integration_tests:overfit',
+            model='transformer/ranker',
+            variant='prelayernorm',
+            activation='gelu',
+            history_add_global_end_token='end',
         )
 
         self.assertGreaterEqual(valid['hits@1'], 0.90)
@@ -219,36 +247,42 @@ class TestTransformerRanker(unittest.TestCase):
         """
         Test a transformer ranker reduction method other than `mean`.
         """
-        valid, test = testing_utils.train_model(
-            dict(
-                task='integration_tests:candidate',
-                model='transformer/ranker',
-                optimizer='adamax',
-                learningrate=7e-3,
-                batchsize=16,
-                validation_every_n_epochs=5,
-                validation_patience=2,
-                n_layers=1,
-                n_heads=4,
-                ffn_size=64,
-                embedding_size=32,
-                candidates='batch',
-                eval_candidates='inline',
-                gradient_clip=0.5,
-                variant='xlm',
-                activation='gelu',
-                reduction_type='first',  # this is really what we're trying to test for
-            )
+        valid, test = self._overfit_train(
+            variant='xlm',
+            activation='gelu',
+            reduction_type='first',  # this is really what we're trying to test for
         )
 
         self.assertGreaterEqual(valid['hits@1'], 0.90)
         self.assertGreaterEqual(test['hits@1'], 0.90)
 
 
-class TestTransformerGenerator(unittest.TestCase):
+class TestTransformerGenerator(TestTransformerBase):
     """
     Checks that the generative transformer can learn basic tasks.
     """
+
+    def _overfit_train(self, **args):
+        args = dict(
+            task='integration_tests:overfit',
+            model='transformer/generator',
+            optimizer='sgd',
+            learningrate=1,
+            momentum=0.9,
+            batchsize=4,
+            n_layers=1,
+            n_heads=1,
+            ffn_size=32,
+            embedding_size=16,
+            inference='greedy',
+            beam_size=1,
+            skip_generation=True,
+            validation_metric='ppl',
+            validation_every_n_epochs=10,
+            num_epochs=100,
+        )
+        args.update(args)
+        return testing_utils.train_model(args)
 
     def test_greedysearch(self):
         """
@@ -300,189 +334,156 @@ class TestTransformerGenerator(unittest.TestCase):
         self.assertAlmostEqual(test['bleu-3'], 0.40, delta=0.001)
 
     @pytest.mark.nofbcode
+    def test_beamsearch_return_all_texts(self):
+        """
+        Test beam_texts for beam_size > 1.
+        """
+        size = 3
+
+        agent = create_agent_from_model_file(
+            'zoo:unittest/beam_blocking/model',
+            opt_overrides={"beam_size": size, "inference": "beam"},
+        )
+        agent.observe({'text': '5 5 5 5 5 5 5', 'episode_done': True})
+        response = agent.act()
+        self.assertTrue("beam_texts" in response)
+        self.assertGreaterEqual(len(response["beam_texts"]), size)
+        hyp, score = response["beam_texts"][0]
+        self.assertTrue(isinstance(hyp, str))
+        self.assertTrue(isinstance(score, float))
+
+        agent = create_agent_from_model_file(
+            'zoo:unittest/beam_blocking/model',
+            opt_overrides={"beam_size": size, "inference": "topk"},
+        )
+        agent.observe({'text': '5 5 5 5 5 5 5', 'episode_done': True})
+        response = agent.act()
+        self.assertTrue("beam_texts" in response)
+        self.assertEqual(len(response["beam_texts"]), size)
+
+    @pytest.mark.nofbcode
     def test_beamsearch_blocking(self):
         """
         Test beamsearch blocking.
         """
         with testing_utils.tempdir() as tmpdir:
-            valid, _ = testing_utils.eval_model(
-                dict(
-                    task='integration_tests:repeat_words',
-                    model_file='zoo:unittest/beam_blocking/model',
-                    dict_file='zoo:unittest/beam_blocking/model.dict',
-                    batchsize=1,
-                    inference='beam',
-                    beam_size=5,
-                    skip_generation=False,
-                ),
-                skip_test=True,
+            agent = create_agent_from_model_file('zoo:unittest/beam_blocking/model')
+            agent.observe({'text': '5 5 5 5 5 5 5', 'episode_done': True})
+            assert agent.act()['text'] == '5 5 5 5 5 5 5'
+
+            agent = create_agent_from_model_file(
+                'zoo:unittest/beam_blocking/model', Opt(beam_block_ngram=1)
             )
-            valid_beam_block, _ = testing_utils.eval_model(
-                dict(
-                    task='integration_tests:repeat_words',
-                    model_file='zoo:unittest/beam_blocking/model',
-                    dict_file='zoo:unittest/beam_blocking/model.dict',
-                    batchsize=1,
-                    inference='beam',
-                    beam_size=5,
-                    beam_block_ngram=1,
-                    skip_generation=False,
-                ),
-                skip_test=True,
+            agent.observe({'text': '5 5 5 5 5 5 5', 'episode_done': True})
+            assert '5 5' not in agent.act()['text']
+
+            agent = create_agent_from_model_file(
+                'zoo:unittest/beam_blocking/model', Opt(beam_block_ngram=2)
             )
-            valid_beam_block2, _ = testing_utils.eval_model(
-                dict(
-                    task='integration_tests:repeat_words',
-                    model_file='zoo:unittest/beam_blocking/model',
-                    dict_file='zoo:unittest/beam_blocking/model.dict',
-                    batchsize=1,
-                    inference='beam',
-                    beam_size=5,
-                    beam_block_ngram=2,
-                    skip_generation=False,
-                ),
-                skip_test=True,
-            )
+            agent.observe({'text': '5 5 5 5 5 5 5', 'episode_done': True})
+            assert '5 5 5' not in agent.act()['text']
 
             with open(os.path.join(tmpdir, 'blocklist.txt'), 'w') as f:
-                f.write("38\n62\n")
+                f.write("38\n62\n34 34\n")
 
-            valid_beam_block3, _ = testing_utils.eval_model(
-                dict(
-                    task='integration_tests:repeat_words',
-                    model_file='zoo:unittest/beam_blocking/model',
-                    dict_file='zoo:unittest/beam_blocking/model.dict',
-                    batchsize=1,
-                    inference='beam',
-                    beam_size=5,
-                    beam_block_list_filename=os.path.join(tmpdir, 'blocklist.txt'),
-                    skip_generation=False,
-                ),
-                skip_test=True,
+            agent = create_agent_from_model_file(
+                'zoo:unittest/beam_blocking/model',
+                Opt(beam_block_list_filename=os.path.join(tmpdir, 'blocklist.txt')),
             )
+            agent.observe({'text': '4 4 4', 'episode_done': True})
+            assert agent.act()['text'] == '4 4 4'
 
-        self.assertLessEqual(valid['ppl'], 1.30)
-        self.assertGreaterEqual(valid['f1'], 0.80)
-        self.assertGreaterEqual(valid['bleu-4'], 0.5)
+            agent.observe({'text': '38 38 38', 'episode_done': True})
+            assert '38' not in agent.act()['text']
 
-        # Beam Block 1
-        self.assertLessEqual(valid_beam_block['f1'], 0.4)
-        self.assertLessEqual(valid_beam_block['bleu-4'], 1e-9)
+            agent.observe({'text': '62 62 62', 'episode_done': True})
+            assert '62' not in agent.act()['text']
 
-        # Beam Block 2
-        self.assertLessEqual(valid_beam_block2['f1'], 0.6)
-        self.assertLessEqual(valid_beam_block2['bleu-4'], 1e-6)
-
-        # Beam Block block_list
-        self.assertLess(valid_beam_block3['bleu-4'], valid['bleu-4'])
-        self.assertLess(valid_beam_block3['f1'], valid['f1'])
+            agent.observe({'text': '34 34 34', 'episode_done': True})
+            text = agent.act()['text']
+            assert '34' in text
+            assert '34 34' not in text
 
     @pytest.mark.nofbcode
     def test_beamsearch_contextblocking(self):
         """
         Test beamsearch context blocking.
-
-        General strategy: train a parrot model, then block it from doing the parroting
-        well. Measure how much context blocking affects performance.
         """
 
-        # we'll reuse these
-        args = dict(
-            task='integration_tests',
-            model_file='zoo:unittest/context_blocking/model',
-            dict_file='zoo:unittest/context_blocking/model.dict',
-            metrics='all',
-        )
-        noblock_valid, _ = testing_utils.eval_model(args)
-        self.assertGreaterEqual(noblock_valid['f1'], 0.95)
+        agent = create_agent_from_model_file('zoo:unittest/context_blocking/model')
+        agent.observe({'text': '5 4 3 2', 'episode_done': True})
+        assert agent.act()['text'] == '5 4 3 2'
 
-        # first confirm all is good without blocking
-        valid, _ = testing_utils.eval_model(
-            dict(beam_context_block_ngram=-1, **args), skip_test=True
+        agent = create_agent_from_model_file(
+            'zoo:unittest/context_blocking/model', Opt(beam_context_block_ngram=1)
         )
-        self.assertGreaterEqual(valid['f1'], 0.95)
-        self.assertGreaterEqual(valid['bleu-4'], 0.95)
+        agent.observe({'text': '5 4 3 2', 'episode_done': True})
+        text = agent.act()['text']
+        assert '5' not in text
+        assert '4' not in text
+        assert '3' not in text
+        assert '2' not in text
 
-        # there's a special case for block == 1
-        valid, _ = testing_utils.eval_model(
-            dict(beam_context_block_ngram=1, **args), skip_test=True
+        agent = create_agent_from_model_file(
+            'zoo:unittest/context_blocking/model', Opt(beam_context_block_ngram=2)
         )
-        # bleu and f1 should be totally wrecked.
-        self.assertLess(valid['f1'], 0.01)
-        self.assertLess(valid['bleu-4'], 0.01)
-
-        # a couple general cases
-        valid, _ = testing_utils.eval_model(
-            dict(beam_context_block_ngram=2, **args), skip_test=True
-        )
-        # should take a big hit here
-        self.assertLessEqual(valid['f1'], noblock_valid['f1'])
-        # bleu-1 should be relatively okay
-        self.assertLessEqual(valid['bleu-1'], noblock_valid['bleu-1'])
-        self.assertGreaterEqual(valid['bleu-1'], 0.45)
-        # and bleu-2 should be 0 at this point
-        self.assertLessEqual(valid['bleu-2'], 0.01)
-
-        # larger blocking, we can do better now
-        valid, _ = testing_utils.eval_model(
-            dict(beam_context_block_ngram=3, **args), skip_test=True
-        )
-        # not as hard a hit from the larger hit
-        self.assertLessEqual(valid['f1'], 0.95)
-        # bleu-1 and bleu-2 should be relatively okay
-        self.assertGreaterEqual(valid['bleu-1'], 0.60)
-        self.assertGreaterEqual(valid['bleu-2'], 0.25)
-        # bleu-3 should be totally screwed
-        self.assertLessEqual(valid['bleu-3'], 0.01)
+        agent.observe({'text': '5 4 3 2', 'episode_done': True})
+        text = agent.act()['text']
+        assert '5' in text
+        assert '5 4' not in text
+        assert '4 3' not in text
+        assert '3 2' not in text
 
     def test_nucleus(self):
         """
         Test nucleus generation.
         """
         # Nucleus is inherently stochastic, just ensure no crash.
-        testing_utils.eval_model(
-            dict(
-                task='integration_tests:multiturn_candidate',
-                model='transformer/generator',
-                model_file='zoo:unittest/transformer_generator2/model',
-                batchsize=32,
-                inference='nucleus',
-                topp=0.3,
-            )
+        opt = ParlaiParser(True, True).parse_kwargs(
+            model_file='zoo:unittest/transformer_generator2/model',
+            inference='nucleus',
+            topp=0.3,
         )
+        agent = create_agent(opt, True)
+        agent.observe({'text': '1', 'episode_done': True})
+        result = agent.act()
+        assert 'text' in result
+        assert result['text'] != ''
 
     def test_beamdelay(self):
         """
         Test delayedbeam generation.
         """
         # Delayed Beam is inherently stochastic, just ensure no crash.
-        testing_utils.eval_model(
-            dict(
-                task='integration_tests:multiturn_candidate',
-                model='transformer/generator',
-                model_file='zoo:unittest/transformer_generator2/model',
-                batchsize=32,
-                inference='delayedbeam',
-                topk=10,
-                beam_delay=5,
-            )
+        opt = ParlaiParser(True, True).parse_kwargs(
+            model_file='zoo:unittest/transformer_generator2/model',
+            inference='delayedbeam',
+            topk=10,
+            beam_delay=2,
+            beam_min_length=2,
         )
+        agent = create_agent(opt, True)
+        agent.observe({'text': '1\n1\n2\n2\n3\n3\n4', 'episode_done': True})
+        result = agent.act()
+        assert 'text' in result
+        assert result['text'] != ''
+        assert '1 2' in result['text']
 
     def test_topk(self):
         """
         Test topk generation.
         """
         # Topk is inherently stochastic, just ensure no crash.
-        testing_utils.eval_model(
-            dict(
-                task='integration_tests:multiturn_candidate',
-                model='transformer/generator',
-                model_file='zoo:unittest/transformer_generator2/model',
-                batchsize=32,
-                inference='topk',
-                topk=5,
-            )
+        opt = ParlaiParser(True, True).parse_kwargs(
+            model_file='zoo:unittest/transformer_generator2/model',
+            inference='topk',
+            topp=10,
         )
+        agent = create_agent(opt, True)
+        agent.observe({'text': '1', 'episode_done': True})
+        result = agent.act()
+        assert 'text' in result
+        assert result['text'] != ''
 
     def test_generator_backcomp(self):
         """
@@ -504,49 +505,16 @@ class TestTransformerGenerator(unittest.TestCase):
         self.assertGreaterEqual(test['accuracy'], 0.99)
         self.assertGreaterEqual(test['f1'], 0.99)
 
-    def test_badinput(self):
-        """
-        Ensures model doesn't crash on malformed inputs.
-        """
-        testing_utils.train_model(
-            dict(
-                task='integration_tests:bad_example',
-                model='transformer/generator',
-                batchsize=10,
-                datatype='train:ordered:stream',
-                num_epochs=1,
-                no_cuda=True,
-                embedding_size=16,
-                skip_generation=True,
-                ffn_size=16,
-            )
-        )
-
     @testing_utils.retry(ntries=3)
     def test_xlm(self):
         """
         Test --variant xlm.
         """
-        valid, test = testing_utils.train_model(
-            dict(
-                task='integration_tests:nocandidate',
-                model='transformer/generator',
-                optimizer='adamax',
-                learningrate=7e-3,
-                batchsize=32,
-                num_epochs=20,
-                n_layers=1,
-                n_heads=1,
-                ffn_size=32,
-                embedding_size=32,
-                inference='greedy',
-                beam_size=1,
-                variant='xlm',
-                activation='gelu',
-                skip_generation=True,
-                n_segments=8,  # doesn't do anything but still good to test
-                adam_eps=1e-6,  # just to test another flag simultaneously
-            )
+        valid, test = self._overfit_train(
+            variant='xlm',
+            activation='gelu',
+            n_segments=8,  # doesn't do anything but still good to test
+            adam_eps=1e-6,  # just to test another flag simultaneously
         )
 
         self.assertLessEqual(valid['ppl'], 1.30)
@@ -557,25 +525,7 @@ class TestTransformerGenerator(unittest.TestCase):
         """
         Test --variant prelayernorm.
         """
-        valid, test = testing_utils.train_model(
-            dict(
-                task='integration_tests:nocandidate',
-                model='transformer/generator',
-                optimizer='adamax',
-                learningrate=7e-3,
-                batchsize=32,
-                num_epochs=20,
-                n_layers=1,
-                n_heads=1,
-                ffn_size=32,
-                embedding_size=32,
-                inference='greedy',
-                beam_size=1,
-                variant='prelayernorm',
-                activation='gelu',
-                skip_generation=True,
-            )
-        )
+        valid, test = self._overfit_train(variant='prelayernorm', activation='gelu')
 
         self.assertLessEqual(valid['ppl'], 1.30)
         self.assertLessEqual(test['ppl'], 1.30)
@@ -585,23 +535,16 @@ class TestTransformerGenerator(unittest.TestCase):
         """
         Test that the model outputs self-computed bleu correctly.
         """
-        valid, _ = testing_utils.train_model(
+        valid, _ = testing_utils.eval_model(
             dict(
-                task='integration_tests:nocandidate',
-                model='transformer/generator',
-                optimizer='adamax',
-                learningrate=7e-3,
-                batchsize=32,
-                num_epochs=20,
-                n_layers=1,
-                n_heads=1,
-                ffn_size=32,
-                embedding_size=32,
+                task='integration_tests',
+                model_file='zoo:unittest/context_blocking/model',
+                dict_file='zoo:unittest/context_blocking/model.dict',
                 inference='greedy',
                 beam_size=1,
-                variant='xlm',
-                activation='gelu',
+                skip_generation=False,
                 compute_tokenized_bleu=True,
+                metrics='all',
             )
         )
         try:
@@ -610,13 +553,6 @@ class TestTransformerGenerator(unittest.TestCase):
             assert valid['fairseq_bleu1'] > 0.9
         except ImportError:
             # fairseq not installed, let's just move on
-            pass
-        try:
-            import nltk  # noqa: F401
-
-            assert valid['nltk_bleu1'] > 0.9
-        except ImportError:
-            # nltk not installed, let's just move on
             pass
 
     def test_asymmetry(self):
@@ -675,48 +611,7 @@ class TestTransformerGenerator(unittest.TestCase):
 
     @pytest.mark.nofbcode
     def test_resize_embeddings(self):
-        # train original model
-        with testing_utils.tempdir() as tmpdir:
-            model_file = os.path.join(tmpdir, 'model_file')
-            _, _ = testing_utils.train_model(
-                dict(
-                    model='transformer/generator',
-                    task='integration_tests:short_fixed',
-                    n_layers=1,
-                    n_encoder_layers=2,
-                    n_decoder_layers=4,
-                    num_epochs=1,
-                    dict_tokenizer='bytelevelbpe',
-                    bpe_vocab=DEFAULT_BYTELEVEL_BPE_VOCAB,
-                    bpe_merge=DEFAULT_BYTELEVEL_BPE_MERGE,
-                    bpe_add_prefix_space=False,
-                    model_file=model_file,
-                    save_after_valid=True,
-                )
-            )
-
-            # now create agent with special tokens
-            parser = ParlaiParser()
-            parser.set_params(
-                model='transformer/generator',
-                task='integration_tests:short_fixed',
-                n_layers=1,
-                n_encoder_layers=2,
-                n_decoder_layers=4,
-                dict_tokenizer='bytelevelbpe',
-                bpe_vocab=DEFAULT_BYTELEVEL_BPE_VOCAB,
-                bpe_merge=DEFAULT_BYTELEVEL_BPE_MERGE,
-                bpe_add_prefix_space=False,
-                model_file=model_file,
-                save_after_valid=True,
-                special_tok_lst='PARTY,PARROT',
-            )
-            opt = parser.parse_args([])
-            agent = create_agent(opt)
-            # assert that the embeddings were resized
-            assert agent.resized_embeddings
-            # assert model has special tokens
-            self.assertEqual(agent.special_toks, ['PARTY', 'PARROT'])
+        self._test_resize_embeddings('transformer/generator')
 
 
 class TestClassifier(unittest.TestCase):
@@ -751,18 +646,29 @@ class TestLearningRateScheduler(unittest.TestCase):
     Test learning rate scheduler for both generative and ranking transformers.
     """
 
-    def _test_learning_rate_resuming(self, args):
+    def _test_learning_rate_resuming(self, user_args):
         """
         Test learning rate resumes correctly.
         """
+        args = dict(
+            task='integration_tests:overfit',
+            lr_scheduler='invsqrt',
+            optimizer='sgd',
+            learningrate=1e-3,
+            batchsize=4,
+            num_epochs=1,
+            n_layers=1,
+            n_heads=1,
+            ffn_size=4,
+            embedding_size=4,
+        )
+        args.update(user_args)
+
         with testing_utils.tempdir() as tmpdir:
             model_file = os.path.join(tmpdir, 'model')
-            valid1, test1 = testing_utils.train_model(
-                dict(model_file=model_file, lr_scheduler='invsqrt', **args)
-            )
-            valid2, test2 = testing_utils.train_model(
-                dict(model_file=model_file, lr_scheduler='invsqrt', **args)
-            )
+            args['model_file'] = model_file
+            valid1, test1 = testing_utils.train_model(args)
+            valid2, test2 = testing_utils.train_model(args)
             # make sure the number of updates is being tracked correctly
             self.assertGreater(
                 valid2['total_train_updates'],
@@ -773,6 +679,9 @@ class TestLearningRateScheduler(unittest.TestCase):
             self.assertLess(
                 valid2['lr'], valid1['lr'], 'Learning rate is not decreasing'
             )
+
+            del args['lr_scheduler']
+            del args['model_file']
             # but make sure we're not loading the scheduler if we're fine
             # tuning
             valid3, test3 = testing_utils.train_model(
@@ -797,6 +706,7 @@ class TestLearningRateScheduler(unittest.TestCase):
                     init_model=os.path.join(tmpdir, 'model'),
                     model_file=os.path.join(tmpdir, 'newmodel2'),
                     lr_scheduler='reduceonplateau',
+                    log_every_n_secs=0.001,
                     **args,
                 )
             )
@@ -814,18 +724,7 @@ class TestLearningRateScheduler(unittest.TestCase):
         Test generators resume correctly.
         """
         GENERATOR_ARGS = dict(
-            task='integration_tests:nocandidate',
-            model='transformer/generator',
-            optimizer='sgd',
-            learningrate=1e-3,
-            batchsize=32,
-            num_epochs=1,
-            n_layers=1,
-            n_heads=1,
-            ffn_size=32,
-            embedding_size=32,
-            skip_generation=True,
-            warmup_updates=1,
+            model='transformer/generator', skip_generation=True, warmup_updates=0
         )
         self._test_learning_rate_resuming(GENERATOR_ARGS)
 
@@ -833,19 +732,7 @@ class TestLearningRateScheduler(unittest.TestCase):
         """
         Test resuming learning rate for the ranker.
         """
-        RANKER_ARGS = dict(
-            task='integration_tests:candidate',
-            model='transformer/ranker',
-            optimizer='sgd',
-            learningrate=1e-3,
-            batchsize=32,
-            num_epochs=1,
-            n_layers=1,
-            n_heads=1,
-            ffn_size=32,
-            embedding_size=32,
-            warmup_updates=1,
-        )
+        RANKER_ARGS = dict(model='transformer/ranker', warmup_updates=0)
         self._test_learning_rate_resuming(RANKER_ARGS)
 
     def test_invsqrt_learning_rate(self):
@@ -854,7 +741,7 @@ class TestLearningRateScheduler(unittest.TestCase):
             model='transformer/generator',
             learningrate=1,
             batchsize=1,
-            warmup_updates=1,
+            warmup_updates=0,
             lr_scheduler='invsqrt',
             n_layers=1,
             n_heads=1,
@@ -865,11 +752,9 @@ class TestLearningRateScheduler(unittest.TestCase):
             short_final_eval=True,
         )
 
-        args['num_epochs'] = 9 / 500
-        args['validation_every_n_epochs'] = 9 / 500
+        args['num_epochs'] = args['validation_every_n_epochs'] = 9 / 500
         valid1, test1 = testing_utils.train_model(args)
-        args['num_epochs'] = 16 / 500
-        args['validation_every_n_epochs'] = 16 / 500
+        args['num_epochs'] = args['validation_every_n_epochs'] = 16 / 500
         valid2, test2 = testing_utils.train_model(args)
 
         self.assertAlmostEqual(
@@ -886,7 +771,39 @@ class TestLearningRateScheduler(unittest.TestCase):
         )
 
 
-@testing_utils.skipUnlessTorch14
+class TestPolyencoder(TestTransformerBase):
+    """
+    Unit tests for PolyencoderAgent.
+    """
+
+    @pytest.mark.nofbcode
+    def test_resize_embeddings(self):
+        self._test_resize_embeddings('transformer/polyencoder')
+
+    def test_multi_head_attention(self):
+        with testing_utils.tempdir() as tmpdir:
+            model_file = os.path.join(tmpdir, 'model_file')
+            _, _ = testing_utils.train_model(
+                Opt(
+                    model='transformer/polyencoder',
+                    task='integration_tests:short_fixed',
+                    n_layers=1,
+                    n_encoder_layers=2,
+                    n_decoder_layers=4,
+                    num_epochs=1,
+                    dict_tokenizer='bytelevelbpe',
+                    bpe_vocab=DEFAULT_BYTELEVEL_BPE_VOCAB,
+                    bpe_merge=DEFAULT_BYTELEVEL_BPE_MERGE,
+                    bpe_add_prefix_space=False,
+                    model_file=model_file,
+                    save_after_valid=True,
+                    poly_attention_type='multihead',
+                    codes_attention_type='multihead',
+                )
+            )
+
+
+@testing_utils.skipUnlessVision
 class TestImagePolyencoder(unittest.TestCase):
     """
     Unit tests for the ImagePolyencoderAgent.
@@ -982,6 +899,103 @@ class TestImagePolyencoder(unittest.TestCase):
         assert (
             valid['accuracy'] > 0.1
         ), f'ImagePolyencoderAgent val-set accuracy on a simple task was {valid["accuracy"].value():0.2f}.'
+
+
+class TestSwappableComponents(unittest.TestCase):
+    def _opt(self, **kwargs):
+        return Opt(
+            batchsize=4,
+            optimizer='adam',
+            n_layers=1,
+            n_heads=4,
+            ffn_size=16,
+            embedding_size=16,
+            skip_generation=True,
+            **kwargs,
+        )
+
+    def test_swap_encoder_attention(self):
+        CustomFFN = type('CustomFFN', (TransformerFFN,), {})
+        CustomFFN.forward = MagicMock()
+        wrapped_class = TransformerGeneratorModel.with_components(
+            encoder=TransformerEncoder.with_components(
+                layer=TransformerEncoderLayer.with_components(feedforward=CustomFFN)
+            )
+        )
+        opt = self._opt()
+        CustomFFN.forward.assert_not_called
+        model = wrapped_class(opt=opt, dictionary=DictionaryAgent(opt))
+        assert isinstance(model, TransformerGeneratorModel)  # type: ignore
+        try:
+            model(torch.zeros(1, 1).long(), ys=torch.zeros(1, 1).long())  # type: ignore
+        except TypeError:
+            pass
+        finally:
+            CustomFFN.forward.assert_called
+
+    def test_swap_is_not_persisted_in_class(self):
+        opt = self._opt()
+        dictionary = DictionaryAgent(opt)
+
+        CustomFFN = type('CustomFFN', (TransformerFFN,), {})
+        wrapped_class = TransformerGeneratorModel.with_components(
+            encoder=TransformerEncoder.with_components(
+                layer=TransformerEncoderLayer.with_components(feedforward=CustomFFN)
+            )
+        )
+        model = wrapped_class(opt=opt, dictionary=dictionary)
+        assert (
+            model.swappables.encoder.swappables.layer.swappables.feedforward
+            == CustomFFN
+        )  # type: ignore
+
+        another_model = TransformerGeneratorModel(opt, dictionary)
+        assert another_model.swappables != model.swappables
+        assert issubclass(
+            another_model.swappables.encoder, TransformerEncoder
+        )  # type: ignore
+
+        wrapped_class.swap_components(
+            encoder=TransformerEncoder.with_components(
+                layer=TransformerEncoderLayer.with_components(
+                    feedforward=TransformerFFN
+                )
+            )
+        )
+        one_more_model = wrapped_class(opt=opt, dictionary=dictionary)
+        assert (
+            one_more_model.swappables.encoder.swappables.layer.swappables.feedforward
+            == TransformerFFN
+        )  # type: ignore
+
+    def test_examples_variant(self):
+        opt = ParlaiParser(True, True).parse_kwargs(
+            model='parlai.agents.examples.transformer_variant:TransformerVariantAgent'
+        )
+        model = create_agent(opt)
+        # send the model a single training example to ensure it can forward/backward
+        model.observe({'text': '1 2 3 4', 'labels': ['1 2 3 4'], 'episode_done': True})
+        model.act()
+        # send the model a single validation example
+        model.observe(
+            {'text': '1 2 3 4', 'eval_labels': ['1 2 3 4'], 'episode_done': True}
+        )
+        model.act()
+
+    def test_examples_configurable(self):
+        opt = ParlaiParser(True, True).parse_kwargs(
+            model='parlai.agents.examples.transformer_variant:ConfigurableTransformerAgent',
+            decoder_ffn_variants='two',
+        )
+        model = create_agent(opt)
+        # send the model a single training example to ensure it can forward/backward
+        model.observe({'text': '1 2 3 4', 'labels': ['1 2 3 4'], 'episode_done': True})
+        model.act()
+        # send the model a single validation example
+        model.observe(
+            {'text': '1 2 3 4', 'eval_labels': ['1 2 3 4'], 'episode_done': True}
+        )
+        model.act()
 
 
 if __name__ == '__main__':

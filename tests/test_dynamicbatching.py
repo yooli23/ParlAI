@@ -20,9 +20,9 @@ _TASK = 'integration_tests:variable_length'
 _DEFAULT_OPTIONS = {
     'dict_file': 'zoo:unittest/transformer_generator2/model.dict',
     'dict_tokenizer': 'space',
-    'batchsize': 16,
+    'batchsize': 64,
     'dynamic_batching': 'full',
-    'num_epochs': 1,
+    'num_epochs': 0.1,
     'truncate': 8,
     'model': 'parlai.agents.test_agents.test_agents:SilentTorchAgent',
     'task': _TASK,
@@ -106,17 +106,14 @@ class TestDynamicBatching(unittest.TestCase):
                 dict(
                     model_file='zoo:unittest/transformer_generator2/model',
                     task='integration_tests:multiturn_candidate',
-                    save_world_logs=True,
+                    world_logs=save_report,
                     report_filename=save_report,
                     truncate=1024,
                     dynamic_batching='full',
                     batchsize=4,
                 )
             )
-            convo_fle = (
-                str(save_report)
-                + '_integration_tests:multiturn_candidate_replies.jsonl'
-            )
+            convo_fle = str(save_report) + '.jsonl'
             convos = Conversations(convo_fle)
             for convo in convos:
                 self.assertEquals(len(convo), 2 * 4)  # each episode is 4 turns
@@ -134,6 +131,18 @@ class TestDynamicBatching(unittest.TestCase):
     def test_batchsize4(self):
         # intentionally an edgecase in the world
         self._test_correct_processed(NUM_TEST, batchsize=4)
+
+    def test_chunky(self):
+        """
+        Test dynamic batching with chunk teachers end to end.
+        """
+        self._test_correct_processed(
+            NUM_TEST,
+            model='test_agents/unigram',  # important we use a real model here
+            task='integration_tests:chunky',
+            datatype='train:stream',
+            num_epochs=2,  # important we use num epochs > 1
+        )
 
 
 class TestBatchSort(unittest.TestCase):
@@ -192,6 +201,38 @@ class TestBatchSort(unittest.TestCase):
     def test_batchsize4(self):
         # intentionally an edgecase in the world
         self._test_correct_processed(NUM_TEST, batchsize=4)
+
+
+class TestTinyDataset(unittest.TestCase):
+    """
+    Test Dyanmic batching when we have a world size fewer than the number of available
+    GPUs.
+    """
+
+    @testing_utils.skipUnlessGPU
+    def test_tiny_model(self):
+        import parlai.scripts.multiprocessing_train as mp_train
+
+        from torch.cuda import device_count
+
+        if device_count() < 2:
+            raise unittest.SkipTest("Need at least 2 GPUs to test")
+
+        valid_report, test_report = mp_train.MultiProcessTrain.main(
+            model='test_agents/unigram',
+            dict_file='zoo:unittest/transformer_generator2/model.dict',
+            dict_tokenizer='space',
+            task='integration_tests:tiny',
+            batchsize=2,
+            dynamic_batching='full',
+            truncate=8,
+            verbose=True,
+            validation_every_n_steps=5,
+            max_train_steps=10,
+        )
+
+        assert valid_report['exs'] == 1
+        assert test_report['exs'] == 1
 
 
 if __name__ == '__main__':

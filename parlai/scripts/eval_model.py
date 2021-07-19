@@ -11,8 +11,8 @@ on them.
 ## Examples
 
 ```shell
-parlai eval_model -t "babi:Task1k:2" -m "repeat_label"
-parlai eval_model -t "#CornellMovie" -m "ir_baseline" -mp "-lp 0.5"
+parlai eval_model --task "babi:Task1k:2" -m "repeat_label"
+parlai eval_model --task convai2 --model-file "/path/to/model_file"
 ```
 """
 
@@ -32,6 +32,7 @@ from parlai.utils.io import PathManager
 import parlai.utils.logging as logging
 
 import json
+import os
 import random
 
 from parlai.utils.distributed import (
@@ -40,6 +41,9 @@ from parlai.utils.distributed import (
     is_distributed,
     get_rank,
 )
+
+# the index to access classifier agent's output in the world
+CLASSIFIER_AGENT = 1
 
 
 def setup_args(parser=None):
@@ -56,17 +60,32 @@ def setup_args(parser=None):
         'file path. Set to the empty string to not save at all.',
     )
     parser.add_argument(
-        '--save-world-logs',
-        type='bool',
-        default=False,
-        help='Saves a jsonl file containing all of the task examples and '
-        'model replies. Must also specify --report-filename.',
+        '--world-logs',
+        type=str,
+        default='',
+        help='Saves a jsonl file of the world logs.'
+        'Set to the empty string to not save at all.',
     )
     parser.add_argument(
         '--save-format',
         type=str,
         default='conversations',
         choices=['conversations', 'parlai'],
+    )
+    parser.add_argument(
+        '--area-under-curve-digits',
+        '-auc',
+        type=int,
+        default=-1,
+        help='a positive number indicates to calculate the area under the roc curve and it also determines how many decimal digits of the predictions to keep (higher numbers->more precise); also used to determine whether or not to calculate the AUC metric',
+    )
+    parser.add_argument(
+        '--area-under-curve-class',
+        '-auclass',
+        type=str,
+        default=None,
+        nargs='*',
+        help='the name(s) of the class to calculate the auc for',
     )
     parser.add_argument('-ne', '--num-examples', type=int, default=-1)
     parser.add_argument('-d', '--display-examples', type='bool', default=False)
@@ -89,8 +108,8 @@ def setup_args(parser=None):
         help='Report micro-averaged metrics instead of macro averaged metrics.',
         recommended=False,
     )
-    WorldLogger.add_cmdline_args(parser)
-    TensorboardLogger.add_cmdline_args(parser)
+    WorldLogger.add_cmdline_args(parser, partial_opt=None)
+    TensorboardLogger.add_cmdline_args(parser, partial_opt=None)
     parser.set_params(datatype='valid')
     return parser
 
@@ -117,13 +136,27 @@ def _save_eval_stats(opt, report):
         f.write("\n")  # for jq
 
 
+def get_task_world_logs(task, world_logs, is_multitask=False):
+    if not is_multitask:
+        return world_logs
+    else:
+        base_outfile, extension = os.path.splitext(world_logs)
+        return f'{base_outfile}_{task}{extension}'
+
+
 def _eval_single_world(opt, agent, task):
     logging.info(f'Evaluating task {task} using datatype {opt.get("datatype")}.')
     # set up world logger
-    world_logger = WorldLogger(opt) if opt['save_world_logs'] else None
-
     task_opt = opt.copy()  # copy opt since we're editing the task
     task_opt['task'] = task
+    # add task suffix in case of multi-tasking
+    if opt['world_logs']:
+        task_opt['world_logs'] = get_task_world_logs(
+            task, task_opt['world_logs'], is_multitask=len(opt['task'].split(',')) > 1
+        )
+
+    world_logger = WorldLogger(task_opt) if task_opt['world_logs'] else None
+
     world = create_task(task_opt, agent)  # create worlds for tasks
 
     # set up logging
@@ -138,7 +171,7 @@ def _eval_single_world(opt, agent, task):
     total_cnt = world.num_examples()
 
     if is_distributed():
-        logging.warn('Progress bar is approximate in distributed mode.')
+        logging.warning('Progress bar is approximate in distributed mode.')
 
     while not world.epoch_done() and cnt < max_cnt:
         cnt += opt.get('batchsize', 1)
@@ -155,20 +188,30 @@ def _eval_single_world(opt, agent, task):
             )
             logging.info(text)
 
-    report = aggregate_unnamed_reports(all_gather_list(world.report()))
-    world.reset()
-
     if world_logger is not None:
         # dump world acts to file
         world_logger.reset()  # add final acts to logs
-        base_outfile = opt['report_filename'].split('.')[0]
         if is_distributed():
             rank = get_rank()
-            outfile = base_outfile + f'_{task}_{rank}_replies.jsonl'
+            base_outfile, extension = os.path.splitext(task_opt['world_logs'])
+            outfile = base_outfile + f'_{rank}' + extension
         else:
-            outfile = base_outfile + f'_{task}_replies.jsonl'
+            outfile = task_opt['world_logs']
         world_logger.write(outfile, world, file_format=opt['save_format'])
 
+    report = aggregate_unnamed_reports(all_gather_list(world.report()))
+
+    if isinstance(world.agents, list) and len(world.agents) > 1:
+        classifier_agent = world.agents[CLASSIFIER_AGENT]
+        if hasattr(classifier_agent, 'calc_auc') and classifier_agent.calc_auc:
+            for class_indices, curr_auc in zip(
+                classifier_agent.auc_class_indices, classifier_agent.aucs
+            ):
+                report[f'AUC_{classifier_agent.class_list[class_indices]}'] = curr_auc
+            classifier_agent.reset_auc()
+            # for safety measures
+            agent.reset_auc()
+    world.reset()
     return report
 
 
@@ -184,12 +227,6 @@ def eval_model(opt):
         raise ValueError(
             'You should use --datatype train:evalmode if you want to evaluate on '
             'the training set.'
-        )
-
-    if opt['save_world_logs'] and not opt['report_filename']:
-        raise RuntimeError(
-            'In order to save model replies, please specify the save path '
-            'with --report-filename'
         )
 
     # load model and possibly print opt

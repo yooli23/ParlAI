@@ -18,12 +18,11 @@ all TorchRankerAgents and TorchGeneratorAgents support this.
 ## Examples
 
 ```shell
-parlai multiprocessing_eval -mf "zoo:tutorial_transformer_generator/model" -bs 16 -t convai2
+parlai multiprocessing_eval --model-file "zoo:tutorial_transformer_generator/model" --batchsize 16 --task convai2
 ```
 """
 
 import torch
-import random
 import os
 import signal
 import parlai.utils.distributed as distributed_utils
@@ -39,8 +38,9 @@ def multiprocess_eval(
 
     Invoked by launch_and_eval, not instantiated directly.
     """
+    init_method = f'tcp://{hostname}:{port}'
     with distributed_utils.distributed_context(
-        rank, opt, port, rank_offset, gpu, hostname
+        rank, opt, rank_offset, gpu, init_method=init_method
     ) as opt:
         opt['multiprocessing'] = True
         return eval_model.eval_model(opt)
@@ -51,13 +51,14 @@ def launch_and_eval(opt, port):
     Perform a fork() to many processes.
     """
     # Launch multiple subprocesses
-    spawncontext = torch.multiprocessing.spawn(
+    spawncontext = torch.multiprocessing.start_processes(
         multiprocess_eval,
         # need to give rank offset as 1 to cover the fact that the main
         # process is rank 0, but that spawn() doesn't let you control rank
-        (opt, port, 1),
+        args=(opt, port, 1),
         nprocs=opt['distributed_world_size'] - 1,  # main proc will also run loop
         join=False,
+        start_method='spawn',  # never fork, or will cause hangs with chunkteacher
     )
 
     try:
@@ -86,7 +87,7 @@ class MultiProcessEval(ParlaiScript):
         return setup_args()
 
     def run(self):
-        port = random.randint(32000, 48000)
+        port = distributed_utils.find_free_port()
         return launch_and_eval(self.opt, port)
 
 

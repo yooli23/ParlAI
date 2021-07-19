@@ -32,7 +32,7 @@ You can train your own ParlAI agent on the Wizard of Wikipedia task with
 See the [ParlAI quickstart for help](http://www.parl.ai/docs/tutorial_quick.html).
 
 The ParlAI MTurk collection scripts are also
-[made available](https://github.com/facebookresearch/ParlAI/tree/master/parlai/mturk/tasks/wizard_of_wikipedia),
+[available](https://github.com/facebookresearch/ParlAI/tree/master/parlai/mturk/README.md) in an older release of ParlAI (see the `wizard_of_wikipedia` task),
 for those interested in replication, analysis, or additional data collection.
 The MTurk task for evaluating pre-trained models is made available in this
 directory.
@@ -117,6 +117,28 @@ You can run an interactive session with the model with:
     python projects/wizard_of_wikipedia/scripts/interactive_retrieval_model.py
 
 Check back later for more pretrained models soon!
+
+## Raw Data
+
+If you want to work with the raw data, we describe the setup of the `json` files.
+
+Each `<train/val/test>.json` file is a list of all dialogues in that split. An entry in the list has the following keys:
+
+- `chosen_topic`: the chosen topic of the conversation
+- `persona`: a corresponding persona that motivated the topic (note this was not used during data collection)
+- `wizard_eval`: an evaluation of the wizard provided by the apprentice at the end of the dialogue
+- `dialog`: the list of dialogue turns
+- `chosen_topic_passage`: a list of sentences from the wiki passage corresponding to the chosen topic
+
+The entries of `dialog` (may) have the following keys; some are ommitted for the apprentice:
+
+- `speaker`: either `"wizard"` or `"apprentice"`
+- `text`: what the speaker wrote
+- `retrieved_topics`: the topics retrieved for that utterance
+- `retrieved_passages`: a list of 1 entry dicts, mapping a topic to the sentences in the passage
+- `checked_sentence`: (wizard only) a 1 entry dict mapping the topic to the chosen sentence by the wizard 
+- `checked_passage`: (wizard only) a 1 entry dict mapping the topic to the chosen topic by the wizard 
+
 
 ## Citation
 

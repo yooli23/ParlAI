@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-
 # Copyright (c) Facebook, Inc. and its affiliates.
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
+import os
 import sys
 import logging
+from logging import getLogger  # noqa: F401
 
 try:
     import coloredlogs
@@ -36,7 +37,7 @@ LOGFILE_DATE_FORMAT = None
 
 COLORED_LEVEL_STYLES = {
     'spam': {'color': 'white', 'faint': True},
-    'debug': {'faint': True},
+    'debug': {'color': 'green', 'faint': True},
     'verbose': {'color': 'blue'},
     'error': {'color': 'red'},
     'info': {},
@@ -47,12 +48,20 @@ COLORED_LEVEL_STYLES = {
 }
 
 
+def _is_interactive():
+    if os.environ.get('PARLAI_FORCE_COLOR'):
+        return True
+    try:
+        __IPYTHON__
+        return True
+    except NameError:
+        return sys.stdout.isatty()
+
+
 # Some functions in this class assume that ':' will be the separator used in
 # the logging formats setup for this class
 class ParlaiLogger(logging.Logger):
-    def __init__(
-        self, name, console_level=INFO,
-    ):
+    def __init__(self, name, console_level=INFO):
         """
         Initialize the logger object.
 
@@ -66,26 +75,31 @@ class ParlaiLogger(logging.Logger):
         self.streamHandler = logging.StreamHandler(sys.stdout)
         # Log to stdout levels: console_level and above
         self.prefix = None
+        self.interactive = _is_interactive()
         self.streamHandler.setFormatter(self._build_formatter())
         super().addHandler(self.streamHandler)
 
     def _build_formatter(self):
         prefix_format = f'{self.prefix} ' if self.prefix else ''
-        if COLORED_LOGS and sys.stdout.isatty():
+        if COLORED_LOGS and self.interactive:
             return coloredlogs.ColoredFormatter(
                 prefix_format + COLORED_FORMAT,
                 datefmt=CONSOLE_DATE_FORMAT,
                 level_styles=COLORED_LEVEL_STYLES,
                 field_styles={},
             )
-        elif sys.stdout.isatty():
+        elif self.interactive:
             return logging.Formatter(
-                prefix_format + CONSOLE_FORMAT, datefmt=CONSOLE_DATE_FORMAT,
+                prefix_format + CONSOLE_FORMAT, datefmt=CONSOLE_DATE_FORMAT
             )
         else:
             return logging.Formatter(
-                prefix_format + LOGFILE_FORMAT, datefmt=LOGFILE_DATE_FORMAT,
+                prefix_format + LOGFILE_FORMAT, datefmt=LOGFILE_DATE_FORMAT
             )
+
+    def force_interactive(self):
+        self.interactive = True
+        self.streamHandler.setFormatter(self._build_formatter())
 
     def log(self, msg, level=INFO):
         """
@@ -119,7 +133,7 @@ class ParlaiLogger(logging.Logger):
 # -----------------------------------
 # Forming the logger                #
 # -----------------------------------
-logger = ParlaiLogger(name=__name__)
+logger = ParlaiLogger(name="parlai")
 
 
 def set_log_level(level):
@@ -167,11 +181,11 @@ def error(*args, **kwargs):
 
 
 def warn(*args, **kwargs):
-    return logger.warn(*args, **kwargs)
+    return logger.warning(*args, **kwargs)
 
 
 def warning(*args, **kwargs):
-    return logger.warn(*args, **kwargs)
+    return logger.warning(*args, **kwargs)
 
 
 def get_all_levels():

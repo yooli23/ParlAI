@@ -19,6 +19,7 @@ from typing import Tuple, Dict, Any
 from parlai.core.opt import Opt
 import parlai.utils.logging as logging
 from parlai.utils.io import PathManager
+from pytest_regressions.data_regression import DataRegressionFixture
 
 
 try:
@@ -29,6 +30,13 @@ try:
 except ImportError:
     TORCH_AVAILABLE = False
     GPU_AVAILABLE = False
+
+try:
+    import torchvision  # noqa: F401
+
+    VISION_AVAILABLE = True
+except ImportError:
+    VISION_AVAILABLE = False
 
 try:
     import git
@@ -46,6 +54,22 @@ try:
 except ImportError:
     BPE_INSTALLED = False
 
+try:
+    import maskrcnn_benchmark  # noqa: F401
+    import cv2  # noqa: F401
+
+    DETECTRON_AVAILABLE = True
+except ImportError:
+    DETECTRON_AVAILABLE = False
+
+
+try:
+    import fairseq  # noqa: F401
+
+    FAIRSEQ_AVAILABLE = True
+except ImportError:
+    FAIRSEQ_AVAILABLE = False
+
 
 def is_this_circleci():
     """
@@ -59,6 +83,16 @@ def skipUnlessTorch(testfn, reason='pytorch is not installed'):
     Decorate a test to skip if torch is not installed.
     """
     return unittest.skipUnless(TORCH_AVAILABLE, reason)(testfn)
+
+
+def skipUnlessTorch17(testfn, reason='Test requires pytorch 1.7+'):
+    if not TORCH_AVAILABLE:
+        skip = True
+    else:
+        from packaging import version
+
+        skip = version.parse(torch.__version__) < version.parse('1.7.0')
+    return unittest.skipIf(skip, reason)(testfn)
 
 
 def skipIfGPU(testfn, reason='Test is CPU-only'):
@@ -91,15 +125,27 @@ def skipIfCircleCI(testfn, reason='Test disabled in CircleCI'):
     return unittest.skipIf(is_this_circleci(), reason)(testfn)
 
 
-def skipUnlessTorch14(testfn, reason='Test requires pytorch 1.4+'):
-    skip = False
-    if not TORCH_AVAILABLE:
-        skip = True
-    else:
-        from packaging import version
+def skipUnlessVision(testfn, reason='torchvision not installed'):
+    """
+    Decorate a test to skip unless torchvision is installed.
+    """
+    return unittest.skipUnless(VISION_AVAILABLE, reason)(testfn)
 
-        skip = version.parse(torch.__version__) < version.parse('1.4.0')
-    return unittest.skipIf(skip, reason)(testfn)
+
+def skipUnlessDetectron(
+    testfn, reason='maskrcnn_benchmark and/or opencv not installed'
+):
+    """
+    Decorate a test to skip unless maskrcnn_benchmark and opencv are installed.
+    """
+    return unittest.skipUnless(DETECTRON_AVAILABLE, reason)(testfn)
+
+
+def skipUnlessFairseq(testfn, reason='fairseq not installed'):
+    """
+    Decorate a test to skip unless fairseq is installed.
+    """
+    return unittest.skipUnless(FAIRSEQ_AVAILABLE, reason)(testfn)
 
 
 class retry(object):
@@ -368,93 +414,87 @@ def display_model(opt) -> Tuple[str, str, str]:
 
 
 class AutoTeacherTest:
-    def _run_display_data(self, datatype, **kwargs):
-        import parlai.scripts.display_data as dd
+    stream = True
 
-        dd.DisplayData.main(
-            task=self.task, datatype=datatype, display_verbose=True, **kwargs
+    def _safe(self, obj):
+        from parlai.core.message import Message
+
+        if isinstance(obj, list):
+            return [self._safe(o) for o in obj]
+        elif isinstance(obj, Message):
+            obj = dict(obj)
+            for key in ['label_candidates', 'eval_label_candidates']:
+                if key not in obj:
+                    continue
+                if isinstance(obj[key], set):
+                    obj[key] = sorted(list(obj[key]))
+                if len(obj[key]) > 20:
+                    obj[key] = list(obj[key][:10]) + list(obj[key][-10:])
+            if 'image' in obj:
+                # convert the image to base64 encoding so we can store it as a string
+                import base64
+                import PIL
+
+                assert isinstance(obj['image'], PIL.Image.Image)
+                resized = obj['image'].resize((16, 16), PIL.Image.NEAREST)
+                gray = resized.convert('LA')
+                obj['image_hex'] = base64.b64encode(gray.tobytes()).decode('ascii')
+                del obj['image']
+            return obj
+        else:
+            return obj
+
+    def _regression(self, data_regression: DataRegressionFixture, datatype: str):
+        import random
+        from parlai.core.worlds import create_task
+        from parlai.core.params import ParlaiParser
+
+        basename = f"{self.task}_{datatype}".replace(":", "_")
+
+        if self.stream:
+            datatype = datatype + ':stream'
+        if datatype == 'train:stream':
+            datatype = datatype + ':ordered'
+
+        random.seed(42)
+
+        opt = ParlaiParser(True, True).parse_kwargs(
+            model='fixed_response',
+            fixed_response='none',
+            task=self.task,
+            datatype=datatype,
+            batchsize=1,
         )
 
-    def test_train(self):
-        """
-        Test --datatype train.
-        """
-        return self._run_display_data('train')
+        world = create_task(opt, [])
+        acts = []
+        for _ in range(5):
+            world.parley()
+            act = self._safe(world.get_acts())
+            acts.append(act)
 
-    def test_train_stream(self):
-        """
-        Test --datatype train:stream.
-        """
-        return self._run_display_data('train:stream')
+        teacher = world.get_task_agent()
+        output = {
+            'acts': acts,
+            'num_episodes': teacher.num_episodes(),
+            'num_examples': teacher.num_examples(),
+        }
+        data_regression.check(output, basename=basename)
 
-    def test_train_stream_ordered(self):
+    def test_train_stream_ordered(self, data_regression):
         """
         Test --datatype train:stream:ordered.
         """
-        return self._run_display_data('train:stream:ordered')
+        return self._regression(data_regression, 'train')
 
-    def test_valid(self):
-        """
-        Test --datatype valid.
-        """
-        return self._run_display_data('valid')
-
-    def test_valid_stream(self):
+    def test_valid_stream(self, data_regression):
         """
         Test --datatype valid:stream.
         """
-        return self._run_display_data('valid:stream')
+        return self._regression(data_regression, 'valid')
 
-    def test_test(self):
-        """
-        Test --datatype test.
-        """
-        return self._run_display_data('test')
-
-    def test_test_stream(self):
+    def test_test_stream(self, data_regression):
         """
         Test --datatype test:stream.
         """
-        return self._run_display_data('test:stream')
-
-    def test_bs2_train(self):
-        """
-        Test --datatype train.
-        """
-        return self._run_display_data('train', batchsize=2)
-
-    def test_bs2_train_stream(self):
-        """
-        Test --datatype train:stream.
-        """
-        return self._run_display_data('train:stream', batchsize=2)
-
-    def test_bs2_train_stream_ordered(self):
-        """
-        Test --datatype train:stream:ordered.
-        """
-        return self._run_display_data('train:stream:ordered', batchsize=2)
-
-    def test_bs2_valid(self):
-        """
-        Test --datatype valid.
-        """
-        return self._run_display_data('valid', batchsize=2)
-
-    def test_bs2_valid_stream(self):
-        """
-        Test --datatype valid:stream.
-        """
-        return self._run_display_data('valid:stream', batchsize=2)
-
-    def test_bs2_test(self):
-        """
-        Test --datatype test.
-        """
-        return self._run_display_data('test', batchsize=2)
-
-    def test_bs2_test_stream(self):
-        """
-        Test --datatype test:stream.
-        """
-        return self._run_display_data('test:stream', batchsize=2)
+        return self._regression(data_regression, 'test')
