@@ -17,14 +17,14 @@ def _path(opt):
     # build(opt)
 
     # set up path to data (specific to each dataset)
-    inspired_response_generator_folder_path = os.path.join(opt['datapath'], 'inspired', 'response_generator')
+    inspired_response_generator_folder_path = os.path.join(opt['datapath'], 'inspired', 'e2e_blender')
     # training_file_path = os.path.join(inspired_response_generator_folder_path, 'inspired_response_generator_training_file_with_placeholders.csv')
     # inspired_response_generator_folder_path = os.path.join(opt['datapath'], 'redial')
-    training_file_path = os.path.join(inspired_response_generator_folder_path, 'blender_response_generator_training_file_1110.csv')
+    training_file_path = os.path.join(inspired_response_generator_folder_path, 'e2e_blender_training_file_1117.csv')
     return training_file_path, inspired_response_generator_folder_path
 
 
-class InspiredResponseGeneratorTeacher(FixedDialogTeacher):
+class InspiredE2eBlenderTeacher(FixedDialogTeacher):
     """
     Inspired Response Generator Teacher.
     GPT2 based
@@ -37,12 +37,12 @@ class InspiredResponseGeneratorTeacher(FixedDialogTeacher):
         super().__init__(opt, shared)
         opt['datafile'], inspired_response_generator_folder_path = _path(opt)
         self._setup_data(opt['datafile'], inspired_response_generator_folder_path)
-        self.id = 'inspired_response_generator'
+        self.id = 'inspired_e2e_blender'
         self.reset()
 
     @classmethod
     def add_cmdline_args(cls, argparser):
-        agent = argparser.add_argument_group('Inspired State Predictor Teacher Args')
+        agent = argparser.add_argument_group('Inspired e2e blender Teacher Args')
         agent.add_argument(
             '-instokens',
             '--add_inspired_special_tokens',
@@ -78,23 +78,11 @@ class InspiredResponseGeneratorTeacher(FixedDialogTeacher):
         messages = []
         for index, row in df_training.iterrows():
             context = row["context"].lower()
-            # positive_placeholders = row["positive_placeholders"].lower()
+            bt = row["bt"].lower()
+            # bt = ast.literal_eval(bt)
             entities = row["entities"].lower()
             response = row["response"].lower()
-            # try:
-            #     positive_placeholders = ast.literal_eval(positive_placeholders)
-            # except:
-            #     positive_placeholders = []
-            # if not positive_placeholders:
-            #     positive_placeholders = "[chitchat]"
-            # else:
-            #     positive_placeholders = " ".join(positive_placeholders)
-            # response = row["response"].lower()
-            # if response and response[:4] == " a: ":
-            #     response = response[4:]
-            # # if response and response[:3] == "a: ":
-            # #     response = response[3:]
-            row_dic = {"context": context, "entities": entities, "response": response}
+            row_dic = {"context": context, "bt": bt, "entities": entities, "response": response}
             messages.append(row_dic)
         return messages
 
@@ -105,7 +93,7 @@ class InspiredResponseGeneratorTeacher(FixedDialogTeacher):
         return len(self.messages)
 
     def get(self, episode_idx, entry_idx=0):
-        text = self.messages[episode_idx]["context"] + self.messages[episode_idx]["entities"] + " [sep] "
+        text = self.messages[episode_idx]["context"] + self.messages[episode_idx]["bt"] + " [sep] " + self.messages[episode_idx]["entities"] + " [sep] "
         action = {
             'id': self.id,
             'text': text,
@@ -115,5 +103,5 @@ class InspiredResponseGeneratorTeacher(FixedDialogTeacher):
         return action
 
 
-class DefaultTeacher(InspiredResponseGeneratorTeacher):
+class DefaultTeacher(InspiredE2eBlenderTeacher):
     pass

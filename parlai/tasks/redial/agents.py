@@ -91,7 +91,10 @@ class ReDialTeacher(FixedDialogTeacher):
                 else:
                     episode.append(text)
                     prev_speaker = curr_speaker
-            self.episodes.append(episode)
+            if len(episode) % 2 != 0:
+                episode = episode[:-1]
+            if episode:
+                self.episodes.append(episode)
 
     def get_data_from_file(self, filepath):
         data = []
@@ -116,12 +119,24 @@ class ReDialTeacher(FixedDialogTeacher):
 
     def get(self, episode_idx, entry_idx=0):
         text_idx = entry_idx * 2
-        entry = self.episodes[episode_idx][text_idx]
-        final_speaker_idx = len(self.episodes[episode_idx]) - 2
+        try:
+            entry = self.episodes[episode_idx][text_idx]
+            final_speaker_idx = len(self.episodes[episode_idx]) - 2
+        except:
+            print("error!")
+            print(episode_idx)
+            print(entry_idx)
         # sometimes the first speaker is at the end with no reply
         if len(self.episodes[episode_idx]) % 2 == 1:
             final_speaker_idx -= 1
-        labels = [self.episodes[episode_idx][text_idx + 1]]
+        try:
+            labels = [self.episodes[episode_idx][text_idx + 1]]
+        except:
+            print("error!")
+            print(episode_idx)
+            print(entry_idx)
+            entry = self.episodes[episode_idx][text_idx-2]
+            labels = [self.episodes[episode_idx][text_idx-1]]
         episode_done = text_idx >= final_speaker_idx
         action = {
             'id': self.id,

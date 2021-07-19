@@ -17,14 +17,14 @@ def _path(opt):
     # build(opt)
 
     # set up path to data (specific to each dataset)
-    inspired_response_generator_folder_path = os.path.join(opt['datapath'], 'inspired', 'response_generator')
+    inspired_response_generator_folder_path = os.path.join(opt['datapath'], 'inspired', 'raw_blender_baseline')
     # training_file_path = os.path.join(inspired_response_generator_folder_path, 'inspired_response_generator_training_file_with_placeholders.csv')
     # inspired_response_generator_folder_path = os.path.join(opt['datapath'], 'redial')
-    training_file_path = os.path.join(inspired_response_generator_folder_path, 'blender_response_generator_training_file_1110.csv')
+    training_file_path = os.path.join(inspired_response_generator_folder_path, 'raw_blender_baseline_model_training_file_0202.csv')
     return training_file_path, inspired_response_generator_folder_path
 
 
-class InspiredResponseGeneratorTeacher(FixedDialogTeacher):
+class InspiredBlenderBaselineTeacher(FixedDialogTeacher):
     """
     Inspired Response Generator Teacher.
     GPT2 based
@@ -36,8 +36,9 @@ class InspiredResponseGeneratorTeacher(FixedDialogTeacher):
     def __init__(self, opt, shared=None):
         super().__init__(opt, shared)
         opt['datafile'], inspired_response_generator_folder_path = _path(opt)
+        self.episodes = []
         self._setup_data(opt['datafile'], inspired_response_generator_folder_path)
-        self.id = 'inspired_response_generator'
+        self.id = 'inspired_blender_baseline'
         self.reset()
 
     @classmethod
@@ -55,21 +56,26 @@ class InspiredResponseGeneratorTeacher(FixedDialogTeacher):
         print('loading: ' + data_path)
         df_training = pd.read_csv(data_path)
         df_training = df_training.fillna("")
-        self.messages = self._get_messages(df_training)
+        #self.messages = self._get_messages(df_training)
+        self.episodes = self._get_episodes(df_training)
         # if self.datatype.startswith('test'):
         #     self.messages = self.messages[9507:]
         # elif self.datatype.startswith('valid'):
         #     self.messages = self.messages[8451:9507]
         # else:
         #     self.messages = self.messages[:8451]
-        data_length = len(self.messages)
+        #data_length = len(self.messages)
+        num_episode = len(self.episodes)
 
         if self.datatype.startswith('test'):
-            self.messages = self.messages[int(0.9*data_length):]
+            #self.messages = self.messages[int(0.9*data_length):]
+            self.episodes = self.episodes[int(0.9*num_episode):]
         elif self.datatype.startswith('valid'):
-            self.messages = self.messages[int(0.8*data_length):int(0.9*data_length)]
+            #self.messages = self.messages[int(0.8*data_length):int(0.9*data_length)]
+            self.episodes = self.episodes[int(0.8*num_episode):int(0.9*num_episode)]
         else:
-            self.messages = self.messages[:int(0.8*data_length)]
+            #self.messages = self.messages[:int(0.8*data_length)]
+            self.episodes = self.episodes[:int(0.8*num_episode)]
         
         
     
@@ -97,23 +103,66 @@ class InspiredResponseGeneratorTeacher(FixedDialogTeacher):
             row_dic = {"context": context, "entities": entities, "response": response}
             messages.append(row_dic)
         return messages
+    
+    def _get_episodes(self, df_training):
+        print("[Inspired_Dataset]processing dataset...")
+        episodes = []
+        episode = []
+        for index, row in df_training.iterrows():
+            context = row["context"].lower()
+            user_utterance = row["user_utterance"].lower()
+            entities = row["entities"].lower()
+            response = row["response"].lower()
+            if not user_utterance and episode:
+                episodes.append(episode)
+                episode = []
+                if not user_utterance:
+                    user_utterance = "[start]"
+                episode.append(user_utterance)
+                episode.append(response)
+            else:
+                if not user_utterance:
+                    user_utterance = "[start]"
+                episode.append(user_utterance)
+                episode.append(response)
+        return episodes
 
     def num_examples(self):
-        return len(self.messages)
+        examples = 0
+        for data in self.episodes:
+            examples += len(data) // 2
+        return examples
 
     def num_episodes(self):
-        return len(self.messages)
+        return len(self.episodes)
 
+    # def get(self, episode_idx, entry_idx=0):
+    #     text = self.messages[episode_idx]["context"] + " [sep] "
+    #     action = {
+    #         'id': self.id,
+    #         'text': text,
+    #         'episode_done': True,
+    #         'labels': [self.messages[episode_idx]['response']],
+    #     }
+    #     return action
+    
     def get(self, episode_idx, entry_idx=0):
-        text = self.messages[episode_idx]["context"] + self.messages[episode_idx]["entities"] + " [sep] "
+        text_idx = entry_idx * 2
+        entry = self.episodes[episode_idx][text_idx]
+        final_speaker_idx = len(self.episodes[episode_idx]) - 2
+        # sometimes the first speaker is at the end with no reply
+        if len(self.episodes[episode_idx]) % 2 == 1:
+            final_speaker_idx -= 1
+        labels = [self.episodes[episode_idx][text_idx + 1]]
+        episode_done = text_idx >= final_speaker_idx
         action = {
             'id': self.id,
-            'text': text,
-            'episode_done': True,
-            'labels': [self.messages[episode_idx]['response']],
+            'text': entry,
+            'episode_done': episode_done,
+            'labels': labels,
         }
         return action
 
 
-class DefaultTeacher(InspiredResponseGeneratorTeacher):
+class DefaultTeacher(InspiredBlenderBaselineTeacher):
     pass

@@ -2,11 +2,11 @@
 # evaluate inspired response generator (gpt2 based model)
 set -xue
 
-parlai display_model -t inspired_response_generator \
-    -mf "./experiments/inspired_response_generator/model/blender_0929_exp1" \
+parlai eval_model -t inspired_response_generator \
+    -mf "./experiments/inspired_response_generator/model/blender_1110_exp7" \
     -dt test \
-    -n 100 \
     --skip-generation False \
     --inference nucleus \
+    --metrics bleu \
     
     # --add-special-tokens True

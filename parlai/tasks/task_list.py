@@ -1280,4 +1280,22 @@ task_list = [
             "Inspired movie recommendation dialog dataset response generator"
         ),
     },
+    {
+        "id": "inspired_blender_baseline",
+        "display_name": "inspired_blender_baseline",
+        "task": "inspired_blender_baseline",
+        "tags": ["All", "Goal", "ChitChat"],
+        "description": (
+            "Raw blender model on Inspired"
+        ),
+    },
+    {
+        "id": "inspired_e2e_blender",
+        "display_name": "inspired_e2e_blender",
+        "task": "inspired_e2e_blender",
+        "tags": ["All", "Goal", "ChitChat"],
+        "description": (
+            "Inspired movie recommendation dialog dataset e2e blender"
+        ),
+    },
 ]

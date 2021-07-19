@@ -1,0 +1,1707 @@
+2021-02-04 10:20:31,723 WARNING  | Overriding opt["skip_generation"] to False (previously: True)
+2021-02-04 10:20:31,723 WARNING  | Overriding opt["datatype"] to test (previously: train)
+2021-02-04 10:20:31,724 INFO     | Using CUDA
+2021-02-04 10:20:31,724 INFO     | loading dictionary from ./experiments/inspired_blender_baseline/model/blender_0202.dict
+2021-02-04 10:20:31,738 INFO     | num words = 8008
+2021-02-04 10:21:03,486 INFO     | Total parameters: 2,696,268,800 (2,695,613,440 trainable)
+2021-02-04 10:21:03,501 INFO     | Loading existing model params from ./experiments/inspired_blender_baseline/model/blender_0202
+2021-02-04 10:21:09,432 INFO     | creating task(s): inspired_blender_baseline
+loading: /home/yuli23/ParlAI/data/inspired/raw_blender_baseline/raw_blender_baseline_model_training_file_0202.csv
+[Inspired_Dataset]processing dataset...
+2021-02-04 10:21:10,214 INFO     | Opt:
+2021-02-04 10:21:10,215 INFO     |     activation: gelu
+2021-02-04 10:21:10,215 INFO     |     adafactor_eps: '[1e-30, 0.001]'
+2021-02-04 10:21:10,215 INFO     |     adam_eps: 1e-08
+2021-02-04 10:21:10,215 INFO     |     add_inspired_special_tokens: False
+2021-02-04 10:21:10,215 INFO     |     add_p1_after_newln: False
+2021-02-04 10:21:10,215 INFO     |     aggregate_micro: False
+2021-02-04 10:21:10,215 INFO     |     attention_dropout: 0.0
+2021-02-04 10:21:10,215 INFO     |     batchsize: 2
+2021-02-04 10:21:10,215 INFO     |     beam_block_full_context: True
+2021-02-04 10:21:10,215 INFO     |     beam_block_list_filename: None
+2021-02-04 10:21:10,215 INFO     |     beam_block_ngram: -1
+2021-02-04 10:21:10,215 INFO     |     beam_context_block_ngram: -1
+2021-02-04 10:21:10,215 INFO     |     beam_delay: 30
+2021-02-04 10:21:10,215 INFO     |     beam_length_penalty: 0.65
+2021-02-04 10:21:10,215 INFO     |     beam_min_length: 1
+2021-02-04 10:21:10,215 INFO     |     beam_size: 1
+2021-02-04 10:21:10,215 INFO     |     betas: '[0.9, 0.999]'
+2021-02-04 10:21:10,215 INFO     |     bpe_add_prefix_space: None
+2021-02-04 10:21:10,215 INFO     |     bpe_debug: False
+2021-02-04 10:21:10,215 INFO     |     bpe_merge: ./experiments/inspired_blender_baseline/model/blender_0202.dict-merges.txt
+2021-02-04 10:21:10,215 INFO     |     bpe_vocab: ./experiments/inspired_blender_baseline/model/blender_0202.dict-vocab.json
+2021-02-04 10:21:10,215 INFO     |     compute_tokenized_bleu: False
+2021-02-04 10:21:10,215 INFO     |     datapath: /home/yuli23/ParlAI/data
+2021-02-04 10:21:10,215 INFO     |     datatype: test
+2021-02-04 10:21:10,215 INFO     |     delimiter: '  '
+2021-02-04 10:21:10,215 INFO     |     dict_class: parlai.core.dict:DictionaryAgent
+2021-02-04 10:21:10,215 INFO     |     dict_endtoken: __end__
+2021-02-04 10:21:10,215 INFO     |     dict_file: ./experiments/inspired_blender_baseline/model/blender_0202.dict
+2021-02-04 10:21:10,215 INFO     |     dict_include_test: False
+2021-02-04 10:21:10,215 INFO     |     dict_include_valid: False
+2021-02-04 10:21:10,215 INFO     |     dict_initpath: None
+2021-02-04 10:21:10,215 INFO     |     dict_language: english
+2021-02-04 10:21:10,215 INFO     |     dict_loaded: True
+2021-02-04 10:21:10,215 INFO     |     dict_lower: False
+2021-02-04 10:21:10,215 INFO     |     dict_max_ngram_size: -1
+2021-02-04 10:21:10,215 INFO     |     dict_maxexs: -1
+2021-02-04 10:21:10,215 INFO     |     dict_maxtokens: -1
+2021-02-04 10:21:10,215 INFO     |     dict_minfreq: 0
+2021-02-04 10:21:10,215 INFO     |     dict_nulltoken: __null__
+2021-02-04 10:21:10,216 INFO     |     dict_starttoken: __start__
+2021-02-04 10:21:10,216 INFO     |     dict_textfields: text,labels
+2021-02-04 10:21:10,216 INFO     |     dict_tokenizer: bytelevelbpe
+2021-02-04 10:21:10,216 INFO     |     dict_unktoken: __unk__
+2021-02-04 10:21:10,216 INFO     |     display_examples: False
+2021-02-04 10:21:10,216 INFO     |     display_ignore_fields: 
+2021-02-04 10:21:10,216 INFO     |     download_path: None
+2021-02-04 10:21:10,216 INFO     |     dropout: 0.1
+2021-02-04 10:21:10,216 INFO     |     dynamic_batching: None
+2021-02-04 10:21:10,216 INFO     |     embedding_projection: random
+2021-02-04 10:21:10,216 INFO     |     embedding_size: 2560
+2021-02-04 10:21:10,216 INFO     |     embedding_type: random
+2021-02-04 10:21:10,216 INFO     |     embeddings_scale: True
+2021-02-04 10:21:10,216 INFO     |     eval_batchsize: None
+2021-02-04 10:21:10,216 INFO     |     evaltask: None
+2021-02-04 10:21:10,216 INFO     |     ffn_size: 10240
+2021-02-04 10:21:10,216 INFO     |     force_fp16_tokens: True
+2021-02-04 10:21:10,216 INFO     |     fp16: True
+2021-02-04 10:21:10,216 INFO     |     fp16_impl: mem_efficient
+2021-02-04 10:21:10,216 INFO     |     gpu: -1
+2021-02-04 10:21:10,216 INFO     |     gradient_clip: 0.1
+2021-02-04 10:21:10,216 INFO     |     hf_skip_special_tokens: True
+2021-02-04 10:21:10,216 INFO     |     hide_labels: False
+2021-02-04 10:21:10,216 INFO     |     history_add_global_end_token: end
+2021-02-04 10:21:10,216 INFO     |     history_reversed: False
+2021-02-04 10:21:10,216 INFO     |     history_size: -1
+2021-02-04 10:21:10,216 INFO     |     image_cropsize: 224
+2021-02-04 10:21:10,216 INFO     |     image_mode: raw
+2021-02-04 10:21:10,216 INFO     |     image_size: 256
+2021-02-04 10:21:10,216 INFO     |     inference: greedy
+2021-02-04 10:21:10,216 INFO     |     init_model: zoo:blender/blender_3B/model
+2021-02-04 10:21:10,216 INFO     |     init_opt: None
+2021-02-04 10:21:10,216 INFO     |     interactive_mode: False
+2021-02-04 10:21:10,216 INFO     |     invsqrt_lr_decay_gamma: -1
+2021-02-04 10:21:10,216 INFO     |     label_truncate: 128
+2021-02-04 10:21:10,216 INFO     |     learn_positional_embeddings: False
+2021-02-04 10:21:10,216 INFO     |     learningrate: 7e-06
+2021-02-04 10:21:10,217 INFO     |     load_from_checkpoint: True
+2021-02-04 10:21:10,217 INFO     |     log_every_n_secs: 10.0
+2021-02-04 10:21:10,217 INFO     |     loglevel: info
+2021-02-04 10:21:10,217 INFO     |     lr_scheduler: reduceonplateau
+2021-02-04 10:21:10,217 INFO     |     lr_scheduler_decay: 0.5
+2021-02-04 10:21:10,217 INFO     |     lr_scheduler_patience: 3
+2021-02-04 10:21:10,217 INFO     |     max_lr_steps: -1
+2021-02-04 10:21:10,217 INFO     |     max_train_time: -1
+2021-02-04 10:21:10,217 INFO     |     metrics: default
+2021-02-04 10:21:10,217 INFO     |     model: transformer/generator
+2021-02-04 10:21:10,217 INFO     |     model_file: ./experiments/inspired_blender_baseline/model/blender_0202
+2021-02-04 10:21:10,217 INFO     |     model_parallel: True
+2021-02-04 10:21:10,217 INFO     |     momentum: 0
+2021-02-04 10:21:10,217 INFO     |     multitask_weights: [1]
+2021-02-04 10:21:10,217 INFO     |     n_decoder_layers: 24
+2021-02-04 10:21:10,217 INFO     |     n_encoder_layers: 2
+2021-02-04 10:21:10,217 INFO     |     n_heads: 32
+2021-02-04 10:21:10,217 INFO     |     n_layers: 2
+2021-02-04 10:21:10,217 INFO     |     n_positions: 128
+2021-02-04 10:21:10,217 INFO     |     n_segments: 0
+2021-02-04 10:21:10,217 INFO     |     nesterov: True
+2021-02-04 10:21:10,217 INFO     |     no_cuda: False
+2021-02-04 10:21:10,217 INFO     |     num_epochs: 3.0
+2021-02-04 10:21:10,217 INFO     |     num_examples: 500
+2021-02-04 10:21:10,217 INFO     |     nus: [0.7]
+2021-02-04 10:21:10,217 INFO     |     optimizer: adafactor
+2021-02-04 10:21:10,217 INFO     |     output_scaling: 1.0
+2021-02-04 10:21:10,217 INFO     |     override: "{'task': 'inspired_blender_baseline', 'model_file': './experiments/inspired_blender_baseline/model/blender_0202', 'skip_generation': False, 'datatype': 'test', 'num_examples': '500'}"
+2021-02-04 10:21:10,217 INFO     |     parlai_home: /home/yuli23/ParlAI
+2021-02-04 10:21:10,217 INFO     |     person_tokens: False
+2021-02-04 10:21:10,218 INFO     |     rank_candidates: False
+2021-02-04 10:21:10,218 INFO     |     relu_dropout: 0.0
+2021-02-04 10:21:10,218 INFO     |     save_after_valid: True
+2021-02-04 10:21:10,218 INFO     |     save_every_n_secs: -1
+2021-02-04 10:21:10,218 INFO     |     share_word_embeddings: True
+2021-02-04 10:21:10,218 INFO     |     short_final_eval: False
+2021-02-04 10:21:10,218 INFO     |     skip_generation: False
+2021-02-04 10:21:10,218 INFO     |     special_tok_lst: None
+2021-02-04 10:21:10,218 INFO     |     split_lines: False
+2021-02-04 10:21:10,218 INFO     |     starttime: Feb03_07-02
+2021-02-04 10:21:10,218 INFO     |     task: inspired_blender_baseline
+2021-02-04 10:21:10,218 INFO     |     temperature: 1.0
+2021-02-04 10:21:10,218 INFO     |     tensorboard_log: False
+2021-02-04 10:21:10,218 INFO     |     text_truncate: 128
+2021-02-04 10:21:10,218 INFO     |     topk: 10
+2021-02-04 10:21:10,218 INFO     |     topp: 0.9
+2021-02-04 10:21:10,218 INFO     |     truncate: 128
+2021-02-04 10:21:10,218 INFO     |     update_freq: 2
+2021-02-04 10:21:10,218 INFO     |     use_reply: label
+2021-02-04 10:21:10,218 INFO     |     validation_cutoff: 1.0
+2021-02-04 10:21:10,218 INFO     |     validation_every_n_epochs: 0.25
+2021-02-04 10:21:10,218 INFO     |     validation_every_n_secs: -1
+2021-02-04 10:21:10,218 INFO     |     validation_max_exs: -1
+2021-02-04 10:21:10,218 INFO     |     validation_metric: ppl
+2021-02-04 10:21:10,218 INFO     |     validation_metric_mode: min
+2021-02-04 10:21:10,218 INFO     |     validation_patience: 10
+2021-02-04 10:21:10,218 INFO     |     validation_share_agent: False
+2021-02-04 10:21:10,218 INFO     |     variant: prelayernorm
+2021-02-04 10:21:10,218 INFO     |     verbose: False
+2021-02-04 10:21:10,218 INFO     |     warmup_rate: 0.0001
+2021-02-04 10:21:10,218 INFO     |     warmup_updates: 100
+2021-02-04 10:21:10,218 INFO     |     weight_decay: None
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+2021-02-04 10:21:10,424 INFO     | Current ParlAI commit: e1f1c45deeee3aafdac22ccb5ba2cac8489d8981
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi how are you ?
+     model: hello, how are you doing today?
+i am good
+    labels: so what type of movies are u into ? action, drama, or romance
+     model: what kind of movies do you like?
+romance
+    labels: cool. whats the last romance movie youve watched?
+     model: what was the last movie you watched ?
+berlin ,i love you
+    labels: is that the movie with hayden panettiere in it ? she also played in bring it on .
+     model: i love you too
+when ever you go,love will find you.this is the most dialogue in the movie
+    labels: that sounds like a good movie .
+     model: i will check it out. have you seen the movie love, actually?
+yes.it was awesome
+    labels: i really believe you would love the movie the best of me
+     model: what other types of movies do you like?
+the story also good
+    labels: yes its about two highschool sweethearts who reunite after twenty years
+     model: i think you would like the movie the proposal
+might be they are in good position,it means job
+    labels: well not exactly , they came back to town for an old friends funeral and saw each other after all those yearsyou should watch the trailer from what u explained u liked about the berlin i love you movie i believe youll be interested in this one as well
+     model: yes they are
+they will remember there school age if they watch
+    labels: seeing eachother after all that time brought back alot of old feelings between the two
+     model: yes they will
+they will discuss the good and bad in there life
+    labels: yes they will actually , its a romance movie but has drama as well
+     model: i believe you will enjoy this movie
+so there is chance share those things
+    labels: yes would u like me to send you the trailer so you can view a sneak peek of the movie
+     model: yes they will
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi
+     model: hello, how are you doing today?
+hello
+    labels: what kind of movies do you like? seen anything recently that you liked?
+     model: what kind of movies do you like?
+i like action movies and military or sci-fi movies the best
+    labels: that's great, do you prefer stuff that's realistic or do you prefer stuff that's out there?
+     model: what was the last movie you watched?
+i prefer realistic but don't mind watching something out there every once in a while
+    labels: gotta watch stuff that's out there sometimes, but realistic is good too.
+     model: what was the last movie you watched?
+true that!
+    labels: so i imagine a sci-fi military movie would be great for you.
+     model: what was the last movie you watched?
+yeah for sure
+    labels: any particular director's you're fond of?
+     model: have you seen any of the star wars movies?
+i don't have a good memory for directors, there's one i remember i like but don't remember even which films of there's i prefer, christopher nolan, jj abrams come to mind
+    labels: have you seen ender's game?
+     model: i like jj abrams too.
+i don't think so, i've heard of it before but didn't get around to seeing it yet
+    labels: i thought it was pretty good. maybe not for everyone but should be satisfying if you're into futuristic takes on military ethics.
+     model: it's a good movie.
+yeah, for sure, i will give it a try, sounds like it might be a good fit for me
+    labels: cool, it's got harrison ford in it and it's based on a good book.
+     model: i think you'll enjoy it.
+yeah, someone recommended me the book before, but i will watch the movie instead, thanks for the recc.
+    labels: no problem, i hope you enjoy it.
+     model: no problem. enjoy the movie!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello, i am here to help you looking for a movie trailer
+     model: hello, how are you doing today?
+awesome!
+    labels: do you know what kind of movie trailers you would like to see?
+     model: what kind of movies do you like?
+i like all kinds of movies except horror. i mostly see comedies.
+    labels: what is the last movie that you watched?
+     model: what is the last movie you watched?
+thor: ragnorak
+    labels: i was really impressed with thor: ragnorak. i love marvel movies!
+     model: have you seen the new zombieland movie?
+me too! almost all of the marvel movies have a great balance of action and comedy.
+    labels: i watch them with my best friends, and we always laugh so much at the jokes!
+     model: i agree. what was the last movie you watched?
+what are your feelings about dc movies?
+    labels: they're okay but i prefer marvel! have you by any chance seen avengers: endgame?
+     model: i like them, but i don't watch them as much as marvel movies.
+i have. i saw it in theaters and i've watched it again through disney +
+    labels: what were your thoughts on it? i loved it.
+     model: that's awesome! i've seen it a few times as well. have you seen any other marvel movies?
+i did too. i cried at the end but overall i thought it was amazing
+    labels: did you get a chance to watch captain marvel?
+     model: i agree. i think i might have to watch it again soon. have you seen any other marvel movies?
+yup! i saw that one in theaters too. my sister has a cat that looks just like goose.
+    labels: that's so cool! one of my favorite marvel movies is actually ant-man. it came out in 2015, did you get a chance to see that?
+     model: that's so cute! i love cats.
+i saw the first one but i haven't seen the 2nd one yet...
+    labels: the second one is so good! i definitely recommend watching ant-man and the wasp!
+     model: i really liked the second one. it was a little bit more serious than the first one, but i really liked it.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello! are you looking for recommendations for movie trailers?
+     model: hello, how are you doing today?
+yes i am
+    labels: what kinds of movies do you like?
+     model: what kind of movies do you like?
+action movies
+    labels: have you seen any action movies that you liked lately?
+     model: what was the last action movie you watched?
+yes i have
+    labels: which movies were they?
+     model: what was the last movie you watched?
+avengers, brids of prey
+    labels: you like superhero movies?
+     model: have you seen the new mission impossible movie?
+yes i do
+    labels: have you seen justice league or suicide squad?
+     model: what was the last movie you watched?
+yes i have
+    labels: are you interested in marvel movies?
+     model: what did you like and dislike about them?
+yes i am
+    labels: have you seen any of the thor movies?
+     model: what was the last movie you watched?
+yes i have
+    labels: have you seen avengers infinity war or endgame?
+     model: what did you like and dislike about them?
+yes i have
+    labels: would you be interested in seeing a little-known superhero movie that's not part of a marvel or dc franchise?
+     model: have you seen any of the captain marvel movies?
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello friend!
+     model: hello, how are you doing today?
+good afternoon! i'm looking for a movie recommendation, something to get my mind off of the current status of our country. i love comedies and since laughter is the best medicine, i'd like to find a family friendly comedy to lift my spirits.
+    labels: sure, have you seen inside out or coco? the creators have made another movie coming out soon.
+     model: what is the last movie you watched?
+no, i haven't seen either one. any actors i would recognize in inside out?
+    labels: inside out is an animated movie by disney, it's definitely family friendly, not really a comedy
+     model: jordan peele and jordan peele's son, jordan peele.
+that sounds like an excellent recommendation! thank you! hope you have a nice weekend, goodbye :)
+    labels: amy poehler, bill hader, lewis black, richard kind are among the cast
+     model: you too!
+amy poehler is a hoot!
+    labels: i really like the movie, very easy to relate. definitely gives you that warm feeling afterward.
+     model: she's hilarious, i love her in the movie "the spy who dumped me"
+is coco animated as well?
+    labels: yes, it is.
+     model: yes, it's a disney movie.
+would you say their are morals/lessons learned targeted towards children in one or both of these?
+    labels: i would say so. in my opinion, inside out shows children that it is normal to have crazy mixture of emotion during stressful times. the key is to have good communication with people you trust. coco shows the importance of family and tradition.
+     model: i would say both.
+i personally feel that it is very important that children know that it's okay to 'feel' different ways. i'm leaning towards watching inside out first. what year was that released?
+    labels: i agree. it was released in 2015
+     model: it was released in 2017.
+would you happen to know if either of these films are currently offered on netflix?
+    labels: inside out is not on netflix, but you can find it on youtube, googleplay, and amazon prime for $3, same for coco
+     model: i do not know if either of these films are currently on netflix.
+wonderful! i have an amazon prime account. are these movies both rated g?
+    labels: they are both rated pg
+     model: yes they are
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi there!
+     model: hello, how are you doing today?
+hello
+    labels: have you seen any of the best picture nominees this year 2920?
+     model: what kind of movies do you like?
+i'm not sure what the nominees are, to be honest.
+    labels: well, i see you like classics then, like me, is it correct?
+     model: what kind of movies do you like?
+that depends on which classics, but yes, some of the movies can be pretty good. what was the name of the one recently...mutiny on the bounty? was pretty good.
+    labels: well i can recommend you some classics, like titanic, terminator 1, matrix, and so on, but i have one that is my all time favorite movie, do you like to know its name?
+     model: mutiny on the bounty was a great movie, i really enjoyed it.
+sure, what's your all-itime fave?
+    labels: contact 1997 with jodie foster. under my point of view, it is the most beautiful and meaningful movie ever made, did you watch it ?
+     model: i would say the godfather part 1, have you seen it?
+no, i haven't. wasn't there also a more recent movie with that name, with the aliens?
+    labels: i haven't heard about a new one, but that one is something worth to spend couple of hours watching. it has a great great message, it is very interesting, her performance is tremendous and it leaves you a good taste. i recommend you to watch it, and you will evaluate it by yourself
+     model: yes, there was. it was called "interstellar". have you seen that one?
+sure. one quick question though, what's the genre?
+    labels: drama, even thou it has lots of action and technology
+     model: it is a drama, with a great cast of actors, including the main actress, and the supporting cast is also great.
+awesome. i'll see if i can get the chance to check it out.
+    labels: great! you won't regret it, i can bet
+     model: great, i hope you will enjoy it
+alright. can i get a second reccomendation, actually? not because the first one is bad by any means, just need an additional one :d
+    labels: well, another picture i enjoyed a lot, which is less profound, but with a great message too is "juno", it is very light but with very good story, have you watched it ?
+     model: sure, i recommend the movie "the irishman"
+i've definitely at least heard of it, i think. was it an animated movie by any chance?
+    labels: no, it is about a girl who gets pregnant at 16 and it starts a big drama with a happy ending. jenifer garner is one of the main actresses and the movie won an oscar too
+     model: it was, and it won an academy award for best picture
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi
+     model: hello, how are you doing today?
+hello
+    labels: what kind of movies do you like to watch
+     model: what kind of movies do you like?
+i like chick flicks
+    labels: what's the last one that you've watched?
+     model: what was the last movie you watched
+the last one i watched was the vamps. it's an old, kinda stupid movie
+    labels: i haven't watched many chick flicks, but i have had friends who said that pitch perfect is a great one.
+     model: what did you not like about it?
+i've already watched all of the pitch perfects
+    labels: another good one that i've heard my sister speak of is a girl on a train
+     model: what was your favorite part of the movie?
+what's that one about?
+    labels: it's kind of a mystery drama based around a book between a couple.
+     model: it's about a girl who gets on a train and has to live with the people on the train
+i'm going to need more than that
+    labels: the main character normally sees a couple on a train, then one day sees something happen in the couple's backyard. she then finds out that the girl in the couple is now missing and reports it to the police, but also starts to investigate on her own.
+     model: it's called the notebook.
+ah a nosy main character. in real life she would be crazy. sounds interesting. i accept your recommendation.
+    labels: okay, it says that we have to chat a bit more
+     model: awesome! i hope you enjoy it!
+do you want a movie recommendation too?
+    labels: sure gimme one
+     model: sure, i'm always open to new ideas.
+have you seen parasite? the korean one
+    labels: i have not
+     model: no, i haven't
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello how are you doing today?
+     model: hello, how are you doing today?
+i am well and you?
+    labels: glad to hear it. i am doing pretty good just surviving this storm we have going on with all this corona virus stuff lol. it actually gives me more reasons to stay inside and watch more movies i have fallen behind on. i just got done watching contagion last night. what kind of movies and stuff do you watch?
+     model: i am doing well thank you. what kind of movies do you like?
+haha that is funny you mention contagion, i also just watched thay because of all this craziness. i usually like a solid, creative plot - also i do like scifi as well but not superhero movies. i am exhausted of superhero movies.
+    labels: i can't say i blame you about the superhero thing they have kind of beaten that one into the ground. i am glad you like sci-fi! i do too! have you ever seen i am legend with will smith? i thought it was really well done and loved will smith and his struggle with being alone and trying to deal with his own depression while trying to survive it all!
+     model: i agree. i am not a big fan of superhero movies either. i like sci-fi as well. what was the last movie you watched?
+actually no i haven't but i really like will smith and that sounds like a plot i would enjoy. i was also looking for a recommendation to watch for later tonight. i also enjoy watching a character go through the hero's journey, if you will, so it sounds like i'll check that out! i approve of that recommendation and thank you for the advice!
+    labels: of course! i think you will love it especially with you liking sci-fi and strong plot lines. maybe check check out the trailer and get a preview of what you are getting into. bring snacks and a friend to hold onto lol. there are some pretty intense moments and some really sad ones too. i am glad you have a plan for the night now. would you like to watch this trailer?
+     model: you're welcome! i hope you enjoy it!
+yeah i think there aren't many actors who can hold a movie alone but will smith definitely can. i will! i'll make sure to watch the trailer first. thanks again. yes, i would like to watch this trailer.
+    labels: of course mate. please enjoy it i have seen it like 5 times or more haha. it'll absolutely hold your attention and mr. smith is awesome. have a great rest of your day and i hope my advise leads you to another classic you love. take care, j
+     model: great! i am sure you will enjoy it.
+thanks again! have a good one :)
+    labels: hey i think i can actually send this trailer to you if you would like?
+     model: you too, j!
+actually that would be very helpful, if you don't mind. thanks!
+    labels: of course. i am working on getting that over to you now or i can send you a link to the right one.
+     model: no problem. i think you'll really enjoy it.
+okay thanks, i appreciate it as i'm not too savvy on the computer. do you have a link by chance?
+    labels: you got it! also, what was the last thing you saw will smith in aside from this movie you are going to watch tonight?
+     model: i do. i am going to send it over now.
+perfect, thanks! i would have to say the latest release of bad boys with martin lawrence. i can't remember if the name is bad boys 3 or a spinoff name like bad boys "reloaded" - also i wanted to see him in gemini man but never did. have you heard how that movie is or seen it?
+    labels: i have seen gemini man and i have to say maybe not his best work but was still entertaining for something lazy and entertaining. also, i love the bad boys series lol. they remind me of my childhood.
+     model: i have not seen it yet, but i hear it is good. i have heard that it is a little bit of a departure from the other bad boys movies. have you seen any of the other ones?
+haha yes! did you watch the fresh prince of bel air at all? i did as kid
+    labels: oh yea! that was my jam. i am pretty sure on a yearly basis i go back and watch a few episodes so the theme song is forever stuck in my head... aka: its happening right now...... lol i guess i have been following his work for a very very long time now.
+     model: yes i did. i remember the episode where he went to the beach and got a sunburn lol.
+haha yeah i mean think he was only around 17, 18 when he started the show, possibly younger. and he's still in hollywood! so we basically watched him grow up as we did
+    labels: yes, same here. i pretty much grew up that way.
+     model: oh yea! i remember him being in hollywood. i think he was in the movie "the boy next door" with will smith.
+well thank you so much for giving me the recommendation and the link to watch that trailer. i will definitely do that! take care :)
+    labels: you too! enjoy
+     model: you too!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi! how are you? i'd love to know what type of movies you're into.
+     model: hello, how are you doing today?
+hi! i'm really into horror movies. have you seen midsommar recently?
+    labels: no i haven't, most horror movies scare me too much. did you see the new it?
+     model: i have! i really enjoyed it. have you seen any of the new jason movies?
+i haven't yet! not the one where they're all adults.
+    labels: i've heard really great things about it. quite a few people i know have raved about it. is it something you'd be interested in?
+     model: i haven't seen that one yet either. have you seen the new zombieland movie?
+yeah, it would be. i think it'll be something i really enjoy.
+    labels: i hope you like it. i remember right after it came out my coworker would leave a red balloon in the break room to freak people out.
+     model: what was the last horror movie you watched?
+i think i will. the first one spooked me out a bit. clowns freak me out, lol.
+    labels: oh for sure me too. what about the movie child's play? i remember the originals from being little. did you see the new one?
+     model: haha, i can understand that. i think you'll really enjoy it.
+no. i haven't. isn't audrey plaza in it though?
+    labels: yep! i bet she's good in it, she's a great actress.
+     model: yes she is. i think you'll like it.
+yeah, she's awesome. i'll probably check it out just for her.
+    labels: nice, hope you like it!
+     model: awesome! i hope she enjoys it.
+we'll see. i think a doll as a horror villain is a little silly. it's the kind of horror you just laugh at.
+    labels: haha that's a really good point. i'd still be scared probably though.
+     model: i agree, i think it's a little too much.
+lol, i just imagine me like throwing the doll or something. do you know any horror movies that are more based on real life and not supernatural?
+    labels: yeah texas chainsaw massacre and that one with paul walker and the truck drivers, i can't remember the name of it.
+     model: i do! do you like the shining?
+texas chainsaw massacre? what's it about?
+    labels: this group of friends goes to see if one of their grandparents graves was vandalized and a bunch of psycho murderers that live next door attack them and they have to escape.
+     model: it's a horror movie about a man who is a doctor in texas who is working on a patient who has a chainsaw for a leg. he accidentally cuts off his leg and then the patient starts to try and kill him.
+gnarly. i'll be sure to check it out. thanks for all these movie recommendations!
+    labels: no problem! hope some of them work out for you.
+     model: no problem!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi! i'm here to recommend a move trailer for you. do you know what kind of move trailer you might be interested in?
+     model: hello, how are you doing today?
+a suspensfull movie
+    labels: i recently watched a movie called knives out, where an eccentric and wealthy author is murdered and his family members are all suspects. would you be into that?
+     model: what was the last suspensful movie you watched?
+yes that sounds very interesting. did it have a lot of twists and turns?
+    labels: it's the type of movie where you won't see the end coming. do you like daniel craig or chris evans?
+     model: it has a few twists and turns, but it's not a movie that will leave you thinking about it for a long time. it's a very fast-paced thriller. would you be interested in watching the trailer?
+yes. love those kinds of movies. i am not so familiar with the cast you mention. but i think you have made an excellent recommendation. thank you!
+    labels: so would like to watch this movie trailer?
+     model: you're welcome! i hope you enjoy it.
+yes i would. i accept.
+    labels: awesome, hope you end up liking it. take care!
+     model: great! i hope you enjoy it.
+you must tell me your best part of the movie.
+    labels: it's definitely daniel craig's performance.
+     model: i think the best part was when the main character was in the hospital and he met the doctor who was working on him.
+what other movies has he played in?
+    labels: most people know him from 007. i was shocked to see him doing a southern accent in knives out.
+     model: he was in the movie "last christmas" with emilia clarke.
+ohhh. i know who he is now... southern accent.. hmm interesting. did you watch this at the theater ?
+    labels: i actually saw it at home. it would definitely be good to see at home or in theater's.
+     model: yes, i did.
+is it streaming on netflix?
+    labels: not yet. you can it on amazon prime for $3.99 and probably also through your cable provider.
+     model: it is!
+you think its worth the cost then?
+    labels: definitely! it's one of my favorite movies this year.
+     model: i think it is. it has a lot of action and a good story.
+i think you may have talked me into it then.
+    labels: great, have a great night! (i think the chat is actually done now)
+     model: i'm glad i could help!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello! how are you today?
+     model: hello, how are you doing today?
+hi, how are you?
+    labels: good! thank you for asking! i hear that you are looking for help finding a movie trailer to watch.
+     model: i'm doing well. what kind of movies do you like?
+i am looking for a recommendation - i generally like action movies or comedies with a good plot.
+    labels: those are some of my favorite too! what is the last movie you watched?
+     model: what is the last movie you watched?
+i wanted "the invisible man" with my family last.
+    labels: i've heard that is a great movie! have you heard of the movie "get out"?
+     model: that is a great movie! have you seen the new terminator movie?
+i have seen it, it's a very good movie
+    labels: i agree! have you seen the trailer for "us"?
+     model: i also really enjoyed the movie "the irishman". have you heard of it?
+i have not, what is that about?
+    labels: it is another jordan peele movie. it's about a family that must fight for survival once 4 masks strangers show up in their lives. it has many plot twists like "get out". i think you would really enjoy the trailer!
+     model: it's about a woman who is a psychic and has visions of a future where she is a famous actress.
+i did like get out so i would probably like this movie. i accept your recommendation.
+    labels: great! it was an awesome movie that had me on the edge of my seat the whole time!
+     model: great! i am sure you will enjoy it!
+that sounds amazing, thank you for the recommendation!
+    labels: of course! it has action, suspense, and even a few laughs all in one
+     model: you are welcome! enjoy the movie!
+that's good to know! jordan peele is on fire these days
+    labels: agreed! i can't wait to see what he does next
+     model: i agree! he is a great actor.
+same, do you know if he has any other movies in the making?
+    labels: i heard he was doing a remake of "candyman"
+     model: he has a new movie coming out called the boy next door. it's a comedy.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello, i am here to help you looking for a movie trailer
+     model: hello, how are you doing today?
+hello. happy to be here
+    labels: what is your movie preference, romance, comedy, horror?
+     model: what kind of movies do you like?
+none of those 3 appeal greatly. if i had to choose from those categories. i guess horror
+    labels: do you know what kind of movie trailers you would like to see?
+     model: what was the last horror movie you watched?
+i am open to what you have. i generally prefer, action, sci-fi, adventure, thriller, etc.
+    labels: what is the last movie that you watched?
+     model: what was the last movie you watched?
+family, animated,
+    labels: what is the last movie that you watched?
+     model: do you prefer newer movies or older ones?
+yesterday, the florida project. very good. intense drama. a24 film
+    labels: have you ever seen forbidden games? the girl in that movies is the same age as moonee in the florida project. both movies have a lot of parallels
+     model: i have heard good things about that one. have you seen the movie "the witch"?
+oh wow! it looks good. i would prefer a more recent film (in color) tho
+    labels: how about a 2012 movie, its in color- city world
+     model: i agree. i think the last movie i watched in color was the movie the secret life of walter mitty. have you seen that one?
+sounds interesting! i'd like to see that
+    labels: so you would like the watch this movie trailer?
+     model: what other types of movies do you like?
+yes i would like to.
+    labels: city world
+     model: great! i think you will really enjoy it
+the link didn't work
+    labels: unfortunately city wold isn't available at the moment. hang tight while i try to find you another suggestion
+     model: i think i fixed it
+ok thank you.
+    labels: have you ever seen free ride
+     model: i have a few more suggestions, but i'm not sure if they are what you are looking for.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi there
+     model: hello, how are you doing today?
+hi
+    labels: what kind of movies do you like watching?
+     model: what kind of movies do you like?
+comedy
+    labels: i love comedies. what was the latest one have you watched?
+     model: what is the last movie you watched?
+star wars
+    labels: ohh!!! have you watched all of them?
+     model: have you seen the newest one?
+yes, the first one was my favorite comedy. jar jar 4 lyfe!
+    labels: the rise of the skywalker was a great one!
+     model: i agree. what was the last movie you watched?
+i will watch it again soon
+    labels: since you like starwars - do you watch the shows too?
+     model: what was the last movie you watched?
+not really. can you recommend one?
+    labels: so would you like to watch this movie trailer
+     model: i would recommend the clone wars. it is a great show with a lot of action and drama.
+yes indeed
+    labels: plot:  three years into the clone wars, the jedi rescue palpatine from count dooku. as obi-wan pursues a new threat, anakin acts as a double agent between the jedi council and palpatine and is lured into a sinister plan to rule the galaxy. actors: ewan mcgregor, natalie portman, hayden christensen, ian mcdiarmid  directors: george lucas  production: 20th century fox  awards: nominated for 1 oscar. another 25 wins & 56 nominations. ratings: internet movie database: 7.5/10, rotten tomatoes: 80%, metacritic: 68/1
+     model: i selected the movie "the irishman"
+i accept
+    labels: okay here you go
+     model: great!
+thanks to you
+    labels: thank you!
+     model: you are welcome
+i like
+    labels: have a great evening! i hope you enjoy it!
+     model: i like too
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi, i'm here to help recommend a movie.
+     model: hello, how are you doing today?
+hi!
+    labels: what was the last movie you watched?
+     model: what kind of movies do you like?
+parasite. i really like dramas that are suspenseful.
+    labels: i watched that one. it won a few grammy awards.
+     model: what was the last movie you watched?
+um, i think you mean oscars since grammys are for music. at least i think that's correct. do you have any recommendations for me?
+    labels: did you see the movie us? it came out in 2019. yes i meant oscars.
+     model: yes, i meant oscars. i would recommend the movie the art of racing in the rain.
+i did see us - loved it! that director, who's name i forget, also directed get out a couple of years ago. another fantastic film.
+    labels: i see you like suspense, i can recommend the movie midsommar. it was colorful but also scary.
+     model: yes, he did get out. i really liked that one too.
+oh, i haven't seen that one. i'll check it out - thank you!
+    labels: do you like sci-fi movies?
+     model: you're welcome. enjoy the movie.
+yes, i do.
+    labels: i'd recommend you watch a trailer for midsommar.
+     model: have you seen the movie interstellar?
+i accept your recommendation. thank you.
+    labels: if you like sci-fi movies with lots of suspense and drama, i would also recommend snowpiercer. like parasite, it is also a korean director.
+     model: you're welcome.
+i've discovered i like korean movies. i've seen snowpiercer and also last train to busan which is a zombie movie.
+    labels: do you like classic/older movies? or more modern films?
+     model: i also like korean movies. i recently watched the movie "the irishman". have you heard of it?
+i do like the classics but prefer newer films.
+    labels: i find newer films to be easier to watch although i do like classics too. i watch more newer films.
+     model: i would recommend the movie "the irishman". it is a drama about a mob hitman.
+me too. i'm looking forward to seeing more movies this summer.
+    labels: same here. i still think midsommar is a good choice right now.
+     model: me too. what is the last movie you watched?
+i'll have to check it out.
+    labels: enjoy! i hope you like it.
+     model: it's a little bit of a slow burner but it's a great movie.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi
+     model: hello, how are you doing today?
+hey friend it's been a long day any suggestion for good movies trailers i can check out with action/suspense?
+    labels: family friendly or more geared for when they go to bed?
+     model: what kind of movies do you like?
+i'm not really looking for anything family friendly. it's just me and my dog spot.
+    labels: what was the last movie you saw that you loved?
+     model: what kind of movies do you like?
+the last movie i saw that i loved was rocky 3. i really like the intensity of the movie and the lessons learned along the way. anything similar to that movie you could suggest? i also like movies similar to v for vendetta.
+    labels: have you seen the movie creed?
+     model: have you seen the movie the irishman?
+yes another great one.
+    labels: how about mad max fury road?
+     model: what did you like about it?
+never heard of it i will have to check it out i really appreciate your help! have a great night!
+    labels: yea i think you will really like it!
+     model: you too!
+okay it really is hard to find good movies these days.
+    labels: i agree, but i think you were really like this. the actor who played bane is the lead.
+     model: i agree. what was the last movie you watched?
+wow really then i know it's going to be good! i'm really looking forward to checking it out.
+    labels: all three batman movies are a great idea too if you have a lot of time to pass.
+     model: i think you will really enjoy it.
+batman is another one of my favorites. you have excellent movie recommendations. i should be good now for the next 3 days lol.
+    labels: well with everyone staying in, you will need a good movie. have you seen the new christian bale movie with the cars?
+     model: hahaha. i hope you enjoy them!
+i have yet to see the new movie with christian bale and he is a great actor.
+    labels: yeah, matt damon is in it too and he is great in a bunch of films.
+     model: he is a great actor. i think you will really enjoy the new one.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi! how are you?
+     model: hello, how are you doing today?
+great although a bit anxious because of the pandemic!
+    labels: i totally get that! i'm here to help!
+     model: oh, i'm sorry to hear that. what kind of movies do you like?
+i'm thinking that now is a time to escape for a while and go back in time to a kinder, gentler place
+    labels: what was the last movie that you watched like that?
+     model: that sounds like a great idea! what kind of movies do you like?
+little women directed by greta gerlich
+    labels: oh that's so good! i watched that with my daughter! i like period pieces as well
+     model: oh, i've heard of that one! what did you like and dislike about it?
+i especially like what the director did with the time sequences jumping out of order. it kept the movie from being to predictable.
+    labels: yes! i love it when it keeps me engaged and wanting to know what is next!
+     model: yes! i agree. did you like the movie "the boy next door"?
+so i'm looking for a film that has that similar quality, and sympathetic characters. and of course, no extreme violence. i also like films that present women overcoming obstacles.
+    labels: have you seen lady bird? it's a coming of age indie film also by greta gerwig
+     model: have you seen the movie the secret life of walter mitty?
+that was with sacirse ronan and timothee chalamet? i have seen it but don't exactly remember the story, so that is a great suggestion for watching tonight!
+    labels: would you like to see the trailer to see if it jogs your memory? it's a coming of age story and saoirse ronan is pretty amazing!
+     model: yes it was! it's a very beautiful film and has a very interesting story.
+that would be great! is it set in present time?
+    labels: it is - 2002 i believe!
+     model: it's set in the past, but it's set in a fictionalized version of the 1920s. it's set in a small town in virginia.
+are you sending me the link to the trailer? if so, i will be glad to watch it and most likely to view the movie. i also like laurie metcalf, who is in the movie.
+    labels: i am! laurie was my favorite character in the old sitcom roseanne!
+     model: i believe it is on hbo now, but i will send the trailer!
+oh, yes, of course - totally forgot that she was in roseanne. not sure if you are actually sending a link to lady bird, but now i am eager to watch it again as there are so many in the cast that i really like. i think i remember a scene with mother and daughter in goodwill. is that right?
+    labels: yes! you are right!! i think it's a considered a classic moment now :)
+     model: yes! i think that was the last episode of the series.
+i really don't need to see the trailer. i fully intend to curl up with a cup of tea and watch "lady bird" tonight. thank you so very much for reminding me of a movie i really liked a lot! have a good evening - i know i will.
+    labels: yay! here it is just in case :)  enjoy your evening!!!
+     model: you too! enjoy the movie!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello!
+     model: hello, how are you doing today?
+hey there
+    labels: what's the last movie you've watched?
+     model: what kind of movies do you like?
+the autopsy of jane doe
+    labels: did you like it?
+     model: oh, that's a good one. what did you like and dislike about it?
+yeah! it was scary haha!
+    labels: i've never seen it, but it looks really creepy! do you like scary movies?
+     model: what did you like and dislike about it?
+yea they are my favorite! have you heard of any new ones?
+    labels: yes, my most recent favorites are hereditary and midsommar. have you seen those? they're not really jump-scary, but they're really creepy and disturbing.
+     model: i have! i really liked the new it movie. have you seen it?
+i have seen hereditary, but midsommar i should check out!
+    labels: yes!! they're both ari aster films.
+     model: yes, i definitely recommend it!
+i just watched the trailer, i will probably stream it tonight! thanks for the reccomendation.
+    labels: no problem! have you seen us or get out?
+     model: you're welcome! i hope you enjoy it.
+us was awesome! i like the twists in the story...i haven't heard of get out
+    labels: they're both by jordan peele. get out has a similar vibe, but it's more of a social commentary. do you want to watch the trailer?
+     model: it's a psychological thriller. it's got a lot of twists and turns.
+yea sounds good to  me!
+    labels: ok, i will send it in a moment! have you heard of abc's of death?
+     model: great! i hope you enjoy it!
+my girlfriend has seen it but i have not, you gave me 3 awesome recommendations!
+    labels: awesome!! hope you like them. just give me a second and i'll send you the trailer to get out
+     model: great! i'm glad i could help.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: good day!
+     model: hello, how are you doing today?
+hi
+    labels: i would like to assist you in finding a movie for you to enjoy.
+     model: how are you?
+ok
+    labels: what movie genres do you enjoy watching?
+     model: what kind of movies do you like?
+action movies
+    labels: is there a recent action movie that you've seen to point me in the right direction?
+     model: what was the last action movie that you watched?
+taken two
+    labels: would you enjoy watching a movie played by bruce willis?
+     model: what did you like and dislike about the movie?
+yes i would
+    labels: i'd suggest watching die hard by bruce willis. it's about a nypd officer that is forced to save his wife and her co-workers from a skyscraper held hostage by german terrorists.
+     model: what was the last movie you watched?
+ohh that sounds interesting
+    labels: the movie is well-recommended with a 93% on rotten tomatoes.
+     model: it's a great movie. i highly recommend it.
+i would like to watch the trailer
+    labels: sure thing!
+     model: great! i hope you enjoy it.
+thank you
+    labels: you certainly welcome! i hope you enjoy the trailer!
+     model: you're welcome. enjoy the movie!
+good bye
+    labels: did you have any other movies that you may be interested in? if not, have a great day!
+     model: bye! enjoy the rest of your day.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello, may i assist you in finding a good movie?
+     model: hello, how are you doing today?
+yes please! i am looking for a comedy movie similar to step brothers
+    labels: i'm more than happy to find a similar movie. may i ask the name of an additional recent comedy movie that you have seen to better assist me in this search?
+     model: what is the last movie you watched?
+i also enjoyed the campaign. i am a fan of will farrell.
+    labels: perhaps you would enjoy the movie anchorman staring will ferrell. he plays the role of a new anchor in the 1970's and is intimidated by a new female co-anchor in a male dominated industry of broadcasting.
+     model: i'm a big fan of will ferrell as well. i recently watched the movie "the waterboy". have you heard of it?
+excellent! i will be sure to check it out. thank you for your help!
+    labels: your welcome! enjoy!
+     model: you are welcome. enjoy the movie.
+have you seen this movie?
+    labels: yes, i have. it's one of my favorites. there is multiple movies in the series.
+     model: yes, i have.
+how many movies are there in the series?
+    labels: two thus far. there is speculation of a third edition.
+     model: there are eight movies in the series.
+do you like the first or the second one better?
+    labels: in my opinion, the original is always the best.
+     model: i like the second one better.
+i tend to agree!
+    labels: so would you care to watch the trailer?
+     model: i think the third one will be about the aliens.
+yes i would!
+    labels: would you like the both trailers?
+     model: great! i hope you enjoy it.
+why not? that way i can evaluate both movies.
+    labels: i'll send you the original first.
+     model: i think i have the perfect one for you.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello
+     model: hello, how are you doing today?
+hello, i am looking for a movie reccomendation
+    labels: ok, sure! what is your favorite types of movies? action, drama, comedy, horror, etc.?
+     model: what kind of movies do you like?
+i prefer romantic comedies
+    labels: ok, i think a great romantic comedy would be a classic called clueless. it is about school aged girls and romances and has a lot of funny banter.
+     model: ok, i like romantic comedies too. what is the last movie you watched?
+i love that movie, but i have already seen it. is there another movie from that time period that you would reccomend
+    labels: sure! my best friend's wedding is also a really funny movie from around that time period. have you seen that one?
+     model: i think you would like the movie "the lovebirds". it is a 1954 romantic comedy.
+i have not, i accept that reccomendation
+    labels: awesome!
+     model: great! i think you will really enjoy it.
+thank you
+    labels: you're welcome!
+     model: you are welcome.
+could you reccomend me a different movie too?
+    labels: sure! another movie from that time period is called when harry met sally-- it's a classic.
+     model: sure! what kind of movies do you like?
+i accept that reccomendation do you know about any musicals similar to grease?
+    labels: yes, there is a musical called hairspray, have you seen it?
+     model: i do! i love the sound of music. have you heard of it?
+i have, do you have a different reccomendation
+    labels: flashdance, mama mia, and footloose are also similar to grease.
+     model: i do, have you seen the movie the proposal?
+i have never seen flashdance, ill check it out
+    labels: great! i hope you enjoy it!
+     model: it's a classic, i think you'll enjoy it.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello there how are you today?
+     model: hello, how are you doing today?
+hey there. i am good and you?
+    labels: im  pretty good just staying in taking care of myself with all this crisis going on. so what type of movies do you like to watch?
+     model: i am doing well. what kind of movies do you like?
+yeah same here. i like action and adventure movies
+    labels: oh really i like those movies as well. what were some of the last movies you have watch in the category?
+     model: what was the last movie you watched?
+i recently watched john wick 3. do you have any recommendations?
+    labels: yes i want to make the best reccomendations for you. do you have any favorite actors you like ?
+     model: i do. what was the last movie you watched that you really enjoyed?
+my favorite actors are liam neeson, keanu reeves, and mads mickleson
+    labels: i love liam neeson & keanu reevez are you looking for new or old movies ? does it matter?
+     model: i like all of those as well. i think you will like the movie the irishman. it is a crime drama with keanu reeves.
+yeah they're great! i like both old and new movies.
+    labels: im pretty sure you have seen the movie constantine? its an oldie but goodie!!! or what about the movie "speed"?
+     model: ok i will make a recommendation for you.
+yeah i love both of those movies! classics for sure. any other ones?
+    labels: have you seen the movie earth to echo? its an adventure movie it came out in 2014
+     model: i think you would like the movie "the irishman" with jodie foster.
+no i never heard of it. i think i will check it out. thanks for the recommendation!
+    labels: or another good one featuring liam neeson is "cold pursuit" thats a good one also!!!
+     model: no problem! enjoy the movie!
+okay, i will look that up as well! good luck with everything and thanks again!
+    labels: you are very much welcome would youlike for me to send you a link for a trailer so you can check them out?
+     model: you too!
+yes please
+    labels: you are very welcome
+     model: i have sent the link to the trailer. i hope you enjoy it!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi! how are you today?
+     model: hello, how are you doing today?
+i'm good and you?
+    labels: i'm good thanks! so you're interested in finding a movie to watch?
+     model: i'm doing well. what kind of movies do you like?
+absolutely.
+    labels: awesome. what kind of movies are you interested in seeing?
+     model: what kind of movies do you like to watch?
+actually i love adventure
+    labels: i do too! very entertaining. what was the last adventure film you watched?
+     model: what was the last movie you watched?
+i just had to re-watch polar all over again last week
+    labels: i didn't see that one yet but jonas akerlund directed that and i love his work. he also makes great music videos.
+     model: that's a great movie! have you seen the newest fast and furious movie?
+yeah, he is a great director. i loved his lords of chaos as well
+    labels: so movie that reminds me somewhat of polar (what i've heard of it) that i thought was excellant is atomic blonde, starring charlize theron and james mcavoy. it takes place in berlin during the cold war revolving around double agents. it's great. great action scenes, intriguing story line, great music seleciton and cinematography. the trailer is definitely worth a watch.
+     model: i haven't seen that one yet. have you seen the movie the secret life of walter mitty?
+oh, that sounds intriguing. i'd love to see that one pretty soon. i love the sound of cold war as the story-line. i think i'd love it
+    labels: oh awesome!
+     model: i think you will too. it's got a lot of action and suspense.
+nice one then....i think my next movie is atomic blonde
+    labels: yeah it is a great film to watch especially as i imagine you won't have much to do in the coming weeks! i also loved the color that was used in the film, the use of neon lights. great.
+     model: oh that's a great movie. i love julianne moore.
+yeah, i'm free next week and i'm going to see the movie definitely. thanks for this awesome recommendation.
+    labels: my pleasure! it's directed by david leitch who has done a number of interesting action/adventure films. like deadpool.
+     model: you're welcome! i hope you enjoy it!
+wow! the same david leitch who directed the great movie fast and furious and hobbs and shaw. i love his work.
+    labels: oh great! so you're already familiar with him. he's got an interesting style you'll enjoy.
+     model: yes! he's a great director. i also really like his work in the fast and furious franchise.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello
+     model: hello, how are you doing today?
+hello, how are you
+    labels: i am doing well, how are you
+     model: i am good. what kind of movies do you like?
+im great thanks for asking
+    labels: of course, do you know what kind of movie trailers you would be interested in seeing?
+     model: what kind of movies do you like?
+i really like action movies but also like horror films,
+    labels: what is the last movie you watched?
+     model: what was the last horror movie you watched?
+the last movie was the one about harley queen, that movie was awesome really liked it.
+    labels: that is a good movie, i saw that movie as well. i liked the storyline and the new approach they were taking.
+     model: i have not seen that one yet, have you seen any of the marvel movies?
+yeah didnt really liked the suicide squad movie, i think the approach they are taking now is much better.
+    labels: i would recommend the movie trailer  the hunt,it has action,and horror and even some comedy! along with alot of popular actors, like emma roberts, justin hartley,  wayne duvall and hilary swank!
+     model: i agree, i think they are going in the right direction.
+sounds like a good recommendation can you tell me more about it
+    labels: yes i would love to. 12 strangers wake up in a clearing. not knowing where they are or how they got there. ruthless elitists gather at a remote location to hunt humans for sport. but their master plan is about to be derailed when one of the hunted turns the tables back on the elitists.
+     model: sure! it is about a group of teens who are trying to survive a post-apocalyptic world.
+sounds original and i do like the cast, i think i will give this movie a try, what is the year of the movie by the way.
+    labels: awesome! 2020
+     model: it came out in 2019.
+oh so the movie is recent, thats even better although i like old movies as well.
+    labels: i hope you enjoy this new movie,oldies are always good too!
+     model: yes, it is a recent movie.
+yeah i hope so, i trust your recommendation, thanks a lot
+    labels: no problem!
+     model: no problem, enjoy the movie!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hell there
+     model: hello, how are you doing today?
+hi, how are you?
+    labels: fine i am here to help you find a good movie
+     model: i am good. what kind of movies do you like?
+awesome, that would be great
+    labels: what is your favorite genre?
+     model: what kind of movies do you like?
+i like science fiction the best
+    labels: what is the last movie you watched?
+     model: what is the last movie you watched?
+the last new movie i watched was avengers endgame
+    labels: have you seen the invisible man
+     model: i have not seen that one yet. have you seen any good movies recently?
+no i have not
+    labels: after staging his own suicide, a crazed scientist uses his power to become invisible to stalk and terrorize his ex-girlfriend. when the police refuse to believe her story, she decides to take matters into her own hands and fight back.
+     model: it is a great movie
+oh wow, that sounds interesting
+    labels: or artemis fowl
+     model: it is rated r
+i have not heard of that one. what's it about?
+    labels: artemis fowl is a 12-year-old genius and descendant of a long line of criminal masterminds. he soon finds himself in an epic battle against a race of powerful underground fairies who may be behind his father's disappearance.
+     model: it is a movie about a young girl who is sent to live with her aunt and uncle in the city of the future.
+that one sounds fun--i like that there are fairies in it.
+    labels: how about underwater
+     model: it's a great movie, and it's on netflix.
+i haven't heard of that one either
+    labels: disaster strikes more than six miles below the ocean surface when water crashes through the walls of a drilling station. led by their captain, the survivors realize that their only hope is to walk across the sea floor to reach the main part of the facility. but they soon find themselves in a fight for their lives when they come under attack from mysterious and deadly creatures that no one has ever seen.
+     model: it's a movie.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi, i really liked watching the movie the leprechaun on st. patrick's day. warwick davis is highly underrated as an actor.
+     model: hello, how are you doing today?
+that sounds interesting, what was it about?
+    labels: it's about a leprechaun who has his gold stolen and is on a murderous mission to get it back! it also stars jennifer aniston and has many comedic moments.
+     model: it's about a leprechaun who lives in a mansion. he's a bit of a gambler and has a lot of trouble with his family. he's also a bit of a party animal.
+oh wow, i've never heard of it but that sounds like something i'd be interested in. i'll have to check it out.
+    labels: it's really fun! i heard that warwick davis is tied to a sequel for the movie willow for disney + but it's been many years since i saw the original. no word on val kilmer coming back yet. he's great in everything.
+     model: it's a really funny movie. i really enjoyed it.
+oh, i didn't know that. thank you for the recommendation, i'll be watching that soon.
+    labels: cool! it's nice to dig up old obscure movies, especially since i've seen too much netlflix
+     model: you're welcome! i hope you enjoy it.
+that's true. i'm always looking for new things to watch. are there any other movies you would suggest?
+    labels: goon on netflix is a low-budget comedy movie about a hockey player. it did very poorly at the box office but it's now a cult classic.
+     model: i would recommend the movie "the longest day" with will smith. it's a classic and has a lot of action and adventure.
+that's a good one, i saw that a while back. i thought it was pretty good but i could see why the ratings wouldn't be great. i still haven't seen the second one.
+    labels: i've seen about half of it. pretty funny, same characters. need to finish it
+     model: i haven't seen the second one either. i think the first one is a classic.
+cool, i'll have to watch that. i enjoy all kinds of movies. thanks again.
+    labels: sure thing, this is fun
+     model: no problem. enjoy the movie!
+i agree. i've been watching a lot of movies lately so i could use recommendations.
+    labels: i can imagine
+     model: what kind of movies do you like?
+if you could only watch one movie for the rest of your life what would it be?
+    labels: forrest gump, you?
+     model: probably the godfather
+that's tough. i would probably have to say either the outsiders or the wolf of wallstreet.
+    labels: ooo those are fun
+     model: i like both of those movies
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello, how's it going?
+     model: hello, how are you doing today?
+it's going pretty good. thank you. how are you?
+    labels: doing well. i'm here to help you find a good movie to watch. most of us have a lot more time on our hands these days so it's a good time to watch something new. what's the last movie you watched?
+     model: i'm doing well. what kind of movies do you like?
+let's see... i just watched the greatest showman last night. i love that movie so much.
+    labels: the greatest showman! that's an interesting pick. what did you like about it?
+     model: that's a great movie. i love the music in that movie. what was your favorite part?
+i love how it's going back in time to see how p.t. barnum was when he was a child and how his life was in the 18th century.
+    labels: historical films can feel really immersive when they are good. it's cool to imagine living in a different time. it helps that hugh jackman is such an amazing actor too.
+     model: that's a great movie. i love that time period.
+agreed! hugh jackman did such a glorious job! and my favorite song from that movie is this is me. it makes me cry every time! a good cry.
+    labels: well, if you're into movies with music and like singing, there's plenty of great films for you to also see!
+     model: i agree. i love that movie.
+what would you recommend?
+    labels: i would recommend bohemian rhapsody
+     model: i would recommend the movie the irishman. it's a historical drama about the irish mob.
+yes! i definitely need to see that movie! thank you so much!
+    labels: well here,
+     model: you're welcome!
+great! i'm so far behind on my movie intake.
+    labels: i am going to send you a trailer to watch for the movie bohemian rhapsody, if you would like. i think it will get you excited to watch it!
+     model: what was the last movie you watched?
+great! i would love to see the trailer! i'm already excited just from talking!
+    labels: i hope that you enjoy it and choose to watch it. it's a great film!
+     model: great! i think you will really enjoy it!
+thank you! i will definitely watch it! you've been so helpful, thank you again!
+    labels: no problem, enjoy and have a great day!
+     model: you are welcome!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello, good morning
+     model: hello, how are you doing today?
+hi!
+    labels: im here to help you looking for a movie trailer, what is the last movie that you watched?
+     model: what kind of movies do you like?
+the last movie i watched was frozen 2, honestly sooo much better than the first movie!
+    labels: i thought it was better too, i liked it, so you like movies like frozen? or what is your favorite genre?
+     model: i love that movie! have you seen the new one, "lady and the tramp"?
+yes! explained so much! like how elsa got her powers! and hahah im a huge fan of frozen. i mostly love disney, and action films, how about you?
+    labels: i also like disney movies they are really good, i like the new star war films and also marvel movies, so you like action too? do you like superhero movies闅
+     model: i like disney too, i like all kinds of movies, i like horror movies, comedy, romance, etc. what is the last movie you watched?
+yup! oh yes those are good! and yes! have you seen infinity war?
+    labels: yeah, i did, it was awesome i love the ending although it was sad.
+     model: yes i have, i really liked it, i think it was better than the first one, did you like it?
+right?! i cant believe iron man died i cried so had
+    labels: yeah, that made me cry as well. did you watch the new lion king movie?
+     model: i did too, i was so happy when they brought him back in the end though.
+no i haven't, have you?
+    labels: i have and its a really good movie, i liked it more than the original because of the overall quality of the movie.
+     model: yes, i really liked it. it was a very emotional movie.
+ohh i bet! ya i saw the trailers for it and it does look like its a lot better
+    labels: the director jon favreau is also pretty good at his job, you should really watch it, you wont regret it.
+     model: i think you will really enjoy it.
+its on disney+ now right? i will definitely check it out!
+    labels: yeah, the title is on disney+ are you a part of the streaming service?
+     model: yes it is, i think you will really enjoy it.
+yes i am!!! are you?
+    labels: no but ive been wanting to subscribe it seems like it has a lot of content.
+     model: yes, i am too, i have been watching a lot of disney movies lately.
+you should! they even have classics!
+    labels: i will definitely look it up, anyway i hope you enjoy the movie recommendation and enjoy the trailer
+     model: i will definitely check it out.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello there, would you like to watch a movie trailer? what are some of your favorite type of movies?
+     model: hello, how are you doing today?
+i like all types. comedies, science fiction, action. but nothing too scary
+    labels: i love comedies. the best way to smile is though laughter. do you like older comedies or something that just came out?
+     model: what was the last movie you watched?
+i would love to see a newer comedy. i believe tiffany haddish has a new(ish) movie out
+    labels: she is very funny. here is the weird fact....we share the same birthday, dec. 3.
+     model: i believe she has a new movie out as well. have you seen the movie "the spy who dumped me"?
+oh wow. that is pretty cool. have you seen her interview and heard her background? she was in the foster system for a while. i have watched girls trip so many times already.
+    labels: she is such a solid leader for young girls to look up to. did you know she is good friends with arsenio hall?
+     model: yes, i have seen that. i have a daughter and i have watched that movie many times as well.
+i didn't but i love him too. i remembered that new movie she was in. it was called like a boss. have you seen that one?
+    labels: yes she was great in that. did you know that she was the first black female to host saturday night live? would you like to see her newest movie trailer bad trip?
+     model: no i haven't. i will have to check it out.
+i didn't know she was the first black female to host saturday night live. i have never heard or bad trip, but if she is in it i definitely will. what is it about?
+    labels: it will be coming out later this year. it is about two friends embark on a cross-country road trip where they prank people using hidden cameras. it is pretty funny. i do have one movie trailer to show you, have you seen night school? would you like to see the trailer?
+     model: it is about a group of friends who go on a road trip to see a movie. it is a comedy.
+sure, i'll see a trailer
+    labels: you like kevin hart? they are good in this movie together
+     model: great! i hope you enjoy it!
+yeah, i like him. he always cracks me up. good combination
+    labels: well in this comedy, a group of high school dropouts are forced to attend night school in hope that they'll pass the ged exam to finish high school.
+     model: i agree, he is a funny guy. i think you will like this movie.
+sounds hysterical, i think i would like that movie
+    labels: its really funny. would you like to see the trailer?
+     model: i think you will like it.
+yes, i would like to see that trailer. i need to laugh right now.
+    labels: you're old enough for a rated r movie aren't you? haha
+     model: okay, i selected it for you.
+sure am. lol
+    labels: good. just cant be too careful now-a-days? am i right? haha
+     model: what was the last movie you watched?
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello. how are you today?
+     model: hello, how are you doing today?
+hi! i am well. and you?
+    labels: great! have you seen any good movies lately?
+     model: i am doing well. what kind of movies do you like?
+yes! i saw parasite and jo jo rabbit - both excellen
+    labels: they were :) do you like horror movies?
+     model: i've heard good things about both of those. what did you like and dislike about them?
+i do not really - i find myself either too invested or not invested enough. hard for me to enjoy them. although i loved midsommar
+    labels: i agree with you. they often have poor plots. what about superhero movies in the dc or marvel universe?
+     model: i love midsommar too! have you seen the new it?
+yes - i have seen the majority of them. i like them
+    labels: you should check out the new black widow movie trailer! it's awesome she is finally getting her own movie.
+     model: i agree. i like them too. what about superhero movies in the marvel universe?
+intersting, yeah i may do that - i thought she was dead though
+    labels: she is, but her movie will delve into her backstory. it takes place years ago and really shows her story.
+     model: she is dead, but she is coming back in the next movie.
+ok wow - yeah, i am into that. i will definitely check that trailer out
+    labels: i love her outfits in this
+     model: awesome! i hope you enjoy it!
+this looks great - i love the backstory angle
+    labels: yeah its unfortunate it was delayed because of the virus, but we have end game to hold us over
+     model: me too. i really like the way they are doing it.
+thanks again for the reco - i will likely see that when it comes out now
+    labels: good! have a nice day!
+     model: no problem! enjoy the trailer
+thanks you too!
+    labels: thank you!
+     model: you are welcome!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello im here to help you with movie trailer recommendation how are you doing today?
+     model: hello, how are you doing today?
+doing well thank you, hope you are well. i like movies based on reality
+    labels: do you mean movies based on real life stories?
+     model: what was the last movie you watched?
+yes those tend to be my favorite. i also like action movies or dramas, not a big scifi fan
+    labels: oh i see, i like real life movies as well they leave me thinking
+     model: what was the last movie you watched?
+yes, can relate to them more
+    labels: i agree, have you seen the movie the walk?
+     model: what was the last movie you watched?
+no i have not
+    labels: ok so the movie is based on real life events its about a man who is a high-wire artists and crosses the twin towers
+     model: it is a drama about a man who was a soldier in vietnam and he walks the walk of life after he comes home
+ok, sounds interesting
+    labels: it really is, that movie kept me on an edge the whole time.
+     model: it is a very good movie, i highly recommend it
+great i will check it out thanks
+    labels: ok, great, another recommendation i can give you is the movie sully.
+     model: you are welcome
+yes i have seen that movie, excellent movie
+    labels: it is excellent i agree, if you liked that one then you will enjoy the imitation game, have you seen that one?
+     model: ok, great, another recommendation i can give you is the movie the boy in the striped pajamas.
+i have not, what is that one about?
+    labels: ok then you have to watch that one first, its about a methematical genius who cracked and important code called enigma, the cast is great and it won an oscar
+     model: it is about a man who is a high-wire artist and crosses the twin towers to help the people of new york.
+oh ya i think i remember hearing about that but have never watched it, will give it a try
+    labels: you definitely should, the leading actor is benedict cumberbatch, he has a lot of talent.
+     model: ok great, i hope you enjoy it.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello!
+     model: hello, how are you doing today?
+hi! i was wondering if you have any good movie recommendations in mind?
+    labels: what are some of your favorite movies?
+     model: what kind of movies do you like?
+some of my favorites are oculus, signs, a quiet place - i'm a horror fanatic basically.
+    labels: got it
+     model: i love horror movies! have you seen the new it movie?
+but i prefer horror films that place more of am emphasis on dread rather than gore and jump scares.
+    labels: interesting! do you have a preference in actors or directors?
+     model: i agree. have you seen the shining?
+actually yes! i love both m. night shyamalan and mike flanagan. i think they're two of the most underrated directors out there who know how to tell a suspenseful story without relying on jump scares and gore.
+    labels: have you seen the movie the gift?
+     model: i agree! i love m. night shyamalan as well. have you seen the village?
+i actually have not! can you tell me a little bit about it, starting with the plot?
+    labels: it's about this couple who's lives are thrown into a tailspin when an acquaintance from the past brings mysterious gifts and a horrifying secret.
+     model: it's about a woman who is a widow and her husband has passed away. she is a stay at home mom and her two children are in high school. she is trying to make ends meet and finds a job at a movie theater. she meets a man who is a manager there and they start dating.
+sounds interesting, actually. can you tell me who stars in it and is it a newer film or older?
+    labels: rebecca hall, jason bateman, tim griffin
+     model: it came out in 2015.
+i really like jason bateman as an actor and a director. speaking of directors, do you know who directed the gift?
+    labels: joel edgerton
+     model: jason bateman and michael douglas
+i haven't heard of him but the plot sounds interesting enough. do you know the film's mpaa rating?
+    labels: rated r
+     model: it has a rating of pg
+right up my alley! i will definitely accept your recommendation and give it a watch. the plot itself and jason bateman were huge selling points for me. i'm excited to see it!
+    labels: so would you like to watch the movie trailer?
+     model: awesome!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello, i am here to help you looking for a movie trailer"
+     model: hello, how are you doing today?
+great! thanks for your help.
+    labels: do you know what kind of movie trailers you would like to see?"
+     model: what kind of movies do you like?
+i am in the mood for a high action movie.
+    labels: "what is the last movie that you watched?
+     model: what was the last movie you watched?
+thor ragnarok
+    labels: do you want a movie with similar story or a different one?
+     model: i love that movie! have you seen the new mission impossible?
+similar story would be great
+    labels: how about another thor movie, or avengers?
+     model: what is the last movie that you watched?
+i am pretty caught up on the thor and avengers movies but i do like marvel ones in general
+    labels: have you seen black panther?
+     model: i think you will like the new mission impossible movie.
+yes i saw it. loved it!
+    labels: would you want to see it again
+     model: what about the new captain marvel?
+perhaps but i'd prefer one i hadn't seen yet
+    labels: captain marvel?
+     model: i would recommend avengers: endgame
+well, i've seen it but might watch it again.
+    labels: how about ant-man or adventues of captain marvel
+     model: i think you will enjoy it again
+i'd like to see ant man
+    labels: would you like to watch this movie trailer?
+     model: i think you would like it
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello, i am here to help you looking for a movie trailer
+     model: hello, how are you doing today?
+awesome, i am looking for something to watch during quarantine.
+    labels: i can relate! movies are great for taking our mind off of all the chaos out there!
+     model: what kind of movies do you like?
+very true, how about a funny movie to take my mind off the news
+    labels: gotcha! what is your favorite comedy movie?
+     model: what is the last movie you watched?
+i really enjoy stripes or other bill murray movies
+    labels: bill murray has a house in my hometown! i see him out and about!
+     model: i love bill murray! have you seen the movie zombieland?
+that's cool. does he have any new movies coming out soon?
+    labels: yes! he was just in the new zombeland 2 movie
+     model: he just released a new movie called "groundhog day" which is a sequel to "the life aquatic".
+that sounds awesome, i enjoyed the first one. thanks for the recommendation.
+    labels: what other types of movies do you like?
+     model: no problem! i really enjoyed it as well!
+i am always a big fan of marvel movies or other super hero movies. now that the avengers series is finished, are their any other marvel movies coming out soon?
+    labels: the black widow is coming out! heres the bio-   at birth the black widow (aka natasha romanova) is given to the kgb, which grooms her to become its ultimate operative. when the u.s.s.r. breaks up, the government tries to kill her as the action moves to present-day new york, where she is a freelance operative
+     model: i think the next one is captain marvel coming out in december
+who is starring in the movie?
+    labels: scarlett johansson is the main character.......robert downey jr, and florence pugh are among others
+     model: kevin heart
+that sounds interesting, is it more of an action movie or a spy thriller?
+    labels: do you want to watch the trailer?
+     model: it is a spy thriller
+not right now, i don't have much time and don't have headphones
+    labels: okay well i would like to tell you, that its a spy thriller! you should check out the preview when you get some spare time!
+     model: ok, i will send it to you
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello! i am here to help you look for a movie trailer!
+     model: hello, how are you doing today?
+hi! i'm looking for a uplifting movie and is pretty corny at times. do you have any suggestions?
+    labels: are you looking for a newer movie or do you not care how old it is?
+     model: what is the last movie you watched?
+i don't mind if it's older. i actually seem to prefer old rom-coms such as the wedding date, must love dogs, and hallmark movies. i'm also a hug fan of pride and prejudice. i love movies that have handsome male characters that have terrible first impressions.
+    labels: i feel you on the handsome characters!! for a good rom com i enjoyed the movie valentines day. for something up lifting my favorite movie is last holiday with queen latifah.
+     model: i love all those movies too! i think you would really enjoy the movie "the notebook"
+can you tell me more about last holiday? i do like christmas movies a lot! i think i saw valentine's day and wasn't a fan but i could be thinking of another movie as well.
+    labels: of course! it is a romantic comedy-drama. the film stars queen latifah as georgia, a humble store assistant who is told that she has a rare brain condition and only has a few weeks to live. she promptly decides to spend her last funds on a luxury holiday in europe (like a last hurrah) and she falls in love too!
+     model: it's a rom com and it stars will ferrell. it's a very funny movie and it has a very sweet message.
+the brain condition sounds really sad. without spoiling the ending will i be crying at the end of the movie or smiling?
+    labels: you will be smiling at the end! i promise it is a comedy as well
+     model: i think you will be smiling! it is a very sweet and funny movie.
+okay! i'll take a change on it. thank you so much for your help!
+    labels: you are very welcome :)
+     model: no problem! enjoy the movie!
+can you tell me more about the person she falls in love with?
+    labels: he is one of her co-workers who she flirts with, but doesn't realize he is into her!
+     model: she falls in love with a man who is a doctor in new york city.
+so is the trip she takes to europe a business trip? also does she have any family or friends that she has for support?
+    labels: it is not a business trip it is a trip she takes to go live her life and do all these things on her bucket list after she finds out about all the bad news (but i promise you it is a happy ending) she has 1-2 friends and her family isn't in the story line really.
+     model: yes, she goes to europe for a business trip. she has a few friends that she can lean on.
+so her co-worker shows up to the resort she in by chance?
+    labels: he goes there with a purpose to deliver her certain news and i do not want to spoil the ending haha!
+     model: yes, she is going to europe and she is going to meet a guy there.
+that's okay! the main character in this movie. how would you describe her in three words?
+    labels: brave, smart, and humble
+     model: she is a beautiful woman with a beautiful soul.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello i am here to  help you find a great movie!
+     model: hello, how are you doing today?
+hey! great. i need to find a movie to watch right now. i want to see a movie about finding a hidden treasure.
+    labels: have you watched national treasure with nicolas cage?
+     model: what is the last movie you watched?
+you know what. i have never seen that movie. nicolas cage is my favorite actor. in fact i think he is the greatest actor of our generation.
+    labels: it is a great movie. i also love nicolas cage. it's a good movie, and you can even watch it with your family. it's a good movie night film!
+     model: i agree! he is a great actor.
+i accept your recommendation. i can't wait to see picolas cage in another great movie.
+    labels: glad i could help you find a great movie! enjoy!
+     model: i think you will really enjoy it.
+but wait there is more to say about nicolas cage. i enjoyed his acting in the phantom menace.
+    labels: face off is another good nic cage film too!
+     model: yes, he was great in that. i think he is a great actor in general.
+i enjoyed when they removed their faces and then had them race each other in a face off.
+    labels: yeah! that was trippy for sure. ghost rider was kinda cool too. my dad always liked trapped in paradise because it was a good christmas movie.
+     model: that was a great scene!
+i accept your recommendation.
+    labels: so would you like to watch the national treasure movie trailer?
+     model: awesome! i hope you enjoy it!
+not only do i want to watch it. i want to be in it.
+    labels: me too! haha, i think i want to watch it again.
+     model: you are in it!
+i literally want to find a physical trailer and put myself in it.
+    labels: photoshop yourself haha
+     model: haha, that's awesome. i think i might do that too.
+it sounds like a great movie. right?
+    labels: right! it really is. its very interesting.
+     model: yes it does.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi!
+     model: hello, how are you doing today?
+hello
+    labels: how are you?
+     model: what kind of movies do you like?
+i am doing well. i am looking for a good movie to watch
+    labels: that's good to hear. i recently just finished binge watching a lot of movies. what movie genres are you into?
+     model: what kind of movies do you like?
+i like lots of different genres. i really love a movie that makes you think, maybe a psychological thriller?
+    labels: i can think of a lot of great psychological thriller movies that are amazin. joker is one of them! have you ever seen it?
+     model: what was the last movie you watched?
+i did see that! i liked it but at the same time thought that it was drug out longer than necessary.
+    labels: what did you like and didn't like about the movie?
+     model: i agree. i think it would have been better if it was shorter. what was the last movie you watched?
+i loved the acting it couldn't have been more perfect. i just felt like the story line was slow at times and i lost interest. it isn't one i would watch again but at the same time it isn't one i regret watching.
+    labels: i recommend black swan as an alternative!
+     model: i agree. i think it would be a great movie to watch with a group of friends.
+oh! i haven't seen that one. i accept that recommendation. thank you!
+    labels: it's a very interesting movie featuring natalie portman.
+     model: you're welcome!
+i have debated watching it many times. i love natalie portman.
+    labels: she's a very good actress! mila kunis is also in the movie.
+     model: i do too! she is so talented.
+i did not know that. i am going to look into this evening.
+    labels: sounds good! i'm glad you accept my reccomendation!
+     model: great! i hope you enjoy it!
+have a great rest of your day.
+    labels: you too. goodbye!
+     model: you too!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello
+     model: hello, how are you doing today?
+hello
+    labels: how are you doing today?
+     model: what kind of movies do you like?
+i'm doing fine! how's everything?
+    labels: great, i'm doing okay too. have you seen any movies lately?
+     model: i am doing well. what kind of movies do you like?
+i have! i recently watched never back down. it came out in 2008. have you ever watched it?
+    labels: unfortunately, i haven't watched that movie. what about the movie parasite that recently won an oscar?
+     model: i have not, but i hear it's good. have you seen any good movies recently?
+i have! i've heard about it from a friend and decided to watch it. i never heard about it before because it wasn't a mainstream film.
+    labels: great! what did you like and not like about the movie?
+     model: it won an oscar for best original screen play. i thought it was a great movie. what about you, have you seen any good movies recently?
+one thing i liked about the movie was that it tackled present day topics such as class confliction, inequality within society, and wealth disparity. i don't really dislike anything about the movie at all. it's a solid film.\
+    labels: great, would you like to watch a similar movie, joker?
+     model: i agree. i think it's a great movie for families.
+i will definitely check it out!
+    labels: i'm happy you're interested, you won't be disappointed!
+     model: great! i hope you enjoy it.
+how do you like joker compared to parasite? do you have a favorite between the two?
+    labels: i liked them both a lot. it's close but i liked parasite more because it's different
+     model: i like them both for different reasons. i think i like parasite a little bit more, but they're both great.
+alright, i have added joker to my watchlist.
+    labels: great! i'm happy i've helped you find a cool new movie!
+     model: great! i hope you enjoy it!
+thank you so much for the recommendation! i'll get to it now.
+    labels: have fun!
+     model: you're welcome! enjoy the movie!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: how are you
+     model: hello, how are you doing today?
+i am good, and you?
+    labels: i am doing ok. with this covid-19 everything is not the same. it is like a "move" lol
+     model: i am good
+yes, lol. i am looking for a good movie to watch. and reccomendations?
+    labels: well that will depend on you like. tell me few of the movies you liked in the past
+     model: what kind of movies do you like?
+i like pretty much all genres of movies. but comedy,drama  and horror films  are my favorite.
+    labels: i like old movies. as far as comedy i would pick police academy old but very funny. on the drama side i would say "the notebook"
+     model: i like horror movies too. have you seen the new it movie?
+what is police academy about, i've never heard of in it. any known actors?
+    labels: i am not sure how old you are but steve guttenberg and kim cattral are in it. move is about a group of misfits and how they join a police academy and it follows them in training and later in job as cops on the streets.
+     model: it is a romantic comedy. it stars will ferrell and martin lawrence.
+yes, i am familiar with kim cattral. sound like a great reccomendation! i will definitely watch! thak you!!!
+    labels: this had few movies but start with 1st one for sure
+     model: you are welcome. enjoy the movie.
+can't wait to see it! thanks
+    labels: on the current day i would say schitt's creek
+     model: you are welcome. enjoy the movie.
+what is that about? sounds pretty awkward lol
+    labels: this is a show about a rich family that got rubbed by the accountant and they are forced to go live in a tiny town that they purchased as a joke. they live in a motel. but you have to hear them talk and follow the life in this town. i am watching this for a second time in a year and love every minute of it.
+     model: it is about a group of misfits who live in a small town and try to survive
+oh wow, sound interesting!
+    labels: you can find it on netflix 1-5 seasons and 6th is on poptv for now but i am sure it will be on netflix soon
+     model: it is a little bit of a slow burner but it is so worth it.
+searching now!
+    labels: ok cool let me know what you think. you can see trailer on imdb
+     model: i hope you enjoy it!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello how are you today?
+     model: hello, how are you doing today?
+hello
+    labels: nice to meet you
+     model: what kind of movies do you like?
+nice to meet you too. i am looking for some movie recommendations. maybe something from a female filmmaker. i like all genres.
+    labels: the invisible man is a good one not only is it female directed but the female is a young lady building an empire. this invisible man is unlike any past versions.
+     model: what was the last movie you watched?
+you mean the new one with elizabeth moss?
+    labels: yes indeed
+     model: yes that one
+okay that sounds good to me. i accept. thanks!
+    labels: great enjoy
+     model: you are welcome. i hope you enjoy it.
+is there anyone else of note in it?
+    labels: yes and if thats not your speed wonder woman is also a good one
+     model: yes, julianne moore
+is ww on netflix yet? i know it came out a while ago.
+    labels: i do not believe so but there are plenty of sights to watch it
+     model: yes it is
+okay thanks for your help.
+    labels: is this a movie you would be interested in?
+     model: no problem
+possibly. any foreign film ideas? i like pedro almodovar especially but haven't seen some of his earlier work.
+    labels: nothing really comes to mind for foreign films
+     model: i like him too. i like the movie the irishman
+okay and lastly how about a buddy cop movie. something similar to bad boys or lethal weapon.
+    labels: rush hour is something you can never go wrong with
+     model: i think you would like the movie the irishman
+oh yeah there are like 3 of them right? which one is the best?
+    labels: my personal favorites are 1 and 3
+     model: rush hour 3
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello! how are you?
+     model: hello, how are you doing today?
+yeah fine,i'm here to help you looking for a movie trailer
+    labels: yeah i'd love to hear what types of movies you're interested in?
+     model: what kind of movies do you like?
+i love to watch holllywood movies more also i  like to watch bollywood movies
+    labels: oh that's really cool! have you seen the movie the sky is pink?
+     model: what was the last movie you watched?
+sorry, i haven't seen this movie.but i will try to watch this movie hereafter
+    labels: yes i think you would like it if you like bollywood movies. it's a love story about aisha chaudhary's parents and it spans a period of 25 years!
+     model: okay, i hope you enjoy it!
+may i know the name of the movie is it worth watchable
+    labels: yes it's called the sky is pink. i would really recommend it, it has a really interesting storyline.
+     model: it's called the lovebirds. i think you would like it!
+oh thanks,and now ui wanna a recommend you a bollywood movie for you to watch,the movie name is 'tiger zinda hai' did you watch it before
+    labels: no i've never heard of that one.
+     model: yes i have seen that one. it's a really good movie.
+try to search it in google it is worth watching its a fully action based movie
+    labels: nice i will have to check it out! okay so if you like bollywood movies i bet you would like one called crazy, stupid love. have you heard of it?
+     model: i will do that.
+no i've never heard of that one,but  i'll try to watch it hereafter
+    labels: cool it's a romantic comedy so it's funny and really heartwarming
+     model: okay i hope you enjoy it
+oh okay,well i really enjoyed chating with you.and sorry i have to go now  for a work so i am going to click done,well take care bye
+    labels: i would love to keep chatting for just a few more minutes if you're able!
+     model: okay bye
+yeah fine
+    labels: okay, i hope you enjoy the movie and i will send you a link to the trailer!
+     model: i'm here to help you find a movie trailer
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello! i hear you are looking for movie recommendations.
+     model: hello, how are you doing today?
+yes i am
+    labels: do you know what kind of movie trailers you would like to see?
+     model: what kind of movies do you like?
+superhero movies
+    labels: superhero movies! great! i am a big fan of those as well. what was the last superhero movie that you watched?
+     model: what is the last superhero movie that you watched?
+the avengers
+    labels: very cool! i like that movie series as well. have you seen captain marvel?
+     model: that was a great movie! i really enjoyed it as well. what did you like and dislike about the movie?
+yes i have
+    labels: darn, okay! well, you have good taste. do you like action movies?
+     model: what did you like and dislike about the movie?
+yes i do
+    labels: okay, how about ford vs. ferrari? i loved that movie, and it's about racing.
+     model: what was the last movie you watched?
+yes i do
+    labels: okay, here is the movie and the plot. let me know what you think.
+     model: okay, great! i think you will really enjoy that movie.
+i like it
+    labels: great! i'm so glad that i could help you find a movie that you would like to watch. would you like to see the trailer? or did you already watch it?
+     model: okay, great! i'm glad you like it.
+i already watched it
+    labels: okay awesome. is there anything else i can help you with?
+     model: okay, great! i'm glad i could help you find a movie you would like to watch.
+not todasy
+    labels: okay, have a great day.
+     model: okay, i understand. have a great day!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: this survey is very interesting
+     model: hello, how are you doing today?
+indeed it is
+    labels: this questions very like me
+     model: what kind of movies do you like?
+not all of the questions are like me.just a few
+    labels: no, just questions of the interesting
+     model: i am a big fan of movies
+ohh, i get you.so what kind of movies are you into?
+    labels: the horror movie and romantic movie
+     model: i like all kinds of movies
+am not a fan of the horror but a big fan of the romantic
+    labels: ohh! this any love movie
+     model: what is the last horror movie you watched
+have  you watched @
+    labels: yes, i have watched this titanic and love story and  love actually and ect... movies
+     model: yes i have
+yah!!!!!! titanic is one of the best romantic movie i have watched.....but the fact jack died made me sad and even made mi shed tears
+    labels: ok seeker titanic is very interesting and very love story and jack is interesting person and i like jack.
+     model: i agree, i was sad too
+so do you know of any romantic movie you could recommend to me?
+    labels: when harry met sally movie
+     model: ok i will give you a recommendation
+ok, i have not watched that....i accept the recommendation....thanks
+    labels: ok bye
+     model: ok seeker titanic
+ok,have a nice day...
+    labels: ok bye have a nice and fantastic day my  friend
+     model: you too
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello, i hope your having a nice morning!
+     model: hello, how are you doing today?
+hi, thanks! how are you?
+    labels: im great thanks for asking, having a nice morning and with a positive vibe to recommend movies today!
+     model: i am doing well. what kind of movies do you like?
+haha alright! well, i really like sci-fi movies, but not really star wars xd i like exploring characters and getting into a mindset, that's part of what i love about movies
+    labels: so the force is not with you lol, ok i think i have sense of the movies you like, do you like dinosaurs, if you do maybe jurassic world
+     model: i love sci-fi too! what was the last movie you watched?
+i love dinosaurs!
+    labels: the jurassic world is the movie for you, the movie has a budget of 170 million so you can imagine the visual effects and all.
+     model: ok, i think i have a great recommendation for you, have you seen the new jurassic park movie?
+wow, yeah i just looked it up and it looks good. i've seen the original jurrasic park but the effects were cheesier back then xd
+    labels: yeah i agree, effects are much better now and the cast of the movie is also great, the leading actor is one of my favorites.
+     model: i agree, the effects are not as good as they used to be, but the movie is still a classic.
+and there are supposed to be three of them!
+    labels: yeah there is jurric parl, jurassic wold and then the second part of jurassic world, all of the are great.
+     model: oh wow, i didn't know that, i'm sure the third one will be great as well.
+i accept your recommendation, sir/ma'am/other
+    labels: i am a sir lol, and hope you enjoy the movie trailer is there anything else i can help you with today?
+     model: great, i hope you enjoy it.
+do you have any other sci-fi recommendations?
+    labels: yeah do you like the transformers saga? bumblebee is a nice movie.
+     model: i do, what kind of sci-fi are you into?
+haha i used to looove transformers as a kid. bumblebee was my favorite one
+    labels: yeah bublebee was pretty fun i also like optimus prime.
+     model: i like the newest one, i think it is called dark fate.
+yeah he was cool. is the bumblebee movie worth getting?
+    labels: yeah, it definetely is but you should watch jurassic world best, i liked it better.
+     model: i think so, it has a lot of action and is a good movie to watch with the family.
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello! i can't wait to help you find a movie trailer!
+     model: hello, how are you doing today?
+hey there! i'm excited to get some recommendations!
+    labels: what are the last few movies you've seen lately?
+     model: what kind of movies do you like?
+birds of prey is the last film i've seen in theaters. i'm not usually into superhero movies, but it was great. loved the dark humor and absurdness of the film, as well as the female cast.
+    labels: would you be interested in other superhero movies that are similar to birds of prey?
+     model: i love dark humor! have you seen the movie "the spy who dumped me"?
+i would, only if they're actually similar and not just the same characters in a different movie.
+    labels: do you prefer a female lead cast usually?
+     model: i have a few recommendations for you. do you like animated movies?
+not always, but it definitely doesn't hurt!
+    labels: what would you say you liked most about birds of prey?
+     model: do you prefer a movie with a similar story or a different one?
+the dark humor, the aesthetics, and the absurdism.
+    labels: have you seen joker (2019)?
+     model: do you prefer a movie with a similar story or a different one?
+no i actually haven't but wanted to really badly!
+    labels: i would highly recommend joker based on your preferences!
+     model: it's a great movie, i highly recommend it.
+awesome, great recommendation that i accept! do i click done after this? lol
+    labels: yes i believe so! i hope you enjoy the movie!
+     model: yes, i think you will really enjoy it!
+thank you!
+    labels: you're welcome! have a great day!
+     model: you're welcome!
+you have the same!
+    labels: take care!
+     model: i have to go now, but have a great day!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hi :)
+     model: hello, how are you doing today?
+hey! how are you?
+    labels: i am good thanks, what was the last movie you watched?
+     model: i'm good. what kind of movies do you like?
+big time adolescence
+    labels: did you like it?
+     model: what was the last movie you watched?
+yes! it was great
+    labels: awesome i love comedies
+     model: what was your favorite part?
+yes comedies are my favorite forsure
+    labels: being frank is a great comedy :)
+     model: what was the last movie you watched?
+i have not seen that one actually
+    labels: boss baby is a good one too!
+     model: it is a great movie
+i will go with being frank i believe, thank you for the recommendation
+    labels: no problem :) it's really funny
+     model: no problem! enjoy the movie!
+alright sounds good thanks again
+    labels: any recommendation for me? i love comedies too
+     model: you are welcome!
+have you seen malibu's most wanted? its an older movie but it is a good one
+    labels: nope, sounds like something i'd enjoy though
+     model: yes i have seen that one
+it is really funnly! or the professor is a good one as well
+    labels: i love that 1!!!! for sure
+     model: i think i'll go with the professor
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: greetings
+     model: hello, how are you doing today?
+greetings!
+    labels: what movies are you interested?
+     model: what kind of movies do you like?
+i enjoy comedy.
+    labels: do you like game of thrones?
+     model: what is the last movie you watched?
+i have never watched it.
+    labels: do you prefer adult content or no?
+     model: i highly recommend it.
+yes i do prefer adult content
+    labels: have you watched pinnaple express?
+     model: what is the last movie you watched?
+yes i have. i enjoyed that movie!
+    labels: have you watched your highness?
+     model: what did you like about it?
+no i have not. what is it about?
+    labels: danny mcbride and james franco are knights on a quest to save franco's bride by the evil lazar.
+     model: it is about a guy who gets high and goes to a movie theater.
+that sounds like a good movie.
+    labels: i throughly reccomend it if you enjoyed pinnaple express. same high antics but medival times
+     model: it is a good movie.
+i think i will watch that movie tonight. thank you!
+    labels: you're very welcome! i hope you enjoy it :)
+     model: you are welcome. enjoy the movie!
+i hope so as well. what year did it come out?
+    labels: 2011
+     model: it came out in 2019
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello, how are you doing today?
+     model: hello, how are you doing today?
+good
+    labels: great, glad to hear that, so do you like to watch movies? what type of movies do you like?
+     model: what kind of movies do you like?
+i like mostly comedy movies
+    labels: do you like comedy with action movies?
+     model: what was the last movie you watched?
+i like those kind of movies sometimes
+    labels: i see so mostly comedy movies, i like those as well
+     model: what was the last movie you watched?
+that's very nice. what titles you like?
+    labels: i  like comedy movies as well but my favorite genre is action and also superhero movies, i really like those.
+     model: i like all kinds of movies, what about you?
+like the marvel movies?
+    labels: yeah like marvel movies, exactly, did you happen to watch  deadpool? that movie is great and with a lot of comedy in it.
+     model: yes, i really like those as well.
+i only saw some scenes of it.
+    labels: then you will really like it,  ryan reynolds is the leading actor and he is really funny. there are 2 parts so far and the third one is coming.
+     model: i think you would like it. it has a lot of action and comedy.
+i'll check those whenever whenever i get the chance.
+    labels: yeah you definitely should, he is my favorite hero/anti hero
+     model: okay, i hope you enjoy them.
+yeah, the clips tell me that it's very funny
+    labels: it is, and if you like superhero movies then thats a plus,the movie sure has a great cast.
+     model: it is, it has a lot of action and comedy.
+i'll see how it's like once i get the chance.
+    labels: ok i hope that you like it have a nice day.
+     model: awesome, i hope you enjoy it!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello!
+     model: hello, how are you doing today?
+hello
+    labels: how are you?
+     model: what kind of movies do you like?
+fn
+    labels: good. have you seen any good movies lately?
+     model: what kind of movies do you like?
+ya i
+    labels: what movie?
+     model: what was the last movie you saw?
+my dr soulmate
+    labels: never heard of it. what did you like/dislike about it?
+     model: what did you like and dislike about that movie?
+this movie bestly express pure relationship between two friends
+    labels: very cool. is it more of a romance movie?
+     model: what is the last movie you watched?
+no its concept of frie
+    labels: ahh. if you like movies about friendships, i recommend watching thelma and louise. it's a great movie about friendship.
+     model: oh, i like frie. do you like any other movies?
+ok good i will see the movie
+    labels: life partners is also a great one!
+     model: awesome! i hope you enjoy it.
+absolutely its a great relationship
+    labels: yes, i hope you enjoy!
+     model: i think you will enjoy it.
+ok thank you
+    labels: you are welcome, take care :)
+     model: you are welcome!
+- - - NEW EPISODE: inspired_blender_baseline- - -
+[start]
+    labels: hello!
+     model: hello, how are you doing today?
+hey there
+    labels: what movie did you recently watch that you enjoyed?
+     model: what kind of movies do you like?
+her smell was good. but cats was an experience i'll never forget
+    labels: cats was great!!
+     model: what was your favorite part about the movie?
+cats was insane, i cannot wait to purchase it on blu ray
+    labels: have you seen the souvenir
+     model: i agree. i have the blu ray and it looks great.
+i'm waiting to see it, along with the film the farewell. did you see it in theaters?
+    labels: no...not yet
+     model: yes i did
+do you have an amc theaters nearby? i do, they have the '3movies a week' deal!
+    labels: that is awesome! i will have to check that out
+     model: no i don't
+have you cried seeing a movie recently? the little women film has me a bit dusty at the end
+    labels: it is rare that i cry...so i tried to select the souvenir to recommend...but it was not available...so i selected cats.
+     model: i have not cried recently

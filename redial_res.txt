@@ -1,0 +1,1746 @@
+2021-02-04 09:51:22,382 WARNING  | Overriding opt["skip_generation"] to False (previously: True)
+2021-02-04 09:51:22,382 WARNING  | Overriding opt["datatype"] to test (previously: train)
+2021-02-04 09:51:22,383 INFO     | Using CUDA
+2021-02-04 09:51:22,384 INFO     | loading dictionary from ./experiments/inspired_blender_redial/model/blender_redial_0202.dict
+2021-02-04 09:51:22,396 INFO     | num words = 8008
+2021-02-04 09:51:54,021 INFO     | Total parameters: 2,696,268,800 (2,695,613,440 trainable)
+2021-02-04 09:51:54,036 INFO     | Loading existing model params from ./experiments/inspired_blender_redial/model/blender_redial_0202
+2021-02-04 09:52:00,023 INFO     | creating task(s): redial
+2021-02-04 09:52:00,168 INFO     | Opt:
+2021-02-04 09:52:00,168 INFO     |     activation: gelu
+2021-02-04 09:52:00,168 INFO     |     adafactor_eps: '[1e-30, 0.001]'
+2021-02-04 09:52:00,168 INFO     |     adam_eps: 1e-08
+2021-02-04 09:52:00,168 INFO     |     add_p1_after_newln: False
+2021-02-04 09:52:00,168 INFO     |     aggregate_micro: False
+2021-02-04 09:52:00,168 INFO     |     attention_dropout: 0.0
+2021-02-04 09:52:00,168 INFO     |     batchsize: 8
+2021-02-04 09:52:00,168 INFO     |     beam_block_full_context: True
+2021-02-04 09:52:00,168 INFO     |     beam_block_list_filename: None
+2021-02-04 09:52:00,168 INFO     |     beam_block_ngram: -1
+2021-02-04 09:52:00,168 INFO     |     beam_context_block_ngram: -1
+2021-02-04 09:52:00,168 INFO     |     beam_delay: 30
+2021-02-04 09:52:00,168 INFO     |     beam_length_penalty: 0.65
+2021-02-04 09:52:00,168 INFO     |     beam_min_length: 1
+2021-02-04 09:52:00,168 INFO     |     beam_size: 1
+2021-02-04 09:52:00,168 INFO     |     betas: '[0.9, 0.999]'
+2021-02-04 09:52:00,168 INFO     |     bpe_add_prefix_space: None
+2021-02-04 09:52:00,168 INFO     |     bpe_debug: False
+2021-02-04 09:52:00,168 INFO     |     bpe_merge: ./experiments/inspired_blender_redial/model/blender_redial_0202.dict-merges.txt
+2021-02-04 09:52:00,168 INFO     |     bpe_vocab: ./experiments/inspired_blender_redial/model/blender_redial_0202.dict-vocab.json
+2021-02-04 09:52:00,168 INFO     |     compute_tokenized_bleu: False
+2021-02-04 09:52:00,168 INFO     |     datapath: /home/yuli23/ParlAI/data
+2021-02-04 09:52:00,168 INFO     |     datatype: test
+2021-02-04 09:52:00,168 INFO     |     delimiter: '  '
+2021-02-04 09:52:00,168 INFO     |     dict_class: parlai.core.dict:DictionaryAgent
+2021-02-04 09:52:00,168 INFO     |     dict_endtoken: __end__
+2021-02-04 09:52:00,168 INFO     |     dict_file: ./experiments/inspired_blender_redial/model/blender_redial_0202.dict
+2021-02-04 09:52:00,168 INFO     |     dict_include_test: False
+2021-02-04 09:52:00,168 INFO     |     dict_include_valid: False
+2021-02-04 09:52:00,168 INFO     |     dict_initpath: None
+2021-02-04 09:52:00,168 INFO     |     dict_language: english
+2021-02-04 09:52:00,168 INFO     |     dict_loaded: True
+2021-02-04 09:52:00,168 INFO     |     dict_lower: False
+2021-02-04 09:52:00,168 INFO     |     dict_max_ngram_size: -1
+2021-02-04 09:52:00,169 INFO     |     dict_maxexs: -1
+2021-02-04 09:52:00,169 INFO     |     dict_maxtokens: -1
+2021-02-04 09:52:00,169 INFO     |     dict_minfreq: 0
+2021-02-04 09:52:00,169 INFO     |     dict_nulltoken: __null__
+2021-02-04 09:52:00,169 INFO     |     dict_starttoken: __start__
+2021-02-04 09:52:00,169 INFO     |     dict_textfields: text,labels
+2021-02-04 09:52:00,169 INFO     |     dict_tokenizer: bytelevelbpe
+2021-02-04 09:52:00,169 INFO     |     dict_unktoken: __unk__
+2021-02-04 09:52:00,169 INFO     |     display_examples: False
+2021-02-04 09:52:00,169 INFO     |     display_ignore_fields: 
+2021-02-04 09:52:00,169 INFO     |     download_path: None
+2021-02-04 09:52:00,169 INFO     |     dropout: 0.1
+2021-02-04 09:52:00,169 INFO     |     dynamic_batching: None
+2021-02-04 09:52:00,169 INFO     |     embedding_projection: random
+2021-02-04 09:52:00,169 INFO     |     embedding_size: 2560
+2021-02-04 09:52:00,169 INFO     |     embedding_type: random
+2021-02-04 09:52:00,169 INFO     |     embeddings_scale: True
+2021-02-04 09:52:00,169 INFO     |     eval_batchsize: None
+2021-02-04 09:52:00,169 INFO     |     evaltask: None
+2021-02-04 09:52:00,169 INFO     |     ffn_size: 10240
+2021-02-04 09:52:00,169 INFO     |     force_fp16_tokens: True
+2021-02-04 09:52:00,169 INFO     |     fp16: True
+2021-02-04 09:52:00,169 INFO     |     fp16_impl: mem_efficient
+2021-02-04 09:52:00,169 INFO     |     gpu: -1
+2021-02-04 09:52:00,169 INFO     |     gradient_clip: 0.1
+2021-02-04 09:52:00,169 INFO     |     hf_skip_special_tokens: True
+2021-02-04 09:52:00,169 INFO     |     hide_labels: False
+2021-02-04 09:52:00,169 INFO     |     history_add_global_end_token: end
+2021-02-04 09:52:00,169 INFO     |     history_reversed: False
+2021-02-04 09:52:00,169 INFO     |     history_size: -1
+2021-02-04 09:52:00,169 INFO     |     image_cropsize: 224
+2021-02-04 09:52:00,169 INFO     |     image_mode: raw
+2021-02-04 09:52:00,169 INFO     |     image_size: 256
+2021-02-04 09:52:00,169 INFO     |     inference: greedy
+2021-02-04 09:52:00,169 INFO     |     init_model: /home/yuli23/ParlAI/data/models/blender/blender_3B/model
+2021-02-04 09:52:00,169 INFO     |     init_opt: None
+2021-02-04 09:52:00,169 INFO     |     interactive_mode: False
+2021-02-04 09:52:00,169 INFO     |     invsqrt_lr_decay_gamma: -1
+2021-02-04 09:52:00,169 INFO     |     label_truncate: 128
+2021-02-04 09:52:00,169 INFO     |     learn_positional_embeddings: False
+2021-02-04 09:52:00,169 INFO     |     learningrate: 7e-06
+2021-02-04 09:52:00,169 INFO     |     load_from_checkpoint: True
+2021-02-04 09:52:00,170 INFO     |     log_every_n_secs: 10.0
+2021-02-04 09:52:00,170 INFO     |     loglevel: info
+2021-02-04 09:52:00,170 INFO     |     lr_scheduler: reduceonplateau
+2021-02-04 09:52:00,170 INFO     |     lr_scheduler_decay: 0.5
+2021-02-04 09:52:00,170 INFO     |     lr_scheduler_patience: 3
+2021-02-04 09:52:00,170 INFO     |     max_lr_steps: -1
+2021-02-04 09:52:00,170 INFO     |     max_train_time: -1
+2021-02-04 09:52:00,170 INFO     |     metrics: default
+2021-02-04 09:52:00,170 INFO     |     model: transformer/generator
+2021-02-04 09:52:00,170 INFO     |     model_file: ./experiments/inspired_blender_redial/model/blender_redial_0202
+2021-02-04 09:52:00,170 INFO     |     model_parallel: True
+2021-02-04 09:52:00,170 INFO     |     momentum: 0
+2021-02-04 09:52:00,170 INFO     |     multitask_weights: [1]
+2021-02-04 09:52:00,170 INFO     |     n_decoder_layers: 24
+2021-02-04 09:52:00,170 INFO     |     n_encoder_layers: 2
+2021-02-04 09:52:00,170 INFO     |     n_heads: 32
+2021-02-04 09:52:00,170 INFO     |     n_layers: 2
+2021-02-04 09:52:00,170 INFO     |     n_positions: 128
+2021-02-04 09:52:00,170 INFO     |     n_segments: 0
+2021-02-04 09:52:00,170 INFO     |     nesterov: True
+2021-02-04 09:52:00,170 INFO     |     no_cuda: False
+2021-02-04 09:52:00,170 INFO     |     num_epochs: 3.0
+2021-02-04 09:52:00,170 INFO     |     num_examples: 500
+2021-02-04 09:52:00,170 INFO     |     nus: [0.7]
+2021-02-04 09:52:00,170 INFO     |     optimizer: adafactor
+2021-02-04 09:52:00,170 INFO     |     output_scaling: 1.0
+2021-02-04 09:52:00,170 INFO     |     override: "{'task': 'redial', 'model_file': './experiments/inspired_blender_redial/model/blender_redial_0202', 'skip_generation': False, 'datatype': 'test', 'num_examples': '500'}"
+2021-02-04 09:52:00,170 INFO     |     parlai_home: /home/yuli23/ParlAI
+2021-02-04 09:52:00,170 INFO     |     person_tokens: False
+2021-02-04 09:52:00,170 INFO     |     rank_candidates: False
+2021-02-04 09:52:00,170 INFO     |     relu_dropout: 0.0
+2021-02-04 09:52:00,170 INFO     |     save_after_valid: True
+2021-02-04 09:52:00,170 INFO     |     save_every_n_secs: -1
+2021-02-04 09:52:00,170 INFO     |     share_word_embeddings: True
+2021-02-04 09:52:00,170 INFO     |     short_final_eval: False
+2021-02-04 09:52:00,170 INFO     |     skip_generation: False
+2021-02-04 09:52:00,170 INFO     |     special_tok_lst: None
+2021-02-04 09:52:00,170 INFO     |     split_lines: False
+2021-02-04 09:52:00,170 INFO     |     starttime: Feb03_12-46
+2021-02-04 09:52:00,170 INFO     |     task: redial
+2021-02-04 09:52:00,170 INFO     |     temperature: 1.0
+2021-02-04 09:52:00,170 INFO     |     tensorboard_log: False
+2021-02-04 09:52:00,170 INFO     |     text_truncate: 128
+2021-02-04 09:52:00,170 INFO     |     topk: 10
+2021-02-04 09:52:00,171 INFO     |     topp: 0.9
+2021-02-04 09:52:00,171 INFO     |     truncate: 128
+2021-02-04 09:52:00,171 INFO     |     update_freq: 2
+2021-02-04 09:52:00,171 INFO     |     use_reply: label
+2021-02-04 09:52:00,171 INFO     |     validation_cutoff: 1.0
+2021-02-04 09:52:00,171 INFO     |     validation_every_n_epochs: 0.25
+2021-02-04 09:52:00,171 INFO     |     validation_every_n_secs: -1
+2021-02-04 09:52:00,171 INFO     |     validation_max_exs: -1
+2021-02-04 09:52:00,171 INFO     |     validation_metric: ppl
+2021-02-04 09:52:00,171 INFO     |     validation_metric_mode: min
+2021-02-04 09:52:00,171 INFO     |     validation_patience: 10
+2021-02-04 09:52:00,171 INFO     |     validation_share_agent: False
+2021-02-04 09:52:00,171 INFO     |     variant: prelayernorm
+2021-02-04 09:52:00,171 INFO     |     verbose: False
+2021-02-04 09:52:00,171 INFO     |     warmup_rate: 0.0001
+2021-02-04 09:52:00,171 INFO     |     warmup_updates: 100
+2021-02-04 09:52:00,171 INFO     |     weight_decay: None
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+2021-02-04 09:52:00,367 INFO     | Current ParlAI commit: e1f1c45deeee3aafdac22ccb5ba2cac8489d8981
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+- - - NEW EPISODE: redial- - -
+Hi I am looking for a movie like Super Troopers
+    labels: You should watch Police Academy 
+     model: Hello!
+Is that a great one? I have never seen it. I have seen American Pie  I mean American Pie 
+    labels: Yes Police Academy  is very funny and so is Police Academy 2: Their First Assignment
+     model: I have never seen that one either.
+It sounds like I need to check them out
+    labels: yes you will enjoy them
+     model: Yes you should
+I appreciate your time. I will need to check those out. Are there any others you would recommend?
+    labels: yes Lethal Weapon
+     model: yes you should watch The Big Lebowski
+Thank you i will watch that too
+    labels: and also Beverly Hills Cop
+     model: you are welcome
+Thanks for the suggestions.
+    labels: you are welcome and also 48 Hrs.
+     model: you are welcome
+- - - NEW EPISODE: redial- - -
+Hello!
+    labels: Hello!
+     model: Hi!
+What kind of movies do you like?
+    labels: I am looking for a movie recommendation.   When I was younger I really enjoyed the A Nightmare on Elm Street
+     model: I am looking for a good romance.
+Oh, you like scary movies? I recently watched Happy Death Day 
+    labels: I also enjoyed watching The Last House on the Left 
+     model: I have not seen that one. I do like scary movies.
+It was really good for a new &quot;scary movie&quot;
+    labels: I do enjoy some of the newer horror movies that I have seen as well.
+     model: I haven't seen Happy Death Day 
+I heard that A Quiet Place is good. It is still in theaters though.
+    labels: I really liked the movie Annabelle 
+     model: I have not seen that one yet.
+Me, too! It was really creepy, but I thought it was good!
+    labels: Or The Forest  I saw while in theaters, this was a very good movie.  It had me on the edge of my seat for the whole show.
+     model: I also enjoyed The Babadook
+I'm not sure if I saw that one, I'll have to check into it. Sounds familiar, but not sure. Thank you for your suggestions!
+    labels: Are there any comedies that you would suggest?
+     model: You're welcome.  Have a good day.
+Sure! I like comedies a lot. I like movies like Hot Tub Time Machine and Super Troopers , but I also like Identity Thief and The Heat  .
+    labels: Wonderful! Thank you so much I think I am ready for movie night now.
+     model: I haven't seen those, but I will check them out.  I love Hot Tub Time Machine.
+- - - NEW EPISODE: redial- - -
+Tell me what would you like to watch?
+    labels: Easy A
+     model: I like action movies.
+Did you watch Avengers: Infinity War ? Or The Black Panthers: Vanguard of the Revolution ? i really liked it
+    labels: No , I think I would like to watch Easy A It's funny
+     model: I have not seen either of those.
+But You already know what you want to watch You should tell me what kind of movies you like Did you watch Click  ? Do you like scary movies? Did you watch It  ?
+    labels: Yes I like Adam sandler. The Waterboy is another good movie by him I did not see the movie It 
+     model: I like comedies and romantic comedies. I have not seen Click 
+- - - NEW EPISODE: redial- - -
+i would like to watch any movie Tell me any movie Like Avengers: Infinity War
+    labels: Have you seen The Avengers 
+     model: I would like to watch a movie like Black Panther
+i really enjoyed that one Yes and i liked it Which another one would you recommend me?
+    labels: Do you like scary Have you seen It 
+     model: I would recommend Black Panther
+i watched Iron Man 2  and a liked it
+    labels: Or Cabin by the Lake
+     model: Have you seen The Silence of the Lambs 
+No, i have not seen It  But i'll try Thank you for helping me Good bye
+    labels: If you like superhero Ant-Man   is also a very good one Goodbye
+     model: bye
+- - - NEW EPISODE: redial- - -
+What kind of movies do you like have you seen Avengers: Infinity War ? or Spider-Man 
+    labels: Yes and i liked them Those are awesome I like that kind of movies
+     model: I have seen both of those. I really liked them.
+X-Men: First Class
+    labels: i also watched Iron Man 
+     model: I have not seen that one
+those are good movies as well
+    labels: No, i have not watched that one i think i will try that one
+     model: I will watch them again
+X-Men: The Last Stand was another good xmen movie okay thanks!
+    labels: Oooh, so there are many thanks Good bye
+     model: I will try that one too
+- - - NEW EPISODE: redial- - -
+Tell me what kind of movies do you like?
+    labels: I like scary movies
+     model: I like action movies.
+did you watch Avengers: Infinity War
+    labels: i did not but i want to
+     model: I have not seen that one yet.
+So, did you watch It  ?
+    labels: have you seen It 
+     model: i did not but i want to
+And It ?
+    labels: no but i like the old one yes i like that versio
+     model: i have not seen it
+Yes i have, that's why i told you
+    labels: yes i like that version
+     model: yes i like that one
+and did you watch The Exorcist  ? That is very scary
+    labels: It is very scary ank you for the suggestions goodbye
+     model: yes i did, i liked it
+- - - NEW EPISODE: redial- - -
+I like to watch scary movies
+    labels: tell me what kind of movie do you like? Did you watch It  ? And It ?
+     model: I like scary movies too.
+I have seen the old one
+    labels: Did you watch The Exorcist  ?
+     model: The old one is better than the new one
+i have not seen the new one i do like the excorcist
+    labels: Ok, you should watch the new one Even though i would rather the old one And did you watch The Last Exorcism ? i hope i have helped
+     model: I like the old one better.
+no I have not but it sounds scary! thank you for the suggestions!
+    labels: You should try them your welcome good bye
+     model: You are welcome. Bye
+- - - NEW EPISODE: redial- - -
+Tell me what kind of movies do you like?
+    labels: I love to watch funny movies
+     model: I like action movies.
+Did you watch Click  ?
+    labels: yes, i love adam sandler
+     model: I have not seen that one.
+and The Mask ? Yes he is very funny Do you not like scary movies?
+    labels: just watched the mask last night! there is a new one Son of the Mask i like some scary movie
+     model: I love The Mask 
+And did you watch You Don't Mess with the Zohan ? Hahaha you enjoy those kind of movies!! i hope i have helped
+    labels: That one is the best! thanks for the help goodbye!
+     model: yes i did! i liked that one
+- - - NEW EPISODE: redial- - -
+Hello me what kind of movies do you like?
+    labels: I like all movies, what are your suggestions?
+     model: Hi! I'm looking for a good romance. I really liked The Notebook
+Did you watch Avengers: Infinity War ?
+    labels: No heard it is very good
+     model: I have not, I have been meaning to though.
+I can tell you to watch Click  Yes it is really good
+    labels: I love Adam Sandler movies
+     model: I have seen that one, it was good.
+You can watch too if you want to The Exorcist  But that is a scary one i would recommend you Iron Man 
+    labels: Sounds scary but will have to check it out! These are great suggestions
+     model: I have seen that one, it was good
+And also Spider-Man 3
+    labels: Thank you!
+     model: I have seen that one and it was great!
+Yes I hope i have helped Good bye Enjoy them
+    labels: Goodbye
+     model: Bye
+- - - NEW EPISODE: redial- - -
+What kind of movies do you like?
+    labels: Hello i open to any movie
+     model: I like action movies.
+have you seen Avengers: Infinity War
+    labels: yes i liked that one actually i want to watch it again i also watch Iron Man 
+     model: I have not seen it yet
+or the Spider-Man: Homecoming  was a goid one ot
+    labels: i watched Spider-Man 3 the old one i have not seen the new one
+     model: yes i have seen that one too
+if you like scary movies It  is pretty scary
+    labels: but i will try Yeah! i liked that one too thank you for helping me i will have a good evening good bye
+     model: i have not seen that one either
+- - - NEW EPISODE: redial- - -
+hi
+    labels: hello i am open to any movie Whatever you recommend i watched Avengers: Infinity War and i liked it i also liked Click  i like movies made by Adan Sandler As Marvel movies too
+     model: Hello!
+My fav movie is The Big Lebowski
+    labels: Do you mean The Big Lebowski ? i have not seen it but i will try i watched Iron Man  and i really liked
+     model: i have seen that one too
+Click  was good
+    labels: Yeah i enjoyed it thank you for helping me good bye
+     model: i will try it too
+- - - NEW EPISODE: redial- - -
+Hello
+    labels: hi
+     model: Hi!
+i'm open to any movie What would you recommend me? i liked Avengers: Infinity War
+    labels: The Big Lebowski is my fav
+     model: I would recommend Black Panther
+i also like scary movies i watched The Big Lebowski
+    labels: how about House of 1000 Corpses
+     model: I like The Shining 
+i also watched It  NO, i have not seen that one i guess i would try that one tomorrow i also watched It  the old one Which another one would you recommend me?
+    labels: its by rob Zombie
+     model: i would recommend The Silence of the Lambs 
+A funny one Like Click   by Adan Sandler
+    labels: Blazing Saddles
+     model: I will try that one too
+I could enjoyed so much No, i have not watched that one Thank you for helping me Good bye
+    labels: you're the same person
+     model: bye
+Good bye
+    labels: lol
+     model: bye
+- - - NEW EPISODE: redial- - -
+Hello i would like to see any movie yo recommend me i am open to any movie
+    labels: Are you looking for something older or newer?
+     model: Hi! What kind of movies do you like?
+i just watched Avengers: Infinity War  and i liked it Whatever I also like old movies Like The Exorcist  i can not forget that  movie i like scary movies too like It the old one i have not seen It  the new one i've heard is very good i do not know
+    labels: How about the
+The sixth Battalion?
+     model: I would recommend The Silence of the Lambs 
+do you mean The Sixth Battalion ? i have not seen it but it sounds awesome Well, thank you for helping me i'll try that one
+    labels: Yes that is the movie I suggest.
+     model: Yes, I meant The Sixth Battalion.
+good bye remember to say good bye
+    labels: Goodbye
+     model: Bye
+- - - NEW EPISODE: redial- - -
+I like scary movies, can you make a suggestion?
+    labels: Have you ever seen The Conjuring
+     model: I would suggest The Silence of the Lambs 
+not yet is it good
+    labels: Yes very much so! It is about paranormal activities but it was definitely scary
+     model: It is a good one.
+Can you make other paranoramal suggestions or slasher films like Jason X are good to
+    labels: I wasn't a big fan of Paranormal Activity have you seen that at all?
+     model: I have seen that one and it was pretty good. I also liked The Mist 
+oh yes and the sequel Paranormal Activity 2 These are good suggestions though thank you!
+    labels: absolutely, enjoy!
+     model: I have not seen that one yet. I will have to check it out.
+- - - NEW EPISODE: redial- - -
+hello
+    labels: Hi, I'm looking for a good docutmentary
+     model: Hi there!
+i'm open to any movie
+    labels: any suggestions?
+     model: I really liked The Circle 
+Man, right now i'm the seeker the person who is looking for movies so that means you are the person who recommend
+    labels: my apologies
+     model: I would recommend The Wolf of Wall Street 
+you can read that onto the chat Don't worry man we are here to help So i'm looking for any movies i watched Click  and i liked it
+    labels: Have you seen Avengers: Infinity War
+     model: I have not seen that one, what is it about?
+I like movies made by Adan Sandler Yes and i liked it! i also watched Iron Man  i like those kind of movies i watched Spider-Man: Homecoming and it was awesome
+    labels: My favorite Adam Sandler movie is definitely Billy Madison
+     model: I have not seen it but i heard good things about it
+Remember to say good bye at the end of this chat And i wait for you in another chat ;) Thank you very much
+    labels: thank you, good bye
+     model: Bye
+- - - NEW EPISODE: redial- - -
+hello
+    labels: Hello, I am looking for some movie recommendations.  Do you have any Horror Movies that you could suggest for me?
+     model: Hi there!
+I do! have you ever seen The Conjuring ?
+    labels: I have seen The Conjuring  I very much enjoyed this movie.  When I was younger I liked movies like Friday the 13th  .
+     model: I have not seen that one.  I will have to check it out.
+I liked that one too!
+    labels: I also liked to watch the A Nightmare on Elm Street  Series.
+     model: I have not seen that one.  I will have to check it out.
+I loved that as well mainly because Johnny Depp is in it
+    labels: I love Johnny Depp! So handsome, such a great actor. I love johnny Depp in Alice in Wonderland  .
+     model: I also liked to watch movies like The Shining  .
+Me too one of my favorites from him is The Astronaut's Wife
+    labels: I am not sure if I have ever seen that movie, I am going to have to check that one out.
+     model: I haven't seen that one.  I'll have to check it out.
+It is very creepy and dark but full of suspense
+    labels: Thinking of Johnny Depp have you ever seen the movie Secret Window ?  It is a story By the author Steven King.
+     model: I love suspense!
+I own it! I actually have a poster still on my door from it, it was really good I love a good Steven King movie
+    labels: His performance in that movie is phenomenal. I am a huge fan of Steven King.  His novels help foster my love of reading and story telling. Well thank you for talking with me.  I think I am ready for my movie night now.
+     model: I have seen it and it was good.  I also like The Shining  .  It is a classic.
+excellent! I hope you enjoy good bye
+    labels: good bye.
+     model: Bye
+- - - NEW EPISODE: redial- - -
+Hello, I am looking for some movie suggestions.  What would you suggest?
+    labels: Are you looking for movies currently in theatres?  I like A Quiet Place.
+     model: I would suggest The Dark Knight 
+I want to have a movie night with friends.  I have not seen A Quiet Place but I think it looks really good.  I do love scary movies. One of the best scary movies I have seen in recent years is The Forest  , have you seen this one?
+    labels: If you like recent scary movies, I might suggest Annabelle 2. I have not seen The Forest  The Forest  is a good suggestion for me
+     model: I have not seen The Forest  .  I will have to check it out.
+I have seen Annabelle 2  it was very good. I also very much enjoy watching an old movie like The Last House on the Left  and then watching the remake The Last House on the Left  . It is very interesting to see what changes and what does not, to see the difference that all these years makes in the style of the movie.
+    labels: I enjoyed House at the End of the Street but have not seen The Last House on the Left  or The Last House on the Left .
+     model: I have not seen The Last House on the Left  . I will have to check it out.
+How about a recommendation for a comedy.  After all these scary movies we will need something to lighten the mood at the end of the evening. Maybe something classic like Uncle Buck
+    labels: I like Death at a Funeral , the original British comedy.
+     model: I have not seen that one.
+Oh i have never seen that I will have to check it out.  Well I think I am ready for my movie night now.  Thank you so much.
+    labels: Thanks, enjoy!
+     model: You are welcome.  Have a good night.
+- - - NEW EPISODE: redial- - -
+Hello, what type of movies do you like?
+    labels: whatever i just watched Avengers: Infinity War i really liked
+     model: I like action movies.
+I have not seen Avengers: Infinity War
+    labels: i also watched It  the new one i have not seen the old one It
+     model: i really liked it
+Have you seen Annihilation ?  I would recommend it.
+    labels: i also liked Click  no, i have not seen i think i will try that one thank you for helping me
+     model: i have not seen that one
+I saw It .  I like Click 
+    labels: good bye i'll see you in another chat ;)
+     model: i will try that one too thank you
+- - - NEW EPISODE: redial- - -
+hello
+    labels: Hi there! I'm looking for bad campy movies like... me and my boyfriend are having a competition Have you seen Miami Connection i liked that one but I need something worse haha
+     model: Hi there!
+a classic that I recommend is the movie the graduate, the soudtrank I liked a lot 1967
+    labels: That sounds good. I could go with a classic. Have you seen Troll 2 I'm looking for a horrible movie. cheesy horror
+     model: I haven't seen that one! I'll have to check it out.
+Tuesday 13, you like?
+    labels: Of tuesday the 13th? haha no, is it horrible? I'll have to look it up Oh did you mean Friday the 13th  ? yeah i like it but i need something kinda not so scary just funny too you know
+     model: I haven't seen that one. I'll have to check it out.
+scary movie is funny, I liked it a lot
+    labels: I think I'll go with Jennifer's Body he cant fight me on that one. And it has megan fox in it so he cant complain I loved Scary Movie !! thank you I'll go with that one! so hilarious
+     model: I'll have to look it up. Thanks for the recommendation.
+There are six movies, they are all fun
+    labels: have a good day! and thanks again awesome i will check them out. thank you again have a good day thanks again for your help! goodbye
+     model: I think I'll go with the sixth one then.
+- - - NEW EPISODE: redial- - -
+Hello, have you seen the new IT movie?
+    labels: I have! I loved it.
+     model: I have not. I have heard good things though.
+How about the Sixth Sense? I know it is older but it was good?
+    labels: I feel like it was so much more intense than  It
+     model: I have not seen that one.
+I agree it was more intense then It(1988)
+    labels: I think I've seen the The Sixth Sense  but its been ages ago
+     model: I haven't seen that one.
+What kind of movie are you looking for now?
+    labels: I just finished seeing Black Panther  and loved the action. But I'm all caught up on the marvel movies now.
+     model: I like thrillers
+Might I suggest you go back and watch the movie Sixth Sense since you cannot remember if you saw it?
+    labels: I think that would be an excellent idea, Bruce Willis is one of my favorite actors. Honestly, thinking about it now I'm pretty sure I was thinking of The Fifth Element  earlier.
+     model: I think I will. Thanks for the suggestion.
+I love Bruce Willis too and can watch the movie over and over.
+    labels: Right!? I can't tell you how many times I've rewatched Die Hard  and still enjoy it just a much.
+     model: I think I'll go with that. Thank you for your help.
+Oh yes, one of my favorites. I hope you enjoy Sixth Sense (1999) even if you have seen it.
+    labels: Thank you for the recommendation, I'll definitely have to watch it this week!
+     model: I have not seen that one. I'll have to check it out.
+- - - NEW EPISODE: redial- - -
+Hello, I heard that you are looking for a movie recommendation.  What sort of movies are you into?
+    labels: I like comedies and movies that have really cool cinemotography I like 2001: A Space Odyssey  Tangerine  And i watched Enter the Void last night and it was pretty good
+     model: I am looking for a good action movie.
+I have never seen either of those movies.  do you like comedies like The Waterboy  or something like Black Sheep .
+    labels: Yeah i like The Waterboy adam sandler is so silly i like absurdist humor
+     model: I have seen The Waterboy  and Black Sheep  and liked them both.
+Yes Adam Sandler has made so many great movies, I even like his newer ones like Click  and Grown Ups  .
+    labels: Little Nicky is my favorite
+     model: I have never seen Click  but i have heard good things about it
+I love the movie Little Nicky  an all time favorite Is there anything else I could assist with today?
+    labels: nah it was nice talking to you!
+     model: I think thats all thank you
+- - - NEW EPISODE: redial- - -
+Hello
+    labels: hello!
+     model: Hi!
+i'm looking for any movie i just watched Avengers: Infinity War  and i really liked i also watched It   it was a little scary
+    labels: i loved that movie actually haha.
+     model: i haven't seen that one yet
+but i think the old one It was better so what would you recommend me?
+    labels: I wanted it in theaters and wow. I just wanted Happy Death Day  haha thats as scary as i can go
+     model: i agree. i would recommend Black Panther
+i have not seen it i think i will try
+    labels: Creed  is an awesome movie as well. I love boxing movies
+     model: i hope you enjoy it!
+i also watched Click  and it was interesting i like too! thank you for helping me remember to say good bye good bye! ;) i see you later in another chat or i hope
+    labels: Bye!
+     model: Bye
+- - - NEW EPISODE: redial- - -
+Hello can you tell me what kind of movies you like best?
+    labels: hello i'm the seeker now you should recommend me any movie I just watched Avengers: Infinity War  and i liked
+     model: I like action movies.
+I could recommend Donnie Darko .
+    labels: That's great
+     model: I have seen that one and liked it
+I also enjoy classic horror movies like A Nightmare on Elm Street  and A Nightmare on Elm Street 2: Freddy's Revenge
+    labels: i have not seen them but i could try them those sounds very interesting i just watched It   the new one Are those Scary movies too?
+     model: I would recommend The Shining 
+I love It   and It . Yes they are some classic scary movies.  I haven't watched it yet myself but I have heard great things about A Quiet Place .
+    labels: Thank you for helping me Remember to say good bye after this You should try them ;) good bye
+     model: I have not seen that one either. I will have to check it out.
+- - - NEW EPISODE: redial- - -
+Tell me what would you like to watch? i just watched Avengers: Infinity War Have you seen it? or do you like Scary movies? have you ever seen Click  ?
+    labels: I like a lot of different movies.  Thinking about some comedies something like Billy Madison
+     model: I have seen it and I liked it. I have not seen Click 
+have you ever seen You Don't Mess with the Zohan ? that's is very interesting and funny you should try them
+    labels: Yes I have seen that Movie it is very funny
+     model: I have not seen that one.  I will check it out.
+i also would recommend you American Pie 2 There are many of those movies any of them are really awesome
+    labels: I also like Big Daddy  and The Waterboy .
+     model: I have seen that one too.  I like it.  I will watch the others.  Thank you for your help.
+Scary Movie is one of the best if funny movies you are talking about Well, enjoy your evening good bye
+    labels: These sound like some great movies to look into thank you, good bye.
+     model: I have not seen that one.  I will check it out.  Thank you for your help.  Goodbye
+- - - NEW EPISODE: redial- - -
+hello
+    labels: I am looking for a comedy movie.
+     model: Hi there!
+Tell what kind of movie would you like to watch? did you watch Click  ? i could recommend you American Pie 
+    labels: yes, I loved it. American
+     model: I have seen Click  and American Pie  . I liked them both.
+i could recommend you too American Pie 2 There are many of those movies
+    labels: Im not sure if i saw american pie 2.
+     model: I have seen that one. I liked it.
+Have you ever seen Scary Movie ? Well, you should try them
+    labels: scary movie was good.  The first one atleast
+     model: I have not seen that one.
+You should watch You Don't Mess with the Zohan i hope i have helped you
+    labels: you did thanks
+     model: I have seen that one.  It was good.  Thanks for the suggestions.
+- - - NEW EPISODE: redial- - -
+Hello i'm open to any movie
+    labels: I like old school horror movies like A Nightmare on Elm Street have you ever seen this one?
+     model: Hi! I'm looking for a good romance.
+What would you recommend me? i have not seen them! i think i should try those movies
+    labels: The second one A Nightmare on Elm Street 2: Freddy's Revenge is great too.
+     model: I would recommend The Shining  and The Silence of the Lambs 
+i watched The Exorcist  and it scared me
+    labels: I love that movie.
+     model: I haven't seen that one.
+so are there two movies? haha, i would not say the same i enjoyed It  the old one i think the old one is better than the new one
+    labels: There are more than two, A Nightmare on Elm Street 3: Dream Warriors , A Nightmare on Elm Street 4: The Dream Master , and A Nightmare on Elm Street 5: The Dream Child .
+     model: I agree. I think the original It is the best.
+Ooh, i will try them thank you for helping me good bye
+    labels: I loved It  and I thought the new one It   was ok thank you, good bye.
+     model: Bye.
+- - - NEW EPISODE: redial- - -
+hello i'm open to any movie
+    labels: Hi there.  I would like to suggest some comedies you could watch, have you seen The Wedding Singer ?
+     model: Hi! What kind of movies do you like?
+i just watched Avengers: Infinity War and i liked it i have not seen it but i watched American Pie 2  and it was great i also watched American Pie 
+    labels: It has Adam Sandler in it.  I like so many of his movies like Billy Madison and Big Daddy  and Little Nicky
+     model: I would also suggest The Big Sick.  It is a comedy with Adam Sandler.
+So have you watched Click  ?
+    labels: I didn't think the American Pie  movies were that great I always felt like the were super overrated.
+     model: I have not seen that one.  I will check it out.
+he also made a movie where he is gay but i don't remember the name
+    labels: I've seen Click   but I don't like it as much as his older movies.
+     model: I think I saw that one.  It was called The Big Sick
+i think so, his old movies were better thank you for helping me good bye i hope i'll see you again in another chat
+    labels: You're welcome.  Have a great day, good bye.
+     model: I think I will.
+- - - NEW EPISODE: redial- - -
+Hello what kind of movies would you recommend me to watched with my friends?
+    labels: Hello, there is a movie that I have always enjoyed and I'm not sure what you would call the genre but the movie is Donnie Darko  have you ever seen this one?
+     model: Hello! I would recommend a comedy like The Big Sick
+i think funny movies would be great Yes i watched it! it was really great!
+    labels: Well that one definitely isn't funny.  How about Black Sheep   or another classic Uncle Buck
+     model: I'm glad you liked it.  I would also recommend The Big Lebowski if you like funny movies.
+i watched Hangover i liked very much!
+    labels: I like that movie too.
+     model: I haven't seen that one.  I'll have to check it out.
+i have not seen that mive movie* sorry
+    labels: So funny and just ridiculous.
+     model: I also liked The Hangover Part II
+yes and there is the another one Hangover  i think i will try those movies
+    labels: I really love Chris Farley's movies Tommy Boy is an all time favorite
+     model: I hope you enjoy them.  Have a good day.
+thanks! Good bye i will try that one too!
+    labels: For sure you will definitely enjoy them and get a lot of laughs. Thank you, good bye/
+     model: Bye
+- - - NEW EPISODE: redial- - -
+Hello
+    labels: Hello
+     model: Hi!
+Tell me what kind of movies would you like to watch? i just watched Avengers: Infinity War
+    labels: I like action movies like X-Men 
+     model: I am looking for a good drama
+I really enjoyed it! do you like marvel movies?
+    labels: I haven't seen that.  It's been a while since I've seen a brand new movie
+     model: I like them
+As Man of Steel  ?
+    labels: I've never seen that one but I will have to check it out.
+     model: I haven't seen that one either.  I'll have to check it out.
+do you like that kind of movies? what about Spider-Man: Homecoming ?
+    labels: I also loved The Dark Knight Rises
+     model: I've seen that one and I liked it.  I also liked the new Spider-Man: Homecoming
+That's really good You should try those Yes! Batman has made a lot of good movies
+    labels: I haven't seen that one either but I'll check it out.  I really loved Suicide Squad 
+     model: I will check out Spider-Man: Homecoming .  I've heard good things.
+Well, i hope i have helped Enjoy your evening Good bye
+    labels: Yes you helped so much thank you, good bye.
+     model: Thank you for the suggestions.  Goodbye
+- - - NEW EPISODE: redial- - -
+Have you seen the movie The Godfather
+    labels: I have seen it once, a long time ago.  It was really good but it might be a little dated for me now.
+     model: I have not.
+Yeah its a bit dated for shure What kind of movie genres do you like
+    labels: I enjoy fantasy type movies, and goofy comedies.  Any suggestions?
+     model: I like action and comedy.  I also like drama.
+For me the best fantsy is The Lord of the Rings  Have you seen it
+    labels: For example, Big Fish and Sisters .
+     model: I have seen it, and I enjoyed it.  I think I will rewatch it.
+Or Step Brothers  very funny comedy
+    labels: I love The Lord of the Rings , but The Hobbit: An Unexpected Journey was too tedious! I haven't seen Step Brothers , if I like The Hangover would I like it?
+     model: I have seen Big Fish and Sisters .  I liked it.  I will check out Step Brothers .  I have never seen it.
+definitely the movie Step Brothers  Is for you!
+    labels: Perfect, thank you.  That's a great recommendation!
+     model: I'll check it out!
+Great, anytime!
+    labels: Bye!
+     model: Have a good day!
+- - - NEW EPISODE: redial- - -
+Hello
+    labels: Hi! Have you seen a good action movie lately?
+     model: Hi!
+It has been a while since I've seen any action films, though I do like movies like X-Men . I have always loved the idea of having some sort of power like they have.
+    labels: That is a great title. Loved it, If you have not seen it yet, I highly recommend John Wick
+     model: Have you seen The Avengers  ?
+I loved John Wick .
+    labels: It is action packed with great fight scenes. They do say there is no bond like one between a man and his dog.
+     model: I also loved The Avengers 
+I am also like the movie Shooter  .  It is suspenseful, I was on the edge of my seat the whole time.
+    labels: I haven't seen Shooter 
+     model: I have not seen that one.
+Oh and this other one I think the name is Eagle Eye , it is an intense movie to watch.  Makes you wonder about big brother watching our every move.
+    labels: That is a great recommendation! I will have to check those out. If you're into shooting movies, you should watch American Sniper
+     model: I will check it out.
+I'm not sure if I've seen that one or not.  either way I will have to watch it now. I like all kinds of movies really.  One of my all time favorite movies is Donnie Darko and I have a hard time describing it to people but it is really worth checking out.
+    labels: I have yet see that one either. I will definitely check it out. Thanks for the great suggestions. I have got to go now. I hope you have a wonderful day
+     model: I have heard of that one, but I have never seen it.
+- - - NEW EPISODE: redial- - -
+Hello, I hear you are looking for movie recommendations.  Do you have any sort of genre in mind?
+    labels: Yes, I'd recommend psychological thrillers.  Have you seen Nocturnal Animals ?
+     model: I like action movies.
+No I have never seen that one.  I will have to check it out.  Growing up I always like movies like A Nightmare on Elm Street  and Friday the 13th  . As for newer movies I really enjoyed The Forest  . It was riveting.
+    labels: Those are classics.  I'd like to see A Nightmare on Elm Street or the remake A Nightmare on Elm Street .
+     model: I haven't seen those, but I've heard good things.  I'll have to check them out.
+I have not seen the remake.
+    labels: Have you seen Arrival ?
+     model: I think it's on Netflix.  It's a good one.
+No I have not seen that one either.  I guess I have a few to look into.  I really liked Annabelle  though.
+    labels: I enjoyed Annabelle 2 but never did see the original.  I felt like the sequel stood well on its own. I will have to check out the original!
+     model: I have not seen that one.
+Well you have a wonderful evening I hope I helped.
+    labels: You certainly have!  Thanks!
+     model: You too.  Goodbye.
+Thank you, good bye.
+    labels: Goodbye.
+     model: Bye!
+- - - NEW EPISODE: redial- - -
+Hello! How are you?
+    labels: Hi I am good How are you
+     model: Hi! I'm great. How are you?
+I'm fine. Do you have any good suggestions for a good movie?
+    labels: What kinds of movies do you like? Do you like dramatic movies?
+     model: I would love to help you find a movie
+I love action and funny movies, so I looking for something that combines the two,
+    labels: Do you like Pineapple Express  ? You may like Rush Hour  .
+     model: Have you seen The Dark Knight  ?
+I have heard about it, but have never seen it. What is it about?
+    labels: Pineapple Express  is about two slackers that witness a murder. It is hilarious! You might love Deadpool  !
+     model: It's about a group of friends who are in a car crash and have to get to the hospital. It's hilarious!
+That does so really funny. And that would be the perfect movie for today.
+    labels: That is full of action and comedy. The The Blues Brothers  is a class too! Yes, I highly suggest Pineapple Express  !
+     model: It is!
+I have heard so many things about Deadpool and from the ads it looks so good. Thank you. I just might give Deadpool a try.
+    labels: You won't be disappointed. That sounds great. I am so glad I could help you find a great movie to watch. I wonder if you have seen any of the movies I suggested? Have you see The Blues Brothers  or Rush Hour  ? Maybe you have seen Men in Black  ? That is a good movie too. I think you need to agree you have seen one I suggested. :)
+     model: You are welcome! Have a great day!
+- - - NEW EPISODE: redial- - -
+Hello! How are you?
+    labels: Hi! Do you have a good movie for me? I like dramas. I am great.
+     model: Hi! I'm great. How are you?
+Do you like classic dramas like Casablanca, or would you prefer something more recent?
+    labels: I really likeI like Casablanca  a lot. I love old movies. I have seen Casablanca  . I like Citizen Kane too.
+     model: I like both.
+If you like Casablanca  , you might enjoy Key Largo  or The Night of the Iguana  Grand Hotel  is another favorite old movie of mine, though it doesn't have the same hard-boiled feel to it
+    labels: What is Key Largo  about? That sounds interesting. I think I would like to watch Key Largo  .
+     model: I have seen Key Largo  . I liked it. I have not seen The Night of the Iguana  . I will check it out.
+In Key Largo  Humphrey Bogart's character clashes with mobsters in a Florida resort town, and falls in love with Lauren Bacall along the way
+    labels: Thanks so much for the help! Bye!
+     model: Oh, that sounds interesting. I will definitely check it out.
+Have a good day!
+    labels: Goodbye.
+     model: Bye!
+- - - NEW EPISODE: redial- - -
+Hi! How are you? I am looking for a funny movie. Can you . help me? I really like There's Something About Mary . I like comedies that have a little romance in them.
+    labels: Hi I'm great thanks, how are you?
+     model: I love There's Something About Mary ! Have you seen There's Something About Mary ?
+I am great. It's a nice day. I also really like The Holiday . I like Shallow Hal too. I hope you can help by just suggesting one movie.
+    labels: There's Something About Mary ething About Mary is a great movie, very funny. Have you seen The Wedding Singer ? I also like The Holiday and Shallow Hal
+     model: Have you seen The Big Sick ?
+I have not seen The Wedding Singer . What is it about?
+    labels: It has Drew Barrymore and Adam Sandler starring, it's a romantic comedy so you would like it
+     model: It's about a bride who falls in love with a man who is not her husband. It's very funny.
+- - - NEW EPISODE: redial- - -
+Hi! How are you? It is so great to be paired with you.
+    labels: Hey good thanks and you?
+     model: I'm good. How are you?
+I am great.
+    labels: What kind of movies do you like? I love horrors!
+     model: What kind of movies do you like?
+I really love superhero movies like Guardians of the Galaxy  and Guardians of the Galaxy Vol. 2 . Can you suggest a couple superhero movies for me to watch tonight?
+    labels: That's great my brother also likes those movies so I can recommend some for you
+     model: I love those too! I would suggest Black Panther and Captain America: Civil War
+Awesome.
+    labels: Have you seen Avengers: Age of Ultron
+     model: Have you seen The Avengers  ?
+No I have not seen Avengers: Age of Ultron . I know people that really like it. I will have to watch it. I do really like Spider-Man  . I am sure I will love it.
+    labels: Also Captain America: Civil War is a great film
+     model: I hope you enjoy it
+Cool! Thanks for helping me!
+    labels: Yeh Spiderman is a great movie
+     model: No problem have a great night
+Have a great night. Goodbye!
+    labels: No problem enjoy your movies, bye
+     model: Bye
+- - - NEW EPISODE: redial- - -
+Hey how are you?
+    labels: Hi! How are you today?
+     model: Hi, I'm good. How are you?
+I'm great thanks, What kind of movies do you like?
+    labels: I am hoping you can help me find a movie about gangsters, like Casino  . I love that movie. I also really like Goodfellas . Anything related to the mob interests me.
+     model: I am looking for a good romance. I really liked The Notebook
+They are great movies, have you seen American Gangster 
+    labels: I have not seen it, what is it about? Is it like the Godfather  ?
+     model: I have not seen that one. I will check it out.
+It's based on 1970's in New York
+    labels: Oh, cool. That sounds like something I would like for sure.
+     model: I will have to check it out.
+Also Scarface  is a film you might enjoy
+    labels: Yeah, I have actually never seen that! Thanks a ton for the help.
+     model: I have seen that one, it was pretty good.
+No problem, enjoy
+    labels: Have a great day. Goodbye.
+     model: Bye.
+- - - NEW EPISODE: redial- - -
+Hey how are you?
+    labels: Hi! How are you? I am great.
+     model: Hi, I'm good. How are you?
+Good thanks, what kind of movies do you like?
+    labels: I really loved Black Panther . I love adventure movies.
+     model: I am looking for a good romance. I really liked The Notebook and The Devil Wears Prada .
+That's great it's a great movies. Have you seen Tomb Raider
+    labels: I like stuff like Jurassic Park .
+     model: I have not. I have heard good things though.
+I have't seen Jurassic Park
+    labels: Oh, you know what, I haven't seen that. What is it about? Is it like Raiders of the Lost Ark ?
+     model: I love that movie.
+Have you seen Avengers: Infinity War
+    labels: Jurassic Park is good. No, I haven't seen Avengers: Infinity War . My friends love it though.
+     model: I have not. I am not really into super hero movies.
+It is the best marvel film so far
+    labels: Thanks a ton for the recommendations. I will totally watch those!
+     model: I'll have to check it out.
+No problem, enjoy and goodbye
+    labels: Have a great day. Goodbye.
+     model: Bye!
+- - - NEW EPISODE: redial- - -
+Hey how are you?
+    labels: Hey! I am great. How are you?
+     model: Hi, I'm good. How are you?
+I'm great thanks, what kind of movies do you like?
+    labels: I really love Disney movies. I love Aladdin  and The Lion King .
+     model: I am looking for a good romance. I really liked The Notebook
+Awesome, have you tried the new Beauty and the Beast 
+    labels: I haven't seen all of them though.
+     model: I have not. I heard it was good.
+Those are great movies
+    labels: Oh, the new one?
+     model: I haven't seen The Lion King  either.
+Yeh it's a great film
+    labels: With the girl from Harry Potter and the Philosopher's Stone  ? I have to watch that!
+     model: I'll have to check it out.
+Yeh that's the one she is a great actress
+    labels: That is a great idea. I didn't even think of that. Thanks a lot!
+     model: I think I will watch it tonight.
+Have you seen Sleeping Beauty  it's a classic
+    labels: Yes! I love it. Thanks soooo much.
+     model: I have not. I will check it out.
+No problem, enjoy and goodbye
+    labels: I am excited to watch Beauty and the Beast  . Have a great day. Goodbye.
+     model: Bye!
+- - - NEW EPISODE: redial- - -
+Hello I am looking for some suggestions for an upcoming movie night with firends.
+    labels: What kinds of movies have you liked before with this group of friends?
+     model: Hi! What kind of movies do you like?
+When I was younger I loved watching A Nightmare on Elm Street
+    labels: Do your friends also like scary movies?
+     model: Have you seen The Shining  ?
+And more recently I have enjoyed The Forest . I am not sure of all of their preferences I was thinking maybe to have a couple different genres.
+    labels: Would The Boy  be a good horror choice?
+     model: Have you seen The Babadook ?
+Oh I have seen that one too.  It was wuite good, surprised by the ending. Sorry I mean Quite
+    labels: I would also say Deadpool  could be a good film for a group of people. Funny and with action involved. Lots of super hero movies right now
+     model: I have not seen that one.
+I love Deadpool  and I think you are right that will be a great movie to watch with friends. What about a comedy?  I always liked Tommy Boy or The Wedding Singer .
+    labels: We are a big fan of Spaceballs and Blazing Saddles in my house. A bit older like the two you mentioned and super funny. I just love Mel Brooks
+     model: I have seen both of those and they are great.  I think I will watch The Wedding Singer again.  Thanks for the suggestions.
+I have seen and love Spaceballs but not Blazing Saddles though I think I've heard of it. Well thank you so much I think I can plan my movie night now.
+    labels: Good luck! I hope your friends enjoy the choices
+     model: Have a good night!
+- - - NEW EPISODE: redial- - -
+Hello! What kind of movie are you looking for today?
+    labels: Hello I guess I am not sure what I am looking for.  Do you know of any good romance movies?
+     model: Hi! I'm looking for a good romance. I really liked The Notebook
+I love Ever After . Its an older fairy tale romance with Drew Barrmore Stardust  is also a good action adventure romance.
+    labels: I've never really watched these types of movies and I don't know where to start. I haven't seen either of these I will have to check them out.
+     model: I have seen Ever After  and I liked it.  I have not seen Stardust  .  I will have to check it out.
+What else would you like in the movie? comedy, fairy tales?
+    labels: I always like True Romance I think that is the name of it.
+     model: I like comedies and romance.
+What movies outs die of the romance genre do you like?
+    labels: And not really that romantic but totally hilarious Love Stinks . I love comedies like Little Nicky.  This movie never fails to crack me up.
+     model: I like romance movies like The Notebook and The Notebook .
+So True Romance is a crime movie with some romance
+    labels: And there is another I don't know what you would call the genre but the name is Donnie Darko .
+     model: I have seen that one.  It is a good one.
+Have you seen Kill Bill? Some romance and action
+    labels: Yes but True Romance the love was so real it strikes me as a great romance, I have never gotten through all of Kill Bill. Well I am definitely going to look in to your recommendations.  Thank you, have a great day.
+     model: I have not seen that one.  I will have to check it out.
+- - - NEW EPISODE: redial- - -
+Hello what kind of movies are you looking for?
+    labels: Hi, I love musicals and am looking for some new ones! Les Misérables  is a current favorite
+     model: Hi! I'm looking for a good drama.
+I am not sure that I know many musicals.  I have never seen Les Misérables . I have seen Annie   as a child.
+    labels: I also enjoy The Phantom of the Opera  I have seen Annie but it was sort of meh
+     model: I have seen that one too! I love it!
+I haven't seen that one either.  If anything I am a horror fan all the way. I grew up watching A Nightmare on Elm Street and Friday the 13th .
+    labels: I havent seen a lot of horror movies because they terrify me
+     model: I love horror too!
+I like that scared to the couch feeling, though sometimes I have to follow up my horror movies with a great comedy.  Something like The Waterboy.
+    labels: I love Adam Sandler! My favorite movie of his is Happy Gilmore Do you know of any other good 90's comedies?
+     model: I love that movie!
+I love Happy Gilmore. Tommy Boy  and Black Sheep  are 2 all time favorites.
+    labels: I havent seen either of those but I will take a look! Thank you for the new movie suggestions
+     model: I havent seen those, I will have to check them out.  Thanks for the suggestions!
+- - - NEW EPISODE: redial- - -
+Hi there are you interested in some classic comedies?
+    labels: I am actually looking for movies for my 12 yr olds sleepover
+     model: I am! I love comedies!
+There is a movie called Uncle Buck and it is absolutely hilarious. Well Uncle Buck is family friendly I could do better I am sure.  How abut The Hunger Games   and The Hunger Games: Catching Fire
+    labels: I dont think the kids would be interested in a movie that old. Hunger Games they have seen and love
+     model: I have seen both of those and they are great.
+Well how about Wonder Woman  .
+    labels: They really liked Sky High  when I showed that to them and Wonder Woman  could be good too
+     model: I have not seen that one yet. I will have to check it out.
+I could also suggest X-Men: Apocalypse.
+    labels: I think I will try that with them as well.
+     model: I have not seen that one yet. I will have to check it out.
+or the newest one I believe is Logan  .
+    labels: We havent seen that one but they do like super heroes I think that should be enough movies for one sleepover
+     model: I think they would like that one too.
+- - - NEW EPISODE: redial- - -
+Hello, are you a movie buff?
+    labels: Hi, I guess I could say yes from the ridiculous stack of movies :) you?
+     model: I am. I love movies.
+I watch many movies. I especially like science fiction. Any recommendations?
+    labels: An oldy but a goody is The Wizard of Oz . I prefer more actions and comedies, any recomendations?
+     model: I love science fiction too! I would recommend The Martian 
+I like Bruce Willis action.
+    labels: I really enjoy movies like The Avengers  and Iron Man . Recently we watched Spider-Man: Homecoming and it was great!
+     model: I like him too, but I prefer his older stuff like Unbreakable  .
+I like Seven Samori as well as the Magnificent Seven.
+    labels: I like Bruce Willis in a lot of movies, especially in Die Hard
+     model: I haven't seen that one. I'll have to check it out.
+I will watch The Avengers again, Thanks!
+    labels: I have not seen The Magnificent Seven 
+     model: I also like him in The Sixth Sense
+Please watch it. Lots of action. A classic.
+    labels: I will add it to the Netflix que. Thank you!
+     model: I will watch it. Thank you for your help.
+I guess we are through, nice talking to you.
+    labels: Have a great day! goodbye
+     model: You too!
+- - - NEW EPISODE: redial- - -
+Hi! What kind of movies are you looking for today?
+    labels: I want to watch some classics like The Birds . Or maybe something like The Wizard of Oz .
+     model: Hi! I'm looking for a good drama.
+Have you seen both of those movies?
+    labels: oh yes I have seen both of them multiple times.
+     model: I have seen both of those movies.
+Not as old but Airplane! I would consider a semi classic.
+    labels: I have not seen Airplane! or if I have I do not remember it all.  I will have to check that out.
+     model: I have seen that one too. I love it.
+It is comedic
+    labels: Oh there is another old one that I always loved it has a little bit of everything it is called Little Shop of Horrors .
+     model: I will have to look for it.
+Along the same lines as Airplane is Dr. Strangelove which is a lesser known movie I was introduced to in a film class
+    labels: I have heard of it before but I have never actually watched it.  I will definitely have to check it out now though. Oh and another all time favorite is Willy Wonka & the Chocolate Factory.
+     model: I have not seen that one either.  I will have to check it out.
+If you liked Little Shop of Horrors  for the music I would suggest Anything Goes  And another good Gene Wilder film is Blazing Saddles !
+    labels: I will have to check those ones out as well. Thank you for all the suggestions.  this should keep me busy for a while.
+     model: I have seen that one and it was pretty good.  I will definitely have to check out Anything Goes  .  I have never seen that one either.  I will definitely have to check that one out too.  I have heard of it but never seen it.  I will definitely have to check it out now though.  I will definitely have to check out Anything Goes  .  I have never seen that one either.  I will definitely have to check it out now.  I will definitely have to check out that one too.
+Woudl you like any other suggestions?
+    labels: No I think that's great thank you, Good bye.
+     model: I think that is all.  Thank you for your help.  I really appreciate it.
+- - - NEW EPISODE: redial- - -
+Hey I heard you're looking for movies what kind of recommendation would you like?
+    labels: I enjoy movies with a lot of action.
+     model: I like action movies.
+Have you seen Deadpool  this movie is action packed to the max.  I can't wait to get to see Deadpool 2 .
+    labels: Yes I have seen Deadpool and you are right, its great. I'm also waiting on the second one
+     model: I have not. I will check it out.
+Do you like Mark Wahlberg?  He's in a great movie called Shooter  , this movie is full of action and suspense.  Edge of my seat the whole time.
+    labels: Really? Yes I have heard of him but not that movie. I'll have to check it out. Do you have any other suggestions?
+     model: I have seen that movie and I agree, it was great.
+Oh for sure, it is a great movie and Mark Wahlberg is a stud.  Have you ever seen Boogie Nights ?
+    labels: Missed that one as well.
+     model: I have not seen that one either. I will have to check it out.
+Oh you gotta into it.  It's a great movie.
+    labels: I will do that. Did he ever do fantasy type movies? I'm into those as well
+     model: I will check it out. Thanks for the suggestions.
+I'm not sure, I would have to look into that.  There is one he is in called The Happening .  Kind of crazy scary movie.
+    labels: Sounds interesting. I'll check those out. Thank you.
+     model: I've seen that one. It was pretty good.
+Thank you, good bye.
+    labels: Bye.
+     model: Bye.
+- - - NEW EPISODE: redial- - -
+Hello I am looking for some movies to watch can you recommend anything to me?
+    labels: Yes, what types of movies are you interested in?
+     model: Hi! I would love to help you find a movie. What kind of movies do you like?
+I love all kinds of movies Horror like The Forest , comedies like Uncle Buck and romances like The Notebook.
+    labels: Have you seen 21 Jump Street  ? I thought that was a pretty funny movie
+     model: Have you seen The Shining  ?
+I have seen that movie and it is definitely hilarious.  I have yet to watch the next one though, 22 Jump Street.
+    labels: That movie is also pretty good! I would also recommend watching A Silent Voice  for romance, it is a very sweet and emotional movie. It is in an animated style.
+     model: I haven't seen the new one yet either. I think I will check it out though.
+I have not seen that but I will have to look in to it for sure. Well I think these are some great suggestions.
+    labels: I'm glad you like them. Hope you have a great day!
+     model: Thank you! I hope you enjoy them!
+- - - NEW EPISODE: redial- - -
+Hello
+    labels: hi
+     model: Hi!
+Can you give me some movie titles
+    labels: Dark night the rise Scarface
+     model: sure
+i really like The Godfather And Scarface 
+    labels: Likewise, Alpacino is great.
+     model: I have seen The Godfather  but not Scarface 
+Yes i really like crime movies something like Goodfellas Or Pulp Fiction Tarantino is really great
+    labels: Yeah those are the best, especially Pulp fiction. Samuel Jackson made the movie great !
+     model: I like Tarantino too.
+- - - NEW EPISODE: redial- - -
+Hello Can you reccoment a movie
+    labels: Yes, Avengers is good
+     model: Hello, I would like to watch a good drama.
+I really like The Wolf of Wall Street  Or American Hustle I really dont like superheroes can you reccomend something else something like Memento  or Black Mass  Also The Shawshank Redemption is really good morgan freeman did the role grat!
+    labels: yeah those are great movies I love Napoleon dynamite
+     model: I have seen that one, it was good
+Ok i will see it i think thats a great comedy for a lazy weekend :D Ok thank you bye!
+    labels: no problem, bye
+     model: bye
+- - - NEW EPISODE: redial- - -
+Hey
+    labels: Hi Can you give me a movie recommendation
+     model: Hello!
+I like the movie Get out It really portrays how the majority of america really is
+    labels: Something like the Titanic Or The Karate Kid I dont like the movie get out
+     model: I have not seen that one. I will check it out.
+Ohh ok and I wonder why
+    labels: it portrays black people as an indagerous species and i dont beleve in that Where i live thats not the case :D
+     model: I dont like the story line
+indagerous&gt; whats that ?
+    labels: So something like The Godfather Or 12 Angry Men 
+     model: indigenous
+mmhm it was nice talking to you , good bye
+    labels: i meant endangered :D
+     model: Goodbye
+Hey , you guys are always bothering us , so you might as well
+    labels: Omg sorry if i offended you with my opinions man
+     model: I think i will watch The Godfather 
+Not at all,
+    labels: I hope you all well
+     model: ok good bye
+Same here
+    labels: bye! Thanks for you recommendation!
+     model: bye
+- - - NEW EPISODE: redial- - -
+Hi! How are you? I really like murder mysteries. Can you help me find one?
+    labels: Great, how are you? Have you seen Kiss Kiss Bang Bang
+     model: I'm great! I love murder mysteries too! Have you seen The Silence of the Lambs  ?
+I really like Seven  . No I have not. Is it good? I like The Silence of the Lambs  a lot too.
+    labels: It's awesome. Its a really funny murder mystery with Val Kilmer and RDJ
+     model: I haven't seen that one, but I have heard good things. It's a good one.
+Cool I will have to watch it. We should keep giving each other suggestions later on. :) I also like Memento  .
+    labels: For sure.
+     model: I have not seen that one. I will have to check it out.
+It's been nice chatting with you.
+    labels: Another great one.
+     model: Same here.
+Goodbye. Hope to talk to you soon. I'll be around. Bye
+    labels: You too
+     model: Bye.
+- - - NEW EPISODE: redial- - -
+Hi! It is nice to meet you. Would you like to know about a good movie? What kinds of movies do you like?
+    labels: I love all types of movies but prefer action drama. how about you?
+     model: I like action movies.
+I like drama too. I really like Titanic . Do you like that? Spotlight   was awesome. I highly recommend it! Fight Club and The Shawshank Redemption are two of my favorite movies.
+    labels: Titanic is a great movies. probably the only movie that ever made me cried
+     model: I have seen Spotlight  and I liked it. I have not seen Fight Club but I have heard good things about it.
+Which once that I recommended would you like to watch? I hope we can talk again. ;) I would love to learn more about movies with you later on.
+    labels: you got good taste The Shawshank Redemption is great. I forgot about that one. Have you ever seen Running Scared 
+     model: I think I will watch Fight Club again. I have seen it but I think I will watch it again.
+- - - NEW EPISODE: redial- - -
+Hey, how's it going?
+    labels: Hey it's great
+     model: Hi! I'm looking for a good comedy.
+What kind of movies do you like?
+    labels: I am looking for a scary movie I don't normally watch them so I am open to lots of suggestions
+     model: I like action movies
+I really like A Quiet Place
+    labels: Oh I have never seen it I like the old school ones, like Halloween
+     model: I have seen that one and it was good
+it was very good. and not too scary or gruesome for someone who doesn't normally watch  them
+    labels: Halloween 
+     model: I have seen Halloween  and I liked it
+great classic
+    labels: or the silly ones like Scream  What about Get Out ? Did you see that? Is it good?
+     model: I have seen that one, it was good
+The Others  is pretty creepy only a few jump scares Get Out was so good.
+    labels: Oh yeah that is awesome. Thanks a lot. I hope you can help me later! Goodbye! :)
+     model: I will have to check it out. I have heard good things about it.
+- - - NEW EPISODE: redial- - -
+Hello, I am looking for movies for a night with friends that I have coming up.  Any suggestions?
+    labels: Black Panther is a great movie
+     model: I would suggest The Avengers 
+When I was younger I liked movies like A Nightmare on Elm Street
+    labels: I really love action movies
+     model: I love that movie too
+Oh I haven't seen that one yet, but I really want to.
+    labels: You may be interested in The Texas Chainsaw Massacre 
+     model: I also like movies like The Matrix
+I like action movies too.  I love X-Men   and X-Men: The Last Stand .
+    labels: I have every x-men movie
+     model: I haven't seen that one.  I will have to check it out.
+Oh yes I have seen The Texas Chainsaw Massacre .
+    labels: I love X-Men 
+     model: I love that one too.  I think I will watch A Nightmare on Elm Street  tonight.
+I haven't seen it yet but I want to, Logan  looks amazing.
+    labels: Logan   is the great
+     model: I have not seen that one yet.  I will have to check it out.
+I will definitely have to check that out than.
+    labels: Have you seen Avengers: Infinity War That may be a great movie for an upcoming movie night
+     model: I hope you enjoy it
+No I haven't seen that yet.  I haven't seen any new movies in a while. For sure I will have to check that one out too.  Sounds like it will be an action packed night. Thank you for your help.
+    labels: Yes you are welcome, I am most delighted to help
+     model: No problem have a great night
+Have a great night, good bye.
+    labels: Ta! Good Night
+     model: bye
+- - - NEW EPISODE: redial- - -
+Hi! How are you?
+    labels: I'm good and you? Just looking for some good movies to watch.
+     model: Hi! I'm great. How are you?
+I am looking for a comedy. I really like The Wedding Singer . Oh I see. What do you like?
+    labels: I love that movie.  Have you seen Billy Madison
+     model: I love that movie! I also like The Big Sick.
+Yes that is great. Would you like Shallow Hal . It's old but pretty funny.
+    labels: I have seen that movie and I really like it.  It's funny and heartwarming.
+     model: I have seen that one.  It was pretty good.
+I like Ghostbusters too.
+    labels: I'm stuck on Adam Sandler and Drew Berrymore have you seen 50 First Dates ?
+     model: I have seen that movie and I really like it. It's funny and heartwarming.
+Cool. Maybe I helped. Yes, I love that movie. Did o help you, or do you need more help?
+    labels: Oh I love Ghostbusters . You definitely helped me thank you very much.
+     model: I think I'm good.  Thanks for the suggestions.
+Great. Goodbye.
+    labels: goodbye.
+     model: Bye.
+- - - NEW EPISODE: redial- - -
+Hi how are you? Can I help you find a movie?
+    labels: I'm good yes I would love to see some action adventure. I like the movie Shooter .
+     model: I am looking for a good horror movie.
+Have you seen Raiders of the Lost Ark ? That is a classic. I've never seen that.
+    labels: Oh and this one called Eagle Eye, such a good movie.
+     model: I have seen that one. It was good.
+Have you seen Jack Reacher  ?
+    labels: I have not seen Raiders of the Lost Ark.
+     model: I have not seen that one. I will check it out.
+It is very good. Oh you have to see it. It's one of the best movies ever made. I hope I've helped you.
+    labels: Yes I have seen Jack Reacher  it is a great movie. You have definitely helped, thank you and good bye.
+     model: I will check it out. Thank you.
+- - - NEW EPISODE: redial- - -
+Hi. How are you? Can I help you find a good movie tonight?
+    labels: did you like the The Sixth Sense sure
+     model: I am looking for a good horror movie.
+I did. It was great. What kind of movies do you like.
+    labels: i am looking for a horror movie
+     model: I like action movies
+Ok, have you seen Get Out ?
+    labels: Yes, it was very different then what I usually watch. I didn't like it so much.
+     model: no i have not seen that one
+Have you seen the The Shining  ? It is a classic. Also, Halloween  is a classic. It's the best horror movie.
+    labels: I have never seen it. All I know is that Jack Nicholson is in it. lol Yes. I have seen Halloween. Halloween 
+     model: I have seen The Shining  and I liked it. I haven't seen Halloween  . I will check it out.
+I think you would really like The Shining  . Was I able to help you tonight?
+    labels: Yes you did great. Thank you.
+     model: Yes, thank you.
+- - - NEW EPISODE: redial- - -
+Hi!  Do you like to watch action movies?  I just watched Thor   and enjoyed it. If you like dumb cult classic movies, you can't get better/worse than The Pirate Movie
+    labels: Hi there sorry I'm here
+     model: I love action movies! I love all kinds of movies. I love all kinds of movies.
+Great!  What type of movies do you like?
+    labels: I am into action movies like Thor   but my boyfriend always gets to pick. Can you recommend like a 90s classic? Something to the effect of Cruel Intentions
+     model: I like action movies like The Fast and the Furious 
+I loved Cruel Intentions You might like Election  which had Matthew Broderick and Reese Witherspoon.
+    labels: Do you think the Reese Witherspoon one called Fear  ? haha thats great you brought those up! Thank you very much for the recommendations. I might make him watch Clueless   too haha
+     model: I have seen that one and liked it. I will have to rewatch it.
+I've never seen Fear  .  Even though it's more 80s you might like Heathers if you liked Cruel Intentions . Yes, or Legally Blonde .  He would love that Ha!
+    labels: LOVED Heathers Winona forever
+     model: I loved Heathers ! I will make him watch that too. Thank you very much for your help.
+Yes!
+    labels: Do you think he'd like Encino Man ?
+     model: I think he would like it.
+He probably would.  How about I Know What You Did Last Summer  or Scream 
+    labels: Perfect! I'll see what I can find. Thank you for your recommendations. Its always nice to have a second opinion,
+     model: I haven't seen that one.  I'll have to check it out.
+- - - NEW EPISODE: redial- - -
+Hello Can you please reccomend a movie
+    labels: Hello, sure I will.
+     model: Hello, I would like to watch a good drama.
+Something like The Silence of the Lambs  I really liked that one
+    labels: Have you seen the new Avengers? Avengers: Infinity War
+     model: I have not seen that one.
+I have not Is that a good mmovie?
+    labels: You should for sure go and watch the Avengers: Infinity War . Also go and rewatch the The Silence of the Lambs  It is a great movie! I would highly suggest it!
+     model: It is. It is a very good movie.
+Thanks what do you think of a comedy
+    labels: Have you seeen Blockers ?
+     model: I would definitely recommend it!
+Step Brothers  or Seven Psychopaths
+    labels: It's new in theaters now
+     model: I have not seen that one either
+- - - NEW EPISODE: redial- - -
+Hello
+    labels: Hello! how are you? Have you seen the new Avengers: Infinity War
+     model: Hi!
+Im fine thanks! yes i have its really great
+    labels: I agree, do you have any suggestions on movies?
+     model: I loved it!
+i really like Captain America: Civil War Also
+    labels: Yes! I love all of the marvel movies!
+     model: I have seen that one, it was really good.
+Oldboy  or Thor  must see!
+    labels: I really love Guardians of the Galaxy Vol. 2 Okay, that is all. Goodbye!
+     model: I have seen Oldboy  and loved it! I havent seen Thor  though
+- - - NEW EPISODE: redial- - -
+Hello! Have you seen either of these? Avengers: Infinity War  or Thor  Thor: Ragnarok
+    labels: Omg Yes! i really like them do you have something else for me a superhero movie would be great! Maybe an older Superman  movie
+     model: I have seen both of those. I really liked them.
+Have you seen Batman 
+    labels: I have not thats perfect Thank you!
+     model: I have not seen that one yet. I will check it out.
+Thank you.
+    labels: Bye!
+     model: Have a good day!
+- - - NEW EPISODE: redial- - -
+hello
+    labels: Can you give me any movie sugestions?
+     model: Hi there!
+tell me what kind of movies do you like?
+    labels: I like comedy movies
+     model: I like action movies.
+i would recommend you Click   it is very funny i also would recommend you You Don't Mess with the Zohan
+    labels: I liked Click  I thought it was pretty good.
+     model: I have seen Click  and You Don't Mess with the Zohan . I liked them both.
+those are really funny, have you seen them? have you seen American Pie  ?
+    labels: I havent seen You Don't Mess with the Zohan what it about?
+     model: I have seen them. I liked them.
+or Scary Movie it is a movie mady by Adan Sandle
+    labels: I liked those movies I thought they were pretty good
+     model: I have seen American Pie  and liked it.
+it is pretty funny you know almost all the movie he has done are very funny
+    labels: Yeah I love how he acts
+     model: I will have to check those out.
+hahahaa, those are old movies but if you see them again you laugh so much
+    labels: I think I will watch You Don't Mess with the Zohan  sounds interesting
+     model: I will have to check them out again.
+i hope i have helped have a good evening
+    labels: and maybe rewatch the others thanks bye
+     model: you too
+- - - NEW EPISODE: redial- - -
+Hi there
+    labels: Hello
+     model: Hello!
+I&quot;m looking for movies that have like brain twists? I enjoy movies such as Vanilla Sky I also like Being John Malkovich
+    labels: I can honestly say I have never seen Vanilla Sky i believe it does have Tom Cruise right?
+     model: I love Vanilla Sky. Have you seen The Matrix ?
+yeah it does... just any weird twisty films
+    labels: I have never seen that one either.
+     model: I would say The Mist  is a good one
+I could go for a romantic comedy instead maybe.
+    labels: have you ever seen Monster  with Charlize Theron?
+     model: I love romantic comedies.
+Yes! that is a freaky one. haha she did so well I couldn't believe it was her
+    labels: Valentine's Day  is a good Romantic comedy movie right??? and she looked exactly like her too it was freaky oh another weird and one is Flight  with Denzel
+     model: I agree. I think I will go watch Vanilla Sky  now.
+I haven't seen Valentine's Day  . Do you know of anything similar to Bridget Jones's Diary 
+    labels: how about Maid in Manhattan
+     model: I haven't seen that one.
+Awesome! I'll put those down for another night. I like your suggestion of Maid in Manhattan I think I'll go with that one. Thank you so much for your help!
+    labels: also The Proposal  with Sandra Bullock is amazing as is Ryan Reynolds your very welcome!
+     model: no problem have a good night
+ooooh Can't go wrong with ryan haha have a good night
+    labels: you too, thank you...goodnight.
+     model: you too
+- - - NEW EPISODE: redial- - -
+Hello, I am looking for new dramas or based on true life events such as We Are Marshall or The Judge 
+    labels: I would recommend A Civil Action  or The Lincoln Lawyer  What was the last movie you saw?
+     model: Hi! I'm looking for a good drama too. I really liked The Shawshank Redemption
+I have not seen A Civil Action  but I have seen The Lincoln Lawyer  The last movie I saw was I Can Only Imagine
+    labels: A classic fictional courtroom drama is To Kill a Mockingbird  You might enjoy Woodlawn 
+     model: I would recommend The Judge 
+Ironically, I bought To Kill a Mockingbird  but haven't watched since I purchased it. Thanks for the suggestion. I have not seen Woodlawn  I may have to watch that one as well. Do you have any suggestions for Comedy?
+    labels: 21 Jump Street  and The Hangover are good comedies.
+     model: I would suggest The Big Sick
+those both sound good, I will have to add those to my list, thank you so much for your help today.
+    labels: You're welcome.
+     model: You're welcome. Have a good day.
+- - - NEW EPISODE: redial- - -
+Hello, what genre of movie do you like?
+    labels: I like all kinds, I feel like I could use a good Comedy
+     model: I like action movies.
+Have you seen 21 Jump Street  or any of the The Hangover movies?
+    labels: No, I can't say that I have seen 21 Jump Street  but I have seen The Hangover and it was good Have any suggestions for Will Ferrell movies?
+     model: I have seen 21 Jump Street  and I liked it, but I haven't seen The Hangover 
+Yes. The classics are Anchorman  and Talladega Nights: The Ballad of Ricky Bobby I feel like. His new one, The House  was very good.
+    labels: Sounds good, I have never seen Anchorman  or The House  So I will add those to my weekend binge fest. I did see Talladega Nights: The Ballad of Ricky Bobby Shake &amp; Bake! LOL
+     model: I have seen Anchorman  and Talladega Nights: The Ballad of Ricky Bobby but not The House  I will have to check that out.
+Yes! Alright, have a good one.
+    labels: You too, thank you.
+     model: You too.
+- - - NEW EPISODE: redial- - -
+Hi, what kind of movies are you looking for.
+    labels: I'm looking for any recent horror movies that are good.
+     model: Hi! I'm looking for a good drama.
+I heard the remake of It  was pretty good
+    labels: I haven't gotten around to seeing that, but I will!
+     model: I saw that one and liked it.
+Also A Quiet Place is another one you might like
+    labels: Yes, I didn't get to see that yet, but heard good things about it.
+     model: I saw that one, it was pretty good.
+The Dark Tower  and Annabelle 2 are also really horrific
+    labels: Yes! I saw both of those and enjoyed them.
+     model: I've heard good things about The Dark Tower  . I haven't seen Annabelle 2 .
+Would you like some more suggestions?
+    labels: What was the last indie movie you saw that you would suggest watching?
+     model: Yes, please.
+I would have to say Room  was a good one also Manchester by the Sea  as well
+    labels: I forgot about Room   I wanted to see, but haven't yet. I saw Manchester by the Sea  and enjoyed it. Thank you and goodbye!
+     model: I haven't seen that one. I'll have to check it out.
+- - - NEW EPISODE: redial- - -
+Hello What kind of movies do you like?
+    labels: what ever hello i'm open to any movie i just watched Black Panther and i loved it is very interesting actually
+     model: I like action movies.
+Have you seen Avengers: Infinity War
+    labels: but i have noot seen Avengers: Infinity War  there are many people who say is very interesting i thin i have not seen it
+     model: yes i have and i loved it
+I've heard the same abut that movie
+    labels: i may try that one is it interesting? which another one would you recommend me?
+     model: i will definitely check it out
+You can watch also It  It's a remake very good
+    labels: i watched It  the old one it is similar to the old one? well thank you for helping me i will try them good bye have a nice day
+     model: i have not seen that one either i will try it out thank you for the recommendation
+- - - NEW EPISODE: redial- - -
+Hi Any recomendations for a good movie?
+    labels: Yes I love Running Scared  and Belly  Aldo Titanic is great. what movies do you like
+     model: Hello, what kind of movies do you like?
+i like Good Will Hunting is a  good movie and also Goodfellas its a great movie.
+    labels: Good Will Hunting is a great choice. Goodfellas is also great. So that mean you like Casino  I love mob movies. If you haven't seen Gangs of New York you should give it a peek have you seen it
+     model: I have seen that one and it was good. I have not seen Goodfellas
+yes moob movies are good like The Rise of the Krays
+    labels: Well thank you for your suggestions. I will rewatch Good Will Hunting tonight. I totally forgot about that movie. I never seen The Rise of the Krays It was fun talking to you.
+     model: I love that movie.
+same have a good one
+    labels: Have a great day
+     model: You too. Bye
+- - - NEW EPISODE: redial- - -
+hello
+    labels: Hi
+     model: Hi there!
+tell me what kind of movies would you like to watch?
+    labels: I like all movies but mob movies are my favorite ones like Casino 
+     model: I am looking for a good drama.
+i just watched Black Panther  and i loved it what about Casino Royale  ?
+    labels: its a good movie marvel movies are good do you like the DC world like Batman 
+     model: I have not seen that one yet. I will check it out.
+have you seen that one? yes that batman guy is awesome
+    labels: i live bond movies the old ones like GoldenEye it was nice talking to you i have to go have a good day
+     model: yes i have seen it and i agree
+- - - NEW EPISODE: redial- - -
+What genre of movie do you like?
+    labels: I like comedies
+     model: I like action movies.
+Have you seen Talladega Nights: The Ballad of Ricky Bobby  or The Hangover ?
+    labels: I have seen and enjoyed both of them.
+     model: I have seen The Hangover and liked it
+Did you see that new Will Ferrel movie The House  ?
+    labels: I did see it. I did not like it very much.
+     model: I have not seen that one.
+Me too, buddy. Have you seen Little Miss Sunshine ?
+    labels: Yes, I love a dark comedy like that
+     model: I have not seen that one.
+I would recommend Fargo  and other Cohen brother movies for sure.
+    labels: That sounds great, thank you for the recommendation.
+     model: I have seen Fargo  and liked it. I will check out the other one. Thanks for the recommendation.
+- - - NEW EPISODE: redial- - -
+Hi. Can you reccomend an action movie?
+    labels: Hi! How are you? Do you like The Avengers  ? There is a new one out right now.
+     model: I would like to watch a movie with Bruce Willis in it.
+Yes. I really liked The Avengers 
+    labels: It is Avengers: Infinity War . I heard it is awesome.
+     model: I liked it too. I also liked Black Panther.
+I saw it a couple of weeks ago it was very good!
+    labels: I really loved Guardians of the Galaxy  and the sequel Guardians of the Galaxy  , Those are great movies, and they are funny too. My favorite classic is Raiders of the Lost Ark .
+     model: I am glad you liked it.
+I enjoyed Thor: Ragnarok too that was very funny.
+    labels: I haven't seen that.
+     model: I have not seen that one yet. I will have to check it out.
+It was good and verry funny.
+    labels: Have you see Crouching Tiger, Hidden Dragon ?
+     model: I will have to check it out.
+No I have not seen that movie.
+    labels: You should! I highly recommend it. I would definitely watch it. It is one of the best action movies of all time. I hope I helped you some today.
+     model: I think you would enjoy it.
+I will have to watch that movie. Thanks for the suggestion!
+    labels: Goodbye!
+     model: You are welcome. Have a great day.
+- - - NEW EPISODE: redial- - -
+hi how are you? It is nice to meet you. Can you help me find a movie today?
+    labels: I'm good. How about you?
+     model: I can try. What kind of movie are you looking for?
+I am in the mood to watch a comedy. I really like movies with Drew Barrymore. I like slapstick, silly movies. I really liked 50 First Dates . What do you think I would like? I really like National Lampoon's Vacation . That is hilarious. There's Something About Mary is one of my favorites too.
+    labels: How about The Wedding Singer
+     model: I love 50 First Dates. Have you seen The Proposal  ?
+Maybe you can help me find one. Yeah, I love that one. I haven't seen anything recent though. Maybe something that has been recently released? I am so behind when it comes to movies.
+    labels: Do you think you'd like the new Jurassic World?
+     model: Have you seen The Big Sick ?
+What is it about? Is it like Jurassic Park ? I really liked that move.
+    labels: Yes, it's part of the Jurassic Park  series. But it's a new one. I don't know if it's out yet.
+     model: It's about a group of kids who go to a theme park and find out that dinosaurs are real.
+Cool. That sounds awesome. I will have to watch it. Thanks so much for the help! Have a great day! Goodbye.
+    labels: You're welcome. Good day to you, too!
+     model: Bye!
+- - - NEW EPISODE: redial- - -
+Hi! How are you today? It is nice to meet you. Do you need help finding a movie?
+    labels: Hello Yes do you have any drama reccomendations? What types of movies do you like?
+     model: I am looking for a good comedy.
+Sure, I love dramas. What is your favorite drama? I like comedies, but I love all kinds of movies.
+    labels: I really like The Shawshank Redemption Have you seen Thor: Ragnarok it was a superhero movie but very funny.
+     model: I like comedies too. I like The Big Sick
+I haven't seen Thor: Ragnarok . Have you seen Me Before You  ? It is a drama, but it has some romance in it too.
+    labels: Yes I have. I loved the book and the movie was very good too.
+     model: I have seen that one and I liked it.
+La La Land  was actually pretty good too. It was very dramatic, because it was a musical. I know, Me Before You  made me cry!
+    labels: I acutually have not seen La La Land  yet
+     model: I haven't seen that one. I will have to check it out.
+I really liked The Fault in Our Stars  . That is an amazing movie if you haven't seen it. I hope I am helping you some.
+    labels: Thats a good reccomenation I have not seen it yet.
+     model: I have not seen that one either. I will check it out. Thank you for your help.
+You should watch it. It's amazing. I really hope you have a great day.
+    labels: I will! thanks you too!
+     model: Thank you for the suggestions.
+- - - NEW EPISODE: redial- - -
+Hi are  you looking for a specific type of movie?
+    labels: Hello
+     model: I am looking for a good drama.
+I am trying to find a movie based on a book to watch.
+    labels: I like action movies
+     model: I would recommend The Lord of the Rings: The Fellowship of the Ring
+Have you seen the new Avengers: Infinity War movie?
+    labels: Yes I have Have you seen Fifty Shades of Grey 
+     model: I have not seen it yet.
+yes I have.
+    labels: How did you like it?
+     model: I have not seen that one.
+It was okay but I was interested in somehitng more serious.
+    labels: What other types of movies do you like?
+     model: I have not seen it.
+I like historical movies. I watched The Post recently and liked it
+    labels: ok have you seen Seabiscuit 
+     model: Have you seen The Great Gatsby  ?
+No I have not. Thats a good suggestion. thanks for your help!
+    labels: your welcome
+     model: no problem have a good day
+- - - NEW EPISODE: redial- - -
+What genre of movie do you like?
+    labels: I like Comedy Movies!!
+     model: I like action movies.
+Have you seen Talladega Nights: The Ballad of Ricky Bobby or The Hangover ?
+    labels: I have seen both movies!
+     model: I have seen The Hangover and liked it.
+What about last year's The House  ?
+    labels: I have not seen that movie yet but it looks like it would be a good one!
+     model: I have not seen that one!
+Neighbors  with Seth Rogan is good too.
+    labels: I seen that one. I really liked it. Isnt there a second one that came out like within the last year?
+     model: I have not seen that one either but I will check it out!
+Yes, Neighbors 2: Sorority Rising!
+    labels: Thats it! I want to see that one!
+     model: I will have to check that out. Thanks for the suggestions!
+- - - NEW EPISODE: redial- - -
+Hi
+    labels: Hi, how are you?
+     model: Hello!
+Im good you?
+    labels: I'm well! Having a good start to the day!
+     model: I'm good, thanks.
+I like action movies. Any suggestions?
+    labels: I just saw Deadpool 2  maybe you'd like that!
+     model: Have you seen The Avengers  ?
+I havent seen that. I think I would like that What kind of movies do you like
+    labels: Have you watched Deadpool  the first one?
+     model: I like action movies like The Fast and the Furious 
+I saw Avengers: Infinity War that was great
+    labels: I like action, comedy, and thrillers mostly. What about you?
+     model: I have not seen that one yet. I will have to check it out.
+I have seen the first one as well I meant Avengers: Infinity War
+    labels: Nice! Did you feel Thanos was a bad guy? I personally still feel he was selfish/self-centered. Did you see Guardians of the Galaxy  and Guardians of the Galaxy  ?
+     model: I have not seen that one.
+I did, but I also felt bad for him. Strangely I have seen Guardians of the Galaxy  but i have seen Guardians of the Galaxy Vol. 2 Im sorry havent for the first one
+    labels: Oh! Okay, you should see Guardians of the Galaxy  so that you could even better understand that relationship dynamic with his daughters.
+     model: I have seen both of those as well. I have not seen Guardians of the Galaxy Vol. 2 yet. I will have to check it out.
+Awesome! Thanks
+    labels: Well, it was nice talking to you! Have a great day! You're welcome!
+     model: You're welcome!
+- - - NEW EPISODE: redial- - -
+Hi, how are you? Did you enjoy your weekend?
+    labels: HI, Im good how are you? I did. What about you?
+     model: I am doing great. I am looking for a good comedy.
+Nice! I'm well. I enjoyed my weekend. I saw Deadpool 2  with my bf. Did you see it?
+    labels: No! I do want to see it though, it looks funny.
+     model: I did, it was pretty good. I saw it with my boyfriend too.
+Yeah, I liked the first one, Deadpool  Did you see that one? If not, you definitely should watch it in order.
+    labels: Yes I saw that one. Im a marvel fan are you? I saw Avengers: Infinity War that was great!
+     model: I did see it. I liked it.
+Nice! I am a Marvel fan, too! Have you watched Ant-Man  ?
+    labels: Im looking forward to seeing Ant-Man and the Wasp yep Ive seen that too!
+     model: I have not. I want to see it though.
+Yes! Me too! I wound up liking Ant-Man  more than I thought I would!
+    labels: Yea I was surprised it was good! Well it was nice to talk to another marvel fan! Have a great day!
+     model: I agree!
+- - - NEW EPISODE: redial- - -
+Hello, how are you?
+    labels: Great and you?
+     model: I am good. How are you?
+Wonderful, I just seen this awesome movie call Avengers: Infinity War , have you seen it?
+    labels: Not yet, what is it about?
+     model: I have not seen it yet. I am waiting for it to come out on DVD.
+Well have you seen The Avengers  ?
+    labels: Yes, i liked it. Are you a big fan of action movies?
+     model: I have not, I will have to check it out.
+Well basically all the Avengers get together for a common goal, I really liked it.  I am, what about you?
+    labels: I enjoy good action movie. What else would you recommend me from that genre?
+     model: I am a big fan of action movies. I like the Avengers  too.
+I would recommend Deadpool  or The Dark Knight  if you like comic book action movies like that.
+    labels: I've seen both Deadpool  and The Dark Knight . I think acting in that particular batman movie was phenomenal.
+     model: I have seen Deadpool  and liked it. I have not seen The Dark Knight  . I will check it out.
+- - - NEW EPISODE: redial- - -
+Hello
+    labels: Hi, what kind of movies do you like?
+     model: Hi!
+Whatever you can recommend me Whatever you can recommend me
+    labels: Have you seen the new movies Avengers: Infinity War or Isle Of Dogs ?
+     model: Have you seen The Dark Knight  ?
+yes! i watched infinitive war and it was very interesting but i did not watched the another one
+    labels: I would also recommend A Quiet Place and No Country for Old Men  . Those are some of my favorites!
+     model: I haven't seen it yet, but I heard it was good.
+What are those about? Are those funny movies or action movies?
+    labels: A Quiet Place is horror and No Country for Old Men  is kind of a horror thriller.
+     model: A Quiet Place is about a group of people who are trapped in a building with a monster. It's a thriller/horror movie.
+i think i could try those ones this evening i kind of like it thank you for helping me
+    labels: See you!
+     model: No problem! Have a good night!
+- - - NEW EPISODE: redial- - -
+hi Do you have any comedies you can recomend?
+    labels: hi yes of course i would recommend you Click  that's a really interesting movie have you ever seen American Pie  ? it is a old movie but you can love it and smile a lot!!
+     model: I do. Have you seen The Big Sick ?
+yes I have seen American Pie  who is in Click ?
+    labels: i could also recommend you Scary Movie as Scary Movie 2 but i liked more the old one Click  it is made by Adan Sandler
+     model: it is a movie about a man who falls in love with a woman who is a man
+okay I think I saw that.
+    labels: he is very funny
+     model: yes it is a good movie
+do you know any good dark comedies?
+    labels: well i hope i have helped let me think let me think there is Fargo  have you seen it? Enjoy your evening
+     model: yes i do have you seen The Dark Knight  ?
+No i haven't. That is a good reccomendation. Thanks!
+    labels: Have a nice day good bye Have a nice day good bye Have a nice day good bye Have a nice day good bye
+     model: you are welcome
+- - - NEW EPISODE: redial- - -
+hello hello What kind of movies would you like to watch? What kind of movies would you like to watch?
+    labels: I like comedies
+     model: Hi there! I'm looking for a good romance. I really liked The Notebook and The Devil Wears Prada .
+i just watched Black Panther and i loved it i recommend you watch Click   and also You Don't Mess with the Zohan
+    labels: I have not seen Black Panther
+     model: I have seen Click  and You Don't Mess with the Zohan
+Those movies are made by Adan Sandler even though Click  is better than the another one Well.. Black panther is a Action movie so, i recommend you those funny movies
+    labels: I haven't seen Click  either.
+     model: I will check them out.
+i would recommend you American Pie   too There are a lot of those movies
+    labels: I really liked American Pie 
+     model: i would recommend you American Pie 
+And if you like old movies you can watch Scary Movie too Yeah, the new one is really good
+    labels: I've seen Scary Movie but don't really like those kind of movies.
+     model: I have not seen that one either. I will check it out.
+- - - NEW EPISODE: redial- - -
+Hello. Have you seen Jaws  It's based on a book about a rogue shark that terrorizes a small beach community during the tourist summer season.
+    labels: Hi How are you? No I have not Not really my kind of movie.
+     model: I have seen Jaws  and I liked it.
+What type of movies do you like?
+    labels: I like action
+     model: I like action movies.
+Then might I recommend Last Action Hero starring Arnold Schwarzenegger?
+    labels: Okay. I haven't seen that one.
+     model: I have not seen that one either.
+I could also recommend Die Hard
+    labels: I have seen that one. I have to say that Live Free or Die Hard was my favorite of all the Die hard movies Have you seen all of them?
+     model: I have seen that one. It was good.
+That was pretty good, but to me the first one is still the best. I have seen all of them. Have you seen Lethal Weapon
+    labels: I would have to agree the first one is very good. Yes I have seen that one as well. I haven't seen it in a while. It was nice talking to you. Have a good night
+     model: I have not seen that one. I will have to check it out.
+- - - NEW EPISODE: redial- - -
+hello what kind of movies would you like to watch? what kind of movies would you like to watch?
+    labels: Hi!
+     model: I like action movies.
+i just watched Black Panther and i loved
+    labels: I like action and comedy
+     model: I have not seen that one yet.
+have you seen Avengers: Infinity War ?
+    labels: What about you? I saw that as well it was really good!
+     model: I have not seen that one yet.
+i really like marvel movies as the movies of Iron Man  Or the new one Spider-Man: Homecoming
+    labels: Me too I'm a big marvel fan.
+     model: I have not seen that one yet. I will have to check it out.
+Even though there are many people who like the old ones i liked it
+    labels: I wasn't really a fan of the spider man
+     model: I agree. I think it was a good movie.
+Me too man The best part of that one was when iron man appeared
+    labels: I saw Avengers: Infinity War that was awesome!
+     model: I agree.
+i hope i have helped you
+    labels: Yes true!
+     model: You have, thank you!
+Have a good evening good bye
+    labels: You too
+     model: bye
+Enjoy your evening
+    labels: You as well.
+     model: Thanks
+- - - NEW EPISODE: redial- - -
+Hello i love Marvel movies
+    labels: Hey there!
+     model: Hello, what kind of movies do you like?
+Like Black Panther or Avengers: Infinity War what would you recommend me?
+    labels: Awesome me too! What about Iron Man 
+     model: I would recommend Thor: Ragnarok
+The best things of those movies are the action and the imaginative of the person who made it
+    labels: Im really looking forward to Ant-Man and the Wasp would you see that?
+     model: I agree!
+i watched that one and i liked it
+    labels: I cant wait!
+     model: I hope you enjoy it!
+I haven't heard about it
+    labels: What about Spider-Man: Homecoming
+     model: I hope you enjoy it!
+what is that about? The name sounds a little interesting
+    labels: Oh I thought you said you it. saw it sorry
+     model: It is about Spider-Man and his high school years
+Yes, i watched it too, i did not like it at all but i could enjoy it. Well, thak you for helping i hope i see you later have a nice day remember to say good  bye good bye
+    labels: Great have a good night!
+     model: bye
+- - - NEW EPISODE: redial- - -
+Hello there
+    labels: Hi How are you?
+     model: Hi!
+i'm fine thank you what about you?
+    labels: Great! What kind of movies do you like?
+     model: I am good. What kind of movies do you like?
+i'm looking forward to watching comedy movies What would you recommend?
+    labels: Have you seen Girls Trip
+     model: Have you seen The Big Sick?
+No, i have not watched it, is it interesting?
+    labels: Yes I thought it was pretty funny.
+     model: It is a good movie.
+i watched Click  and i liked, it was made by Adan Sandler
+    labels: Oh yes that a good one. What about  The Mask 
+     model: I haven't seen that one either.
+I like the movies made by that guy, he knows how to make people smile
+    labels: Yes very true
+     model: Yes he does. Have you seen The Money Pit  ?
+Yes, i watched it!
+    labels: what about The Waterboy I like his older movies
+     model: I hope you enjoy it!
+No, i haven't watched that one, i like old movies too
+    labels: You should check it out
+     model: I think you would like it
+Thank you for helping me i think i will try that one Have a nice day, Good bye
+    labels: No problem! have a good night!
+     model: you too
+See you later
+    labels: Bye
+     model: Bye
+- - - NEW EPISODE: redial- - -
+Hello
+    labels: Hi
+     model: Hi!
+What would you recommend?
+    labels: What kind movies do you like?
+     model: I am looking for a good comedy
+i'm open to any options
+    labels: Have you seen Avengers: Infinity War
+     model: Have you seen The Dark Knight  ?
+No, i haven't but i want to!
+    labels: It so good! What about Black Panther
+     model: It was really good.
+i just watched Black Panther and i loved it
+    labels: So you like action?
+     model: It was really good.
+Even though the most of the people are black is very interesting haha Yes i also like Comedy movies
+    labels: Have you seen Down to Earth 
+     model: I would recommend The Big Sick
+No, i haven't what is it about?
+    labels: Chris Rock. He dies by accident and comes back in someone else body.
+     model: It's about a guy who gets a job as a comedian. It's really funny.
+Wow, it sounds really interesting
+    labels: I watched it the other night. Pretty funny
+     model: It is.
+i like a comedy movie which was made by Adan Sandler
+    labels: What about The Waterboy
+     model: I like him too.
+i don't know its name i don't know its name
+    labels: Yes that is right
+     model: It's about a boy who is addicted to water.
+he has to be gay in the movie for his best friend and also he has to marry him
+    labels: oh yeah I Now Pronounce You Chuck & Larry
+     model: I think i will watch it again.
+That is! Thank you for helping me, i hope i see you later have a great day
+    labels: No problem have a good night bye!
+     model: you too
+- - - NEW EPISODE: redial- - -
+Hello!
+    labels: hello
+     model: Hi!
+How is your day going?
+    labels: i'm open to any movie what would you recommend? My day is awesome, what about your day?
+     model: great, how about yours?
+Pretty good! Have you seen The Notebook
+    labels: i like comdy movies like Click  No, i have not, what is that about? it sounds interesting
+     model: I have not seen that one, what is it about?
+It's a love story about two young people who meet in the summer and they fall in love and they have to part ways for a long time but end up meeting agian
+    labels: i also watched Black Panther and i loved that movie Again, i could try that one
+     model: sounds good, i'll check it out
+That was a great movie! What about Avengers: Infinity War
+    labels: i haven't been able to watch it, but i want to! i also like Iron Man 2
+     model: i have not seen that one either, i will try that one too
+It was so good!
+    labels: That man knows how to make a movie Well, thank you for helping me
+     model: i will try to watch it soon, thank you for the suggestions!
+No problem! Have a good night bye!
+    labels: Have a nice day, i will try that movie called The Notebook Bye see you later
+     model: you too! bye
+- - - NEW EPISODE: redial- - -
+Hello there How are you?
+    labels: Hi there! can I help you find anything? I'm great!
+     model: Hi, I'm looking for a good comedy.
+Yes, i like comedy movies as Action movies i liked Black Panther and Avengers: Infinity War
+    labels: ooooh... which one do you like more? I have a lot of suggestions
+     model: I love those movies! Have you seen The Incredibles ?
+But i also like old movies like Click  and American Pie  i liked Black Panther and Avengers: Infinity War but sometime i prefer watching old movies where i can be relax and smile a lot
+    labels: For comedy you can't go wrong with Old School 
+     model: I see. I think you would like The Big Sick
+What is that movie about? i think i have not heard about it
+    labels: Will Farrell, tries to be young again and joins a frat
+     model: It's about a high school football coach who falls in love with a cheerleader. It's hilarious!
+It sounds interesting i think i will try that one Well, thank you for your help, have a nice day
+    labels: also for a relaxy funny movie i would suggest The Sweetest Thing  with cameron diaz
+     model: You too
+Good bye, see you later
+    labels: Hope i helped! have a good one
+     model: bye
+- - - NEW EPISODE: redial- - -
+Hello there Who are you? Could you tell me what kind of movies would you like to watch?
+    labels: Hi there, Im good.. kinda confused. how are you? I need help finding a documentary
+     model: Hello, I am looking for a good drama.
+I'm really good thank you
+    labels: specifically about poverty or cults, its for my clasroom
+     model: I like documentaries about the military.
+What about 15 Park Avenue ? Have you watched that one? I can also recommend you Poverty Inc. 
+    labels: I really liked Jesus Camp oooh those would be good I haven't seen the Park Avenue one
+     model: I have not seen that one, I will check it out. I have seen Poverty Inc. and I liked it.
+What about The Master  ? have you watched it? Well, i hope i have helped Enjoy your evening or your classroom Good bye, have a great day See you later
+    labels: There is one called Hauling  i might try as well. Thank you for your help! have a good one
+     model: I haven't seen that one, I'll check it out.
+- - - NEW EPISODE: redial- - -
+Hello
+    labels: hiya!
+     model: Hi!
+i'm open to any movie How are you? what would you recommend? i like comedy movies as Action movies
+    labels: How about It 
+     model: I'm good.  I'm looking for a good action movie.  I really liked The Avengers 
+I watched Avengers: Infinity War  and i loved it, even though i like old movies like American Pie  Yes i watched that one but i liked more It the old one i don't know why but i like more old movies, i find them more interesting
+    labels: I love older movies too. Have you seen High Fidelity 
+     model: I agree, I like the older ones better too.
+No, i haven't! i think i will try that one
+    labels: Its so good!
+     model: It's a great movie.
+Thank you for your help have a nice day, good bye
+    labels: You're welcome! bye
+     model: Bye
